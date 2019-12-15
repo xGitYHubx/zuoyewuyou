@@ -16,7 +16,8 @@
     "pages/square-detail/RWsquareDetail",
     "pages/square-detail/RWcomment",
     "pages/recharge/RWrechart/RWrechart",
-    "pages/square-detail/RWDetailById"
+    "pages/square-detail/RWDetailById",
+    "pages/tabbar/index/Recommend"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -56,13 +57,13 @@
       }
     ]
   },
-  "nvueCompiler": "weex",
+  "nvueCompiler": "uni-app",
   "renderer": "auto",
   "splashscreen": {
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
   "appname": "作业无忧",
-  "compilerVersion": "2.3.3",
+  "compilerVersion": "2.4.2",
   "usingComponents": {}
 }

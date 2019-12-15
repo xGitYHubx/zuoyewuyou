@@ -109,11 +109,9 @@
 		onLoad(options) {
 			this.taskId = options.taskId
 			this.getTask()
-			this.getMsg()
 		},
 		onShow() {
 			this.isMine = uni.getStorageSync('account') == this.task.account ? true : false
-			// console.log(this.isMine);
 			// this.taskImg=[]
 			// this.getTaskImg()
 		},
@@ -169,7 +167,6 @@
 				});
 			},
 			pickBestComment(id) { //选取最佳评论
-				// console.log(id);
 				var _this = this
 				
 				this.RWajax.post("/comment/pick", {
@@ -181,6 +178,9 @@
 								title: "采用成功",
 								icon: "success"
 							})
+							_this.msg=[]
+							_this.task.hasBest=true
+							_this.getMsg()
 						} else {
 							uni.showToast({
 								title: "采用失败:" + res.data.message,
@@ -196,10 +196,10 @@
 				this.RWajax.get("/task/query/single",{
 						taskId: _this.taskId
 					}).then(res=>{
-						console.log(res);
 						if(res.data.success==true){
 							_this.task=res.data.result
 							_this.getTaskImg()
+							_this.getMsg()
 						}
 					})
 			},
@@ -246,7 +246,6 @@
 						taskId: this.taskId,
 						account: uni.getStorageSync('account')
 					}).then(res=>{
-						console.log(res);
 						if (res.data.success == true) {
 							_this.msg = res.data.result
 						}

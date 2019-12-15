@@ -6,8 +6,6 @@ const RWajax = (opts, data) => {
         url: baseUrl+opts.url,
         data: data,
 		success:(res)=>{
-			console.log(res.data)
-			console.log('进入拦截器')
 		}
         method: opts.method || "post",
         header: opts.method == 'get' ? {

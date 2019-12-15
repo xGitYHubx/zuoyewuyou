@@ -10,14 +10,14 @@
 }
 
 
-.RW-border-bottom.data-v-34b18c45{
+.RW-border-bottom.data-v-90aaab8e{
 	border-bottom: #dddddd solid 16rpx;
 }
-.comment.data-v-34b18c45{
+.comment.data-v-90aaab8e{
 	/* border-radius: 10px; */
 	border-bottom: #dddddd solid 8rpx;
 }
-.rw-caiyong text.data-v-34b18c45{
+.rw-caiyong text.data-v-90aaab8e{
 	margin: 0 10rpx;
 }
 

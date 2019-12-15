@@ -39,7 +39,7 @@
 				page: 0,
 				isLoading: false,
 				loadingMsg: "加载中...",
-				dafaultAvatar:"../../../static/user/avatar.png"
+				dafaultAvatar: "../../../static/user/avatar.png"
 			};
 		},
 
@@ -72,26 +72,22 @@
 			getTask() {
 				var _this = this
 				this.isLoading = true
-				// console.log(this.page);
 				this.RWajax.get('/task/query/page', {
-						page: _this.page
-					}).then(res=>{
-												console.log(res);
-						if (res.data.success == true) {
-							_this.page = _this.page + 1;
-							_this.list = _this.list.concat(res.data.result);
-							if (res.data.result.length == 0) {
-								_this.loadingMsg = "加载中..."
-							}
-						} else {
-							uni.showToast({
-								title: '无数据'
-							})
-						}
-					}).finally(res=>{
+					page: _this.page
+				}).then(res => {
+					console.log(res);
+					if (res.data.success == true) {
+						_this.page = _this.page + 1;
+						_this.list = _this.list.concat(res.data.result);
 						_this.isLoading = false
 						uni.stopPullDownRefresh()
-					})
+					}
+				}).finally(res => {
+					console.log(res);
+					_this.isLoading = false
+					uni.stopPullDownRefresh()
+					uni.stopPullDownRefresh()
+				})
 
 			}
 		}

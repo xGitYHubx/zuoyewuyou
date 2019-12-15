@@ -28,11 +28,11 @@
 <script>
 import editor from "@/components/tinymce/tinymce.vue";
 import { updataAboutUs, getAboutUs } from "@/api/aboutUs";
-import { addTeacherCommand } from "../../api/teacherCommand";
+import { editTeacherCommand } from "../../api/teacherCommand";
 import { constants } from 'fs';
 
 export default {
-  name: "addcmd",
+  name: "editcmd",
   components: { editor },
   data() {
     return {
@@ -41,22 +41,24 @@ export default {
       avatarUrl: "",
       limit: 1,
       avatarExdata: {
-        fileName: "recommand/" + new Date(" 2018/06/22 08:00:20").getTime(),
+        fileName: "recommand/" + new Date().getTime(),
         fileType: "jpg"
       },
       title: null,
       dialogVisible: false,
-      fileList:null,
+      fileList:[],
     };
   },
   mounted() {
       console.log(this.$route)
+      this.recmdId=this.$route.query.recmdId
       this.title=this.$route.query.title
       this.Value=this.$route.query.content
       this.fileList=[{
           name:'file',
           url:this.$route.query.sketch
       }]
+      this.avatarUrl=this.$route.query.sketch
       
 
   },
@@ -73,9 +75,12 @@ export default {
         let data = {
           title: this.title,
           content: this.Value,
-          sketch: this.avatarUrl
+          sketch: this.avatarUrl,
+          recmdId:this.recmdId
         };
-        addTeacherCommand(data).then(res => {
+        console.log(data);
+        
+        editTeacherCommand(data).then(res => {
           console.log(res);
           if(res.success){
             this.$router.push('/tchCommand/tchcmd')
@@ -109,14 +114,9 @@ export default {
       this.avatarUrl = res.result;
     },
     onProgress(event, file, fileList) {
-      console.log();
-      console.log();
-      console.log();
     },
     beforeUploadAvatar(file) {
       this.avatarExdata.fileType = file.type.split("/")[1];
-      console.log(1111);
-      console.log(file);
     }
   }
 };

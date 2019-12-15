@@ -11,11 +11,11 @@
     </div>
 
     <el-table v-loading="tableLoading" :data="tableDataFilter" element-loading-text="Loading" border fit highlight-current-row style="width: 100%">
-      <el-table-column :show-overflow-tooltip="true" align="center" v-for="(item,index) in showCols" :width="item.width" :prop="item.prop" :label="item.label"></el-table-column>
+      <el-table-column :show-overflow-tooltip="true" align="center" v-for="(item,index) in showCols" :key="index" :width="item.width" :prop="item.prop" :label="item.label"></el-table-column>
 
       <el-table-column align="center" label="图片">
         <template slot-scope="scope">
-          <img :src="tableData[scope.$index].sketch" alt="图片加载失败">
+          <img :src="tableData[scope.$index].sketch" class="preview_img" alt="图片加载失败">
           <!-- {{scope.row.sketch}} -->
         </template>
       </el-table-column>
@@ -100,7 +100,6 @@ export default {
     changePage(page) {
       this.tableLoading = true;
       getDataBypage(page).then(res => {
-        console.log(res);
         this.tableData = res.result;
         this.tableLoading = false;
       });
@@ -119,13 +118,11 @@ export default {
         recmdId:this.deleteRow.recmdId
       }
       deleteCommand(data).then(res=>{
-        console.log(res)
         if(res.success){
           this.dialogVisible=false
           this.changePage(this.page)
         }
       })
-      // this.changePage(this.page)
     },
     editCmd(row){
       this.$router.push({path:'/tchCommand/editcmd',query:row})
@@ -145,6 +142,10 @@ export default {
 </script>
 
 <style scoped>
+.teacher_command{
+  padding: 20px;
+}
+
 .commandContain {
   width: 100%;
   margin: 15px auto;
@@ -159,5 +160,10 @@ export default {
   /* width: 10%; */
   margin-left: 5%;
   float: left;
+}
+.preview_img{
+  width: 100px;
+  height: 100px;
+  object-fit: cover
 }
 </style>

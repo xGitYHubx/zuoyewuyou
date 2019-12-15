@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "题目广场",
   "enablePullDownRefresh": true,
+  "navigationBarBackgroundColor": "#4191ea",
+  "navigationBarTextStyle": "white",
   "pullToRefresh": {
     "color": "#1296db"
   },

@@ -53,9 +53,7 @@ export default function ({ baseURL, timeout, headers }) {
 				interceptors: [],
 				use(fun) { this.interceptors.push(fun) },
 				intercept(response) {
-					// console.log(response)
 					this.interceptors.forEach(fun => response = fun(response))
-					// console.log(response.data)
 					return response
 				}
 			}

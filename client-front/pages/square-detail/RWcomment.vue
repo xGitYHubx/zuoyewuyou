@@ -60,7 +60,6 @@
 					content: '评论尚未发布，确定退出吗？',
 					success: function(res) {
 						if (res.confirm) {
-							console.log(_this.task);
 							uni.redirectTo({
 								// url: `./RWsquareDetail?task=${ encodeURIComponent(JSON.stringify(_this.task))  }`
 								url: `./RWDetailById?taskId=${_this.task.taskId}`
@@ -144,7 +143,6 @@
 							}				
 						} else {
 							uni.hideLoading()
-							console.log(res);
 							uni.showToast({
 								title: '发送失败',
 								icon:'none'
@@ -152,7 +150,6 @@
 						}
 						// _this.getMsg()
 					}).catch(res=>{
-						console.log(res);
 						uni.hideLoading()
 						uni.showToast({
 							title: '发送失败',
@@ -182,7 +179,6 @@
 									fileType: format
 								},
 								success: (res) => {
-									console.log(res);
 									var data = JSON.parse(res.data)
 									if (data.success == true) { //上传图片成功
 										var url = data.result
@@ -196,7 +192,6 @@
 											}]) ,
 											success(res) {
 												count++;
-												console.log(res);
 												if (count == _this.imgList.length) {												
 													uni.hideLoading()
 													uni.showToast({
@@ -215,14 +210,12 @@
 											},
 											fail(res) {
 												count++;
-												console.log(res);
 											}
 										})
 									}
 
 								},
 								fail: (err) => {
-									console.log(err);
 									uni.showModal({
 										content: err.errMsg,
 										showCancel: false

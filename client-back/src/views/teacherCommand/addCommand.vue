@@ -40,7 +40,7 @@ export default {
       avatarUrl: "",
       limit: 1,
       avatarExdata: {
-        fileName: "recommand/" + new Date(" 2018/06/22 08:00:20").getTime(),
+        fileName: "recommand/" + new Date().getTime(),
         fileType: "jpg"
       },
       title: null,
@@ -103,7 +103,6 @@ export default {
     },
     beforeUploadAvatar(file) {
       this.avatarExdata.fileType = file.type.split("/")[1];
-      console.log(1111);
       console.log(file);
     }
   }

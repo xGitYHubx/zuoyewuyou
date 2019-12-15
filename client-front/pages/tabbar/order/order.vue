@@ -30,7 +30,7 @@
 					</view>
 					<view class="RW-button-group">
 						<button class='RW-button-item' v-if='item.status==0&&role==1' @click="changeOrderState(4,item.orderId)">取消</button>
-						<button class='RW-button-item' v-if='item.status==0&&role==1'  @click="changeOrderState(1,item.orderId)">接受</button>
+						<button class='RW-button-item' v-if='item.status==0&&role==1' @click="changeOrderState(1,item.orderId)">接受</button>
 						<button class='RW-button-item' v-if='item.status==1&&role==0' @click="changeOrderState(2,item.orderId,item.cost)">去支付</button>
 						<button class='RW-button-item' v-if='item.status==2&&role==0' @click="changeOrderState(3,item.orderId)">完成</button>
 					</view>
@@ -50,12 +50,11 @@
 				list: [],
 				orderState: ['老师未同意', '同意未支付', '支付未完成', '完成', '老师已拒绝'],
 				subject: ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理'],
-				role:uni.getStorageSync('userInfo').role
+				role: uni.getStorageSync('userInfo').role
 			};
 		},
 		onLoad() {
 			this.getList()
-			console.log(this.role);
 		},
 		onPullDownRefresh() {
 			this.list = []
@@ -65,18 +64,16 @@
 			getList() {
 				var _this = this
 				this.list = []
-				this.RWajax.get('/mine/query',{
-						account: uni.getStorageSync('account'),
-						type:2
-					}).then(res=>{
-							console.log(res);
-						_this.list = res.data.result
+				this.RWajax.get('/mine/query', {
+					account: uni.getStorageSync('account'),
+					type: 2
+				}).then(res => {
+					// console.log(res);
+					_this.list = res.data.result
 
-					}).catch(res=>{
-						console.log(res);
-					}).finally(res=>{
-						uni.stopPullDownRefresh()
-					})
+				}).catch(res => {}).finally(res => {
+					uni.stopPullDownRefresh()
+				})
 			},
 			formatOrderState(index) {
 				return this.orderState[index]
@@ -84,47 +81,43 @@
 			formatSubject(index) {
 				return this.subject[index]
 			},
-			changeOrderState(state, orderId,cost) {
+			changeOrderState(state, orderId, cost) {
 				var _this = this
-				var tag=0//标志位
-				console.log(state);
-				if(state==2){
-					var balance=uni.getStorageSync('balance')
-					var cost=cost
-					console.log(balance);
-					console.log(cost);
-					if(cost>balance){
-						tag=1
+				var tag = 0 //标志位
+				if (state == 2) {
+					var balance = uni.getStorageSync('balance')
+					var cost = cost
+					if (cost > balance) {
+						tag = 1
 						uni.showModal({
-						    title: '余额不足！',
-						    content: '点击确认前往充值',
-						    success: function (res) {
-						        if (res.confirm) {
+							title: '余额不足！',
+							content: '点击确认前往充值',
+							success: function(res) {
+								if (res.confirm) {
 									uni.navigateTo({
-										url:'../../recharge/RWrechart/RWrechart'
+										url: '../../recharge/RWrechart/RWrechart'
 									})
-						        } else if (res.cancel) {
-						        }
-						    }
+								} else if (res.cancel) {}
+							}
 						});
 					}
 				}
-				if(tag==0){
-					this.RWajax.post("/order/status/update",{
+				if (tag == 0) {
+					this.RWajax.post("/order/status/update", {
 						status: state,
 						orderId: orderId
-					}).then(res=>{
+					}).then(res => {
 						console.log(res);
 						uni.showToast({
 							title: '操作成功'
 						})
 						_this.getList()
-						
-					}).catch(res=>{
+
+					}).catch(res => {
 						console.log(res);
 					})
 				}
-				
+
 			},
 			mapOrderColor(status) {
 				if (status == 0 || status == 1 || status == 2) {
@@ -144,7 +137,7 @@
 					return 'gray'
 				}
 			},
-			
+
 		}
 	}
 </script>

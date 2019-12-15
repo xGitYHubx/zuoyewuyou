@@ -29,7 +29,7 @@ page {
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.page_reg.data-v-0f3c7d2e {
+.page_reg.data-v-628567dd {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -49,16 +49,16 @@ page {
       -ms-flex-pack: center;
           justify-content: center;
 }
-.page_reg .submit-button.data-v-0f3c7d2e {
+.page_reg .submit-button.data-v-628567dd {
     width: 100%;
     margin-top: 32rpx;
 }
-.tip.data-v-0f3c7d2e {
+.tip.data-v-628567dd {
   margin-top: 30px;
   font-size: 13px;
   color: #B6B6B6;
 }
-.code.data-v-0f3c7d2e {
+.code.data-v-628567dd {
   width: 100%;
   min-height: 65px;
   margin-top: 30px;
@@ -81,16 +81,16 @@ page {
           justify-content: space-between;
   border-bottom: 1px solid #d6d6d6;
 }
-.code .submit.data-v-0f3c7d2e {
+.code .submit.data-v-628567dd {
     color: white;
     background-color: #4191ea;
     -webkit-tap-highlight-color: #4191ea;
 }
-.code .submit.data-v-0f3c7d2e:active {
+.code .submit.data-v-628567dd:active {
       color: #B6B6B6;
       background-color: rgba(63, 145, 234, 0.8);
 }
-.pwd.data-v-0f3c7d2e {
+.pwd.data-v-628567dd {
   width: 100%;
   margin-top: 10px;
   min-height: 65px;
@@ -109,11 +109,11 @@ page {
           align-items: center;
   border-bottom: 1px solid #d6d6d6;
 }
-.protocol_tip.data-v-0f3c7d2e {
+.protocol_tip.data-v-628567dd {
   font-size: 16px;
   color: #B6B6B6;
 }
-.link.data-v-0f3c7d2e {
+.link.data-v-628567dd {
   color: #3a8de8;
 }
 

@@ -28,6 +28,8 @@ export default {
 .fixed-header+.app-main {
   padding-top: 50px;
 }
+
+
 </style>
 
 <style lang="scss">
@@ -37,4 +39,6 @@ export default {
     padding-right: 15px;
   }
 }
+
+
 </style>

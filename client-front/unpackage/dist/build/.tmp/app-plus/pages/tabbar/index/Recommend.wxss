@@ -1,0 +1,21 @@
+
+image {
+	max-width: 100%;
+	-o-object-fit: cover;
+	   object-fit: cover;
+}
+
+
+.box.data-v-ee7b87a0 {
+	padding: 20rpx;
+	overflow: hidden;
+}
+.content.data-v-ee7b87a0 {
+	overflow: hidden;
+}
+.content ._img.data-v-ee7b87a0 {
+	max-width: 90% !important;
+	-o-object-fit: cover;
+	   object-fit: cover;
+}
+

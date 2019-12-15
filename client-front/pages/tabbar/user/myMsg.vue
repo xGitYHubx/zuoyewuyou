@@ -29,7 +29,7 @@
 				<input name="school" :value="school" @input="changeSchool"></input>
 			</view>
 			<!-- #ifndef MP-ALIPAY -->
-			<view class="cu-form-group margin-top">
+			<view class="cu-form-group margin-top" v-if="role==0" >
 				<view class="title">年级</view>
 				<picker @change="PickerChange" :value="index" :range="picker">
 					<view class="picker">
@@ -60,10 +60,13 @@
 				textareaAValue: '', //家庭住址
 				name: "", //姓名
 				school: '', //学校
-				avatar: ""
+				avatar: "",
+				role:0
 			};
 		},
 		onLoad() {
+		},
+		onShow() {
 			this.getUserInfo()
 		},
 		methods: {
@@ -98,8 +101,6 @@
 										}
 									},
 									fail: (err) => {
-										// console.log('uploadImage fail', err);
-										// console.log(imgList[i]);
 
 										uni.showModal({
 											content: err.errMsg,
@@ -119,12 +120,11 @@
 				var token = uni.getStorageSync('token')
 				var account = uni.getStorageSync('account')
 				var _this = this
-				// if(account)
 				this.RWajax.get("/user/query/info", {
 					'account': account
 				}).then(res => {
-					console.log(res);
 					var data = res.data.result
+					console.log(data);
 					if (res.data.success==true) {
 						_this.name = data.name
 						_this.account = data.account
@@ -133,15 +133,14 @@
 						_this.avatar = data.avatar
 						_this.textareaAValue = data.address
 						_this.name = data.name
+						_this.role=data.role
 					}
-
 				}).catch(res=>{
 					console.log(res)
 				})
 
 			},
 			submit() {
-				console.log("submit");
 				var params = {
 					'account': uni.getStorageSync('account'),
 					'name': this.name,

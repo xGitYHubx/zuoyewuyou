@@ -82,7 +82,6 @@
 				this.pwdType = this.pwdType === 'text' ? 'password' : 'text'
 			},
 			login() {
-				console.log('username:' + this.username + ',pwd:' + this.userpwd)
 			},
 			findPwd() {
 				uni.navigateTo({

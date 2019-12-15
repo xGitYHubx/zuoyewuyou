@@ -41,6 +41,7 @@
         </el-form>
       </el-col>
     </el-row>
+    
     <el-row :gutter="16">
       <el-col :span="12">
         <div class="grid-content  bg-purple">
@@ -264,12 +265,12 @@ export default {
         arr[index] = this.subjectArr[arr[index]];
       }
       result = arr.join("、");
-      return result;
+      return result
     }
   }
 };
 </script>
-<style>
+<style scoped>
 .el-form-item {
   width: 22%;
   float: left;

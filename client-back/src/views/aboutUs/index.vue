@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="box">
     <el-row :gutter="20">
 
       <el-col :span="16">
+        <p>编辑</p>
         <editor
           v-model="Value"
           class="editor"
@@ -12,12 +13,18 @@
           @on-upload-success="onEditorUploadComplete"
           @on-upload-fail="onEditorUploadFail"
         />
+
+        <el-button type="button" class="" @click="save">保存</el-button>
+
+      </el-col>
+      <el-col :span="8">
+        <p>预览</p>
+        <div class="preview" name="" id="" v-html="Value"></div>
       </el-col>
       <el-col
         :span="3"
         class="editor"
       >
-        <el-button type="button" @click="save">保存</el-button>
 
       </el-col>
     </el-row>
@@ -62,8 +69,25 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .editor{
-  padding: 40px;
+  /* padding: 40px; */
+}
+
+.box{
+  padding: 20px;
+
+}
+
+.preview{
+  width: 100%;
+  height: 700px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  padding:5px 20px;
+
+}
+.preview img{
+  max-width: 100%;
 }
 </style>

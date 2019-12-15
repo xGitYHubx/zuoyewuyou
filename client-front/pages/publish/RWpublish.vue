@@ -56,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-			<button class="submit" type="primary" @tap="publish">发布</button>
+			<button class="submit" type="primary" :disabled="publishing" @tap="publish">发布</button>
 		</view>
 	</view>
 </template>
@@ -102,7 +102,7 @@
 				textContent: '',
 				imgList: [],
 				taskId: '',
-				isHover: false, //点击中
+				publishing: false, //点击中
 
 			}
 		},
@@ -144,39 +144,42 @@
 				});
 			},
 			DelImg: function(e) {
-				uni.showModal({
-					title: '召唤师',
-					content: '确定要删除这段回忆吗？',
-					cancelText: '再看看',
-					confirmText: '再见',
-					success: res => {
-						if (res.confirm) {
-							this.imgList.splice(e.currentTarget.dataset.index, 1)
-						}
-					}
-				})
+				this.imgList.splice(e.currentTarget.dataset.index, 1)
+				// uni.showModal({
+				// 	title: '删除该照片',
+				// 	content: '确定要删除这段回忆吗？',
+				// 	cancelText: '再看看',
+				// 	confirmText: '再见',
+				// 	success: res => {
+				// 		if (res.confirm) {
+				// 		}
+				// 	}
+				// })
 			},
 			checkLogin() {
 				var account = uni.getStorageSync('account')
-				if (account && account == "custom") {
-					uni.showModal({
-						title: '未登录',
-						content: '发布题目需要登陆，点击确定前往登陆或注册',
-						success: function(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-									url: "../login/login"
-								})
-							} else if (res.cancel) {
-								uni.navigateBack({
-									delta: 1
-								})
-							}
-						}
-					});
+				console.log(account);
+				if (!account || account == "custom") {//未登录的时候
+					// uni.showModal({
+					// 	title: '未登录',
+					// 	content: '发布题目需要登陆，点击确定前往登陆或注册',
+					// 	success: function(res) {
+					// 		if (res.confirm) {
+					// 			uni.navigateTo({
+					// 				url: "../login/login"
+					// 			})
+					// 		} else if (res.cancel) {
+					// 			uni.navigateBack({
+					// 				delta: 1
+					// 			})
+					// 		}
+					// 	}
+					// });
 				}
 			},
 			publish() {
+				
+				this.publishing=true
 				var params = {
 					account: uni.getStorageSync('account'),
 					descText: this.textareaAValue,
@@ -184,32 +187,26 @@
 					grade: this.index_grade,
 					reward: this.price
 				}
-				if (params.reward > uni.getStorageSync('balance')) {
-					uni.showModal({
-						title: '金币不足',
-						content: `剩余金币(${uni.getStorageSync('balance')})不足以发布任务,点击确认前往充值`,
-						success: function(res) {
-							if (res.confirm) {
-								uni.navigateTo({
-									url: '../recharge/RWrechart/RWrechart',
-								});
-							}
-						}
-					});
-				} else {
-					this.RWajax.post('/task/publish',params).then(res=>{
-						if (res.data.success == true) {
-								this.taskId = res.data.result
-								this.uploadImg()
-							} else {
-								uni.showToast({
-									title: '出错',
-									icon: 'none'
-								})
-							}
-					})
-
-				}
+				
+				this.validation().then(()=>{
+						this.RWajax.post('/task/publish',params).then(res=>{//生成任务id
+							if (res.data.success == true) {
+									this.taskId = res.data.result
+									this.uploadImg()
+								} else {
+									this.publishing=false
+									uni.showToast({
+										title: '出错',
+										icon: 'none'
+									})
+								}
+						})
+				}).catch((err)=>{
+					this.publishing=false
+				})
+				
+				
+				
 			},
 
 
@@ -299,13 +296,13 @@
 						duration: 1000
 					})
 					setTimeout(function() {
+						this.publishing=false
 						uni.navigateBack({
 							delta: 1
 						})
 					}, 1000)
 				} else {//有图片
 					_this.uploadImgAll().then(() => {
-						uni.hideLoading()
 						uni.showToast({
 							title: '任务发布成功',
 							icon: 'success',
@@ -317,78 +314,16 @@
 							})
 						}, 1000)
 					}).catch((err) => {
-						uni.hideLoading()
 						uni.showToast({
 							title: '任务发布失败，请重试',
-							icon: 'error',
+							icon: 'none',
 							duration: 1000
 						})
+					}).finally(()=>{
+						uni.hideLoading()
+						this.publishing=false
 					})
-					// 	for (let i = 0; i < this.imgList.length; i++) {
-					// 	var format //图片格式
-					// 	uni.getImageInfo({//获取图片格式
-					// 		src: _this.imgList[i],
-					// 		success(res) {
-					// 			format = res.type
-					// 			uni.uploadFile({
-					// 				url: _this.$host + '/file/upload',
-					// 				filePath: imgList[i],
-					// 				name: 'file',
-					// 				formData: {
-					// 					fileName: "task/"+_this.taskId+"/"+i,
-					// 					fileType: format
-					// 				},
-					// 				success: (res) => {
-					// 					var data=JSON.parse(res.data)    
-					// 					if(data.success==true){//上传图片成功
-					// 						var url = data.result
-					// 						uni.request({ //url录入数据库
-					// 							url: _this.$host + "/photo/upload",
-					// 							method: "post",
-					// 							data: [{
-					// 								linkId: _this.taskId,
-					// 								position: i,
-					// 								url: url
-					// 							}],
-					// 							success(res) {
-					// 								// console.log(res);
-					// 								if(i==_this.imgList.length-1){
-					// 									uni.hideLoading()
-					// 									uni.showToast({
-					// 										title: '任务发布成功',
-					// 										icon: 'success',
-					// 										duration: 1000
-					// 									})
-					// 									setTimeout(function(){
-					// 										uni.navigateBack({
-					// 											delta:1
-					// 										})
-					// 									},1000)
-					// 								}
-					// 							}
-					// 						})
-					// 					}else{
-					// 						uni.showModal({
-					// 							content: "请求失败，请重试",
-					// 							showCancel: false
-					// 						});
-					// 						i=_this.imgList.length//有个一图片上传失败就跳出for
-					// 					}
-
-					// 				},
-					// 				fail: (err) => {
-					// 					// console.log('uploadImage fail', err);
-					// 					// console.log(imgList[i]);
-					// 					uni.showModal({
-					// 						content: err.errMsg,
-					// 						showCancel: false
-					// 					});
-					// 				}
-					// 			});
-					// 		}
-					// 	})	
-
-					// }
+			
 				}
 
 			},
@@ -416,6 +351,44 @@
 
 				return status;
 			},
+			
+			async validation(){
+				console.log("validata");
+				var params = {
+					account: uni.getStorageSync('account'),
+					descText: this.textareaAValue,
+					subject: this.index_subject,
+					grade: this.index_grade,
+					reward: this.price
+				}
+				return new Promise((resolve,reject)=>{
+					if(this.textareaAValue.trim()==''){
+						uni.showToast({
+							title: '任务描述不能为空',
+							icon: 'none'
+						});
+						reject('任务描述不能为空')
+					}else if (params.reward > uni.getStorageSync('balance')) {
+						uni.showModal({
+							title: '金币不足',
+							content: `剩余金币(${uni.getStorageSync('balance')||0})不足以发布任务,点击确认前往充值`,
+							success: function(res) {
+								if (res.confirm) {
+									uni.navigateTo({
+										url: '../recharge/RWrechart/RWrechart',
+									});
+								}
+							},
+						});
+						reject('余额不足')
+					}else{
+						resolve()
+					}
+				})
+				
+			},
+			
+			
 			handleTextInput(e) {
 				this.textContent = e.detail.value;
 			},

@@ -13,34 +13,63 @@ import uni_request from './common/uni_request.js'
 
 const request = uni_request({ // 有效配置项只有三个
 	baseURL: "http://47.93.22.56:8082", //baseURL
-	timeout: 11111, // 超时时间
+	timeout: 5000, // 超时时间
 	// heaers: {
 	//     // 'x-custom-header': 'x-custom-header'
 	// }
 });
 
-// console.log(request)
 //  function relogin(){
-// 	console.log("111111111111111")
 // 	uni.navigateTo({
 // 		url: "./pages/login/login"
 // 	})
 // }
 request.interceptors.request.use(config => { // 请求拦截器（可以设置多个）
     config.headers.Authorization = uni.getStorageSync('token')||""
-	console.log(config);
     return config
 })
 //添加拦截器
 
 
 request.interceptors.response.use((response, next) => {
-// 　console.log(response)//此处this为请求所在页面的Vue实例
-   // console.log('进去拦截器')
-   if(response.data.success){
+   if(response.data.success==true){
+	   return response
+   }else{
+	   var content=""
+	   if(response.data.message==0){//未登录
+		   // console.log('未登录');
+		   content='这个操作需要登陆，点击确定前往登陆或注册'
+		   // uni.show
+	   }else if(response.data.message==1){
+		   content='登陆已过期，点击确定前往登陆'
+		   // console.log("token过期");
+	   }else if(response.data.message==2){
+		   // console.log("token校验失败");
+		   content='token校验失败，点击确定前往登陆'
+	   }
+	   
+	   uni.showModal({
+	   	title: '失败',
+	   	content: content,
+	   	success: function(res) {
+			// console.log(response);
+	   		if (res.confirm) {
+	   			uni.navigateTo({
+	   				url: "/pages/login/login"
+	   			})
+	   		} else if (res.cancel) {
+	   			uni.navigateBack({
+	   				delta: 1
+	   			})
+	   		}
+	   	}
+	   });
+	   
+	   return response
+	   
 	   
    }
-	return response
+	// return response
 });
 
 

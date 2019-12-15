@@ -36,6 +36,9 @@
   top: 0;
   z-index: 1;
 }
+.Scontainer {
+  min-height: 60vh;
+}
 .img-view .img {
   width: 100%;
   height: 100%;
@@ -112,7 +115,7 @@
   z-index: 999;
   width: 100%;
   background-color: #FFFFFF;
-  border-radius: 32px;
+  border-radius: 32rpx 32rpx 10rpx 10rpx;
   -webkit-box-shadow: -2px 1px 20px 0px grey;
           box-shadow: -2px 1px 20px 0px grey;
 }
@@ -150,9 +153,8 @@
   height: 80rpx;
 }
 .Shead_text {
-  font-size: 50rpx;
-  width: 100rpx;
-  margin: 0 auto;
+  font-size: 40rpx;
+  text-align: center;
 }
 .Scontent {
   width: 100%;
@@ -180,7 +182,7 @@
 }
 .title {
   height: 130rpx;
-  font-size: 34rpx;
+  font-size: 28rpx;
 }
 .content {
   font-size: 26rpx;

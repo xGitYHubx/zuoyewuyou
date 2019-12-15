@@ -52,7 +52,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '作业无忧', icon: '书2' }
     }]
   },
   {
@@ -63,7 +63,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Order',
         component: () => import('@/views/order/index'),
-        meta: { title: '分配订单', icon: 'order' }
+        meta: { title: '分配订单', icon: 'order2' }
       }
     ]
   },
@@ -92,6 +92,30 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/register',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'register',
+        component: () => import('@/views/register/index'),
+        meta: { title: '注册老师', icon: 'hist' }
+      }
+    ]
+  },
+  {
+    path: '/exchange',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'exchange',
+        component: () => import('@/views/exchange/index'),
+        meta: { title: '兑换学币', icon: '结算' }
+      }
+    ]
+  },
+  {
     path: '/tchCommand',
     component: Layout,
     // meta: { title: '教师推荐', icon: 'hist' },
@@ -100,29 +124,39 @@ export const constantRoutes = [
         path: 'tchcmd',
         name: 'tchcmd',
         component: () => import('@/views/teacherCommand/index'),
-        meta: { title: '教师推荐', icon: 'hist' }
+        meta: { title: '教师推荐', icon: 'teacher' }
       },
       {
-        path:'addcmd',
-        name:'addcmd',
-        hidden:true,
-        component:()=>import('@/views/teacherCommand/addCommand'),
-        meta:{title:"新建推荐", icon: 'hist' }
+        path: 'addcmd',
+        name: 'addcmd',
+        hidden: true,
+        component: () => import('@/views/teacherCommand/addCommand'),
+        meta: { title: '新建推荐', icon: 'hist' }
       },
       {
-        path:'editcmd',
-        name:'editcmd',
-        hidden:true,
-        component:()=>import('@/views/teacherCommand/editCommand'),
-        meta:{title:"编辑推荐", icon: 'hist' }
-      },
+        path: 'editcmd',
+        name: 'editcmd',
+        hidden: true,
+        component: () => import('@/views/teacherCommand/editCommand'),
+        meta: { title: '编辑推荐', icon: 'hist' }
+      }
     ]
   },
-
+  {
+    path: '/logout',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'logout',
+        component: () => import('@/views/logout/index'),
+        meta: { title: '注销账户', icon: '结算' }
+      }
+    ]
+  },
   {
     path: '/example',
     hidden: true,
-
     component: Layout,
     redirect: '/example/table',
     name: 'Example',

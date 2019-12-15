@@ -53,10 +53,6 @@
 	import initData from '../../common/initData.js'
 	export default {
 		onShow() {
-			var icon = plus.nativeObj.View.getViewById("icon");
-			setTimeout(function() {
-				// icon.hide();
-			}, 200);
 		},
 		data() {
 			const isUni = typeof(uni) !== 'undefined'
@@ -108,7 +104,6 @@
 				uni.switchTab({
 					url:'/pages/tabbar/index/index',
 					complete:(res)=>{
-						console.log(uni.getStorageSync('isLogin'));
 						uni.hideToast()
 					}
 				})
@@ -133,12 +128,13 @@
 						account: this.username,
 						password:this.userpwd,
 					}).then(res=>{
-						console.log(res)
+						// console.log(res);
 						if(res.data.success==true){
 							uni.showToast({
 								title: '登陆成功',
 								icon: "success"
 							})
+							uni.clearStorageSync();
 							uni.setStorageSync('token',res.data.result)
 							uni.setStorageSync('account',this.username)
 							uni.setStorageSync('isLogin',true)
@@ -170,7 +166,7 @@
 				})
 			},
 			thirdLogin(type) {
-				console.log(type)
+				// console.log(type)
 			}
 		}
 	}

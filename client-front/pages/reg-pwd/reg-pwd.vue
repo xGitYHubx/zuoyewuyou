@@ -30,14 +30,14 @@
 			</view>
 
 
-			<view class="cu-form-group margin-top">
+			<!-- <view class="cu-form-group margin-top">
 				<view class="title">角色</view>
 				<picker @change="PickerChange" :value="index" :range="picker">
 					<view class="picker">
 						{{picker[index]}}
 					</view>
 				</picker>
-			</view>
+			</view> -->
 
 
 			<view class="cu-bar bg-white margin-top" @tap="showModal" data-target="ChooseModal">
@@ -128,12 +128,12 @@
 					value: 2,
 					name: '英语',
 					checked: false,
-					hot: true,
+					hot: false,
 				}, {
 					value: 3,
 					name: '物理',
 					checked: false,
-					hot: true,
+					hot: false,
 				}, {
 					value: 4,
 					name: '化学',
@@ -251,7 +251,6 @@
 						goodAt: goodAtArr.join("-")
 					}
 					this.RWajax.post("/user/code/check",dadada).then(res=>{
-						console.log(res);
 							uni.showToast({
 								title: "注册成功",
 								icon: "success"
@@ -266,7 +265,6 @@
 							})
 					})
 
-					// console.log(formData)
 				} else {
 					uni.showToast({
 						title: graceChecker.error,
@@ -288,8 +286,6 @@
 				this.codeDis = true;
 				this.codeText = "请" + n + "秒后重试";
 				var timer = setInterval(function() {
-					// console.log(n)
-					// console.log(_that.codeText)
 					if (n === 0) {
 						clearInterval(timer);
 						_that.codeDis = false;
@@ -314,7 +310,6 @@
 					})
 			},
 			formReset: function(e) {
-				console.log("清空数据")
 				this.chosen = ''
 			},
 		}

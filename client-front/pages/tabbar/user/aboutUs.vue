@@ -17,9 +17,7 @@
 		},
 		methods:{
 			getContent(){
-				console.log(123123);
 				this.RWajax.get('/backstage/aboutus/query').then(res=>{
-					console.log(res);
 					this.content=res.data.result
 				})
 			}

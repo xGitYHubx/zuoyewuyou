@@ -166,14 +166,13 @@ page {
 }
 .list {
   width: 100%;
-  border-bottom: 15rpx solid  #f1f1f1;
+  border-bottom: 15rpx solid #f1f1f1;
   background: #fff;
 }
 .list:last-child {
     border: none;
 }
 .list .li {
-    width: 92%;
     height: 100rpx;
     padding: 0 4%;
     border-bottom: 1px solid #f3f3f3;

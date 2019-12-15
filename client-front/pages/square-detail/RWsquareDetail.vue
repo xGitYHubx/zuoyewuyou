@@ -104,13 +104,11 @@
 		},
 		onLoad(options) {
 			this.task =JSON.parse(decodeURIComponent(options.task));     // JSON.parse(options.task)
-			console.log(this.task.avatarUrl);
 			this.commentText=options.comment||""
 			this.getMsg()
 		},
 		onShow() {
 			this.isMine = uni.getStorageSync('account') == this.task.account ? true : false
-			// console.log(this.isMine);
 			this.taskImg=[]
 			this.getTaskImg()
 		},
@@ -140,7 +138,6 @@
 				this.RWajax.get("/photo/query", {
 						linkId: _this.task.taskId
 					}).then(res=>{
-						// console.log(res);
 						if(res.data.success==true){
 							for (var i = 0; i < res.data.result.length; i++) {
 								_this.taskImg.push(res.data.result[i].url)
@@ -163,7 +160,6 @@
 						commentId: id,
 						account: uni.getStorageSync('account')
 					}).then(res=>{
-						console.log(res);
 						if (res.data.success == true) {
 							uni.showToast({
 								title: "采用成功",
@@ -217,7 +213,6 @@
 						account: uni.getStorageSync('account')
 					}).then(res=>{
 						if (res.data.success == true) {
-							console.log(res.data.result);
 							_this.msg = res.data.result
 						}
 					})

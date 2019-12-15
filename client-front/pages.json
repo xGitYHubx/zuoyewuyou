@@ -22,6 +22,8 @@
 			"style": {
 				"navigationBarTitleText": "题目广场",
 				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor": "#4191ea",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"pullToRefresh": {
 						"color": "#1296db"
@@ -142,11 +144,19 @@
         }
         ,{
             "path" : "pages/recharge/RWrechart/RWrechart",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "充值学币",
+				"navigationBarBackgroundColor": "#4191ea",
+				"navigationBarTextStyle": "white"
+			}
         }
         ,{
             "path" : "pages/square-detail/RWDetailById",
-            "style" : {}
+            "style" :{
+				"navigationBarTitleText": "问题详情",
+				"navigationBarBackgroundColor": "#4191ea",
+				"navigationBarTextStyle": "white"
+			}
         }
         ,{
             "path" : "pages/tabbar/index/Recommend",
@@ -202,7 +212,7 @@
 		]
 	},
 	"condition" : { //模式配置，仅开发期间生效
-		"current": 2, //当前激活的模式(list 的索引项)
+		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [
 			{
 				"name": "主页", //模式名称
@@ -222,8 +232,8 @@
 				"path": "pages/tabbar/user/user", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},{
-				"name": "我的信息", //模式名称
-				"path": "pages/tabbar/user/myMsg", //启动页面，必选
+				"name": "充值", //模式名称
+				"path": "pages/recharge/RWrechart/RWrechart", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			},{
 				"name": "广场", //模式名称

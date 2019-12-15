@@ -1,5 +1,5 @@
 <template>
-	<view>		
+	<view>
 		<view class="cu-card dynamic">
 			<view class="cu-item shadow" v-for="(item,index) in list" :key="index" @click="toDetail(item.taskId)">
 				<view class="cu-list menu-avatar comment solids-top">
@@ -13,13 +13,16 @@
 							<view class="margin-top-sm flex justify-between">
 								<view class="text-gray text-df">{{item.createTime}}</view>
 								<view>
-									
+
 									<!-- <text class="cuIcon-messagefill text-green margin-left-sm">已采用</text> -->
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
+			</view>
+			<view class="rw-page-loading" v-if='isLoading'>
+				{{loadingMsg}}
 			</view>
 		</view>
 	</view>
@@ -31,7 +34,9 @@
 		data() {
 			return {
 				isCard: true,
-				list:[]
+				list: [],
+				isLoading: false,
+				loadingMsg: "加载中..."
 			};
 		},
 		onLoad() {
@@ -42,29 +47,28 @@
 			IsCard(e) {
 				this.isCard = e.detail.value
 			},
-			toDetail(taskId){
+			toDetail(taskId) {
 				uni.navigateTo({
-					url: `../../square-detail/RWDetailById?taskId=${taskId}`});
+					url: `../../square-detail/RWDetailById?taskId=${taskId}`
+				});
 			},
-			
-			getComment(){
-				var _this=this
-				this.RWajax.get('/mine/query',{account:uni.getStorageSync('account'),type:1}).then(res=>{
-										console.log(res);
-						if(res.data.success==true){
-							_this.list=res.data.result
-							if(res.data.result.length==0){
-								uni.showToast({
-									title:'无数据'
-								})
-							}
-						}else{
-							uni.showToast({
-								title:'无数据'
-							})
-						}
-				})
 
+			getComment() {
+				var _this = this
+				_this.isLoading=true
+				this.RWajax.get('/mine/query', {
+					account: uni.getStorageSync('account'),
+					type: 1
+				}).then(res => {
+					_this.isLoading=false
+					if (res.data.success == true) {
+						_this.list = res.data.result
+						if(_this.list.length==0){
+							_this.isLoading=true
+							_this.loadingMsg="您还没有评论过"
+						}
+					}
+				})
 			}
 		}
 	}
