@@ -5,7 +5,7 @@
         <el-input v-model="search_command" clearable placeholder="输入推荐信息进行搜索"></el-input>
       </div>
       <div class="command_right">
-        <el-button type="success" @click="newCommand">新建+</el-button>
+        <el-button type="primary" @click="newCommand">新建+</el-button>
       </div>
 
     </div>
