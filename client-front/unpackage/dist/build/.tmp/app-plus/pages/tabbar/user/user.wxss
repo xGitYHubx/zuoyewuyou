@@ -173,7 +173,6 @@ page {
     border: none;
 }
 .list .li {
-    width: 92%;
     height: 100rpx;
     padding: 0 4%;
     border-bottom: 1px solid #f3f3f3;

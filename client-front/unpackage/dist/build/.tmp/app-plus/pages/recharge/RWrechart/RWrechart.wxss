@@ -24,14 +24,14 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.rmbLogo.data-v-c6423112 {
+.rmbLogo.data-v-2eada1b0 {
   font-size: 50rpx;
 }
-button.data-v-c6423112 {
+button.data-v-2eada1b0 {
   background-color: #007aff;
   color: #ffffff;
 }
-.uni-h1.uni-center.data-v-c6423112 {
+.uni-h1.uni-center.data-v-2eada1b0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -50,7 +50,7 @@ button.data-v-c6423112 {
       -ms-flex-align: end;
           align-items: flex-end;
 }
-.submit.data-v-c6423112 {
+.submit.data-v-2eada1b0 {
   margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
@@ -58,23 +58,23 @@ button.data-v-c6423112 {
   background-color: #4191ea;
   -webkit-tap-highlight-color: #4191ea;
 }
-.submit.data-v-c6423112:active {
+.submit.data-v-2eada1b0:active {
     color: #B6B6B6;
     background-color: rgba(63, 145, 234, 0.8);
 }
-.price.data-v-c6423112 {
+.price.data-v-2eada1b0 {
   border-bottom: 1px solid #eee;
-  width: 200rpx;
+  width: 180rpx;
   height: 50rpx;
   font-size: 20px;
   padding-bottom: 4rpx;
   /* text-align: center; */
-  text-indent: 40rpx;
+  text-indent: 60rpx;
 }
-.ipaPayBtn.data-v-c6423112 {
+.ipaPayBtn.data-v-2eada1b0 {
   margin-top: 30rpx;
 }
-.uni-common-mt.data-v-c6423112 {
+.uni-common-mt.data-v-2eada1b0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

@@ -13,6 +13,9 @@ export default {
     ...mapGetters([
       'name'
     ])
+    ,name(){
+      return this.$store.state.name
+    }
   }
 }
 </script>
