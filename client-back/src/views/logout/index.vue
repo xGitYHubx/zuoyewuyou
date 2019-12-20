@@ -20,6 +20,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"   :current-page='pagination1.page' :total="pagination1.total">
+        </el-pagination>
       </el-col>
 
       <el-col :span="12">
@@ -41,6 +43,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange2" :current-page='pagination2.page' :total="pagination2.total">
+        </el-pagination>
       </el-col>
     </el-row>
 
@@ -76,8 +80,16 @@ export default {
   name: "exchange",
   data() {
     return {
-      isLogoutAccount:null,
-      isLogoutName:null,
+      pagination1: {
+        page: 1,
+        total: 1
+      },
+      pagination2: {
+        page: 1,
+        total: 1
+      },
+      isLogoutAccount: null,
+      isLogoutName: null,
       dialogVisible: false,
       search_teacher: "",
       account: "",
@@ -86,7 +98,10 @@ export default {
       deleteRow: null,
       tableData: [],
       TtableData: [],
+      allTtableData: [],
       StableData: [],
+      allStableData: [],
+
       page: 0,
       showCols: [
         {
@@ -104,6 +119,7 @@ export default {
       ],
       dialogTableVisible: false,
       dialogFormVisible: false,
+      search_student: null,
       Determine: false,
       nowUser: {}, //当前选中的user
       form: {
@@ -122,8 +138,10 @@ export default {
   computed: {
     TtableDataFilter() {
       const peopleSearch = this.search_teacher; // 这里要定义
+      // var page = this.pagination1.page;
       if (peopleSearch) {
-        return this.TtableData.filter(data => {
+        this.pagination1.page=1;
+        let filter = this.TtableData.filter(data => {
           return Object.keys(data).some(key => {
             return (
               String(data[key])
@@ -131,14 +149,25 @@ export default {
                 .indexOf(peopleSearch) > -1
             );
           });
-        });
+        })
+        this.pagination1.total=filter.length;
+        console.log(this.pagination1.total)
+        return filter.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      );
       }
-      return this.TtableData;
+      this.pagination1.total=this.TtableData.length;
+      return this.TtableData.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      );
     },
     StableDataFilter() {
       const peopleSearch = this.search_student; // 这里要定义
       if (peopleSearch) {
-        return this.StableData.filter(data => {
+        this.pagination2.page=1;
+        let filter= this.StableData.filter(data => {
           return Object.keys(data).some(key => {
             return (
               String(data[key])
@@ -146,9 +175,18 @@ export default {
                 .indexOf(peopleSearch) > -1
             );
           });
-        });
+        })
+        this.pagination2.total=filter.length;
+        return filter.slice(
+        (this.pagination2.page - 1) * 10,
+        this.pagination2.page * 10
+      );
       }
-      return this.StableData;
+      this.pagination2.total=this.StableData.length;
+      return this.StableData.slice(
+        (this.pagination2.page - 1) * 10,
+        this.pagination2.page * 10
+      );
     }
   },
   methods: {
@@ -158,17 +196,40 @@ export default {
     },
     changePage(page) {
       this.tableLoading = true;
-
+      this.getTeacherList(page);
+      this.getStudentList(page);
+    },
+    getTeacherList(page) {
       getTeacherList(page).then(res => {
+        console.log(res);
+        this.pagination1.total = res.result.length;
         this.TtableData = res.result;
         this.tableLoading = false;
       });
-
+    },
+    getStudentList(page) {
       getStudentList(page).then(res => {
+        this.pagination2.total = res.result.length;
         this.StableData = res.result;
         this.tableLoading = false;
       });
     },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pagination1.page = val;
+      // this.getList();
+    },
+    handleCurrentChange2(val) {
+      // console.log(`当前页: ${val}`);
+      this.pagination2.page = val;
+    },
+
+    // setTeacherList(page){
+
+    // },
+    // setStudentList(page){
+
+    // },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
@@ -176,16 +237,15 @@ export default {
         })
         .catch(_ => {});
     },
-    beforelogout(row){
-      this.isLogoutAccount=row.account;
-      this.isLogoutName=row.name;
-      this.Determine=true;
-
+    beforelogout(row) {
+      this.isLogoutAccount = row.account;
+      this.isLogoutName = row.name;
+      this.Determine = true;
     },
     logout() {
-      this.Determine=false;
+      this.Determine = false;
       var params = {
-        account: this.isLogoutAccount,
+        account: this.isLogoutAccount
       };
       logout(params).then(res => {
         this.$message({
@@ -200,6 +260,11 @@ export default {
   mounted() {
     this.tableData = [];
     this.changePage(0);
+  },
+  watch: {
+    pagination2(newval) {
+      console.log(this.pagination2.page);
+    }
   }
 };
 </script>
@@ -209,11 +274,11 @@ export default {
   padding: 20px;
 }
 
-.isLogout{
+.isLogout {
   padding-left: 80px;
   font-size: 1.3em;
 }
-.determine >>> .el-dialog__body{
+.determine >>> .el-dialog__body {
   padding: 10px 20px;
 }
 .commandContain {
@@ -235,5 +300,9 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>

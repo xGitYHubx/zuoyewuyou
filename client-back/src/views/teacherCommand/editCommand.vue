@@ -2,17 +2,21 @@
   <div>
     <el-row :gutter="20">
 
-      <el-col :span="16">
+      <el-col :span="14">
         <el-input class="XYtitle" v-model="title" placeholder="输入标题"></el-input>
 
         <el-upload class="imgUpload" name="file" :limit="limit" :on-progress="onProgress" :on-error="onError" :file-list="fileList" :on-success="onUploadAvatarSuccess" :before-upload="beforeUploadAvatar" :action="Url" :data="avatarExdata" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
           <i class="el-icon-plus"></i>
         </el-upload>
         <editor v-model="Value" class="editor" :url="Url" @on-ready="onEditorReady" @on-destroy="onEditorDestroy" @on-upload-success="onEditorUploadComplete" @on-upload-fail="onEditorUploadFail" />
-      </el-col>
-      <el-col :span="3" class="editor">
-        <el-button type="button" @click="save">保存</el-button>
+
+        <el-button style="margin-left:50px;margin-bottom:40px;" type="primary"  @click="save">保存</el-button>
         <el-button type="danger" @click="back">返回</el-button>
+      </el-col>
+
+            <el-col :span="8">
+        <p>预览</p>
+        <div class="preview" name="" id="" v-html="Value"></div>
       </el-col>
     </el-row>
     <el-dialog title="保存失败" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">

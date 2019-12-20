@@ -12,6 +12,14 @@ export function getDataBypage(page) {
   })
 }
 
+export function getCount() {
+  return request({
+    url: $host + '/recmd/query/count',
+    method: 'get',
+
+  })
+}
+
 export function addTeacherCommand(data) {
   return request({
     url: $host + '/recmd/add',

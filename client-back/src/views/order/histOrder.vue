@@ -1,13 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="学生手机号">
         <template slot-scope="scope">
           {{ scope.row.initiatorAccount }}
@@ -65,51 +58,77 @@
       </el-table-column>
 
     </el-table>
+    <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :current-page='pagination1.page' :total="pagination1.total">
+    </el-pagination>
   </div>
 </template>
 
 <script>
-import { getHistOrder } from '@/api/order'
+import { getHistOrder } from "@/api/order";
+import { getHistOrderCount } from '../../api/order';
 
 export default {
-  name: 'HistOrder',
+  name: "HistOrder",
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
+        published: "success",
+        draft: "gray",
+        deleted: "danger"
+      };
+      return statusMap[status];
     }
   },
   data() {
     return {
+      pagination1: {
+        page: 1,
+        total: 1
+      },
       list: null,
       listLoading: true
-    }
+    };
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
-    this.fetchData()
+    this.fetchData(0);
+    this.fetchCount();
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getHistOrder().then(response => {
-        this.list = response.result
-
-        this.listLoading = false
+    fetchData(page) {
+      this.listLoading = true;
+      getHistOrder(page).then(response => {
+        this.list = response.result;
+        this.listLoading = false;
+      });
+    },
+    fetchCount() {
+      getHistOrderCount().then(res=>{
+        // console.log(res)
+        this.pagination1.total=res.result;
       })
     },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      console.log(val)
+      this.pagination1.page = val;
+      this.fetchData(val-1)
+
+      // this.getList();
+    },
     formatSubject(index) {
-      return this.subject[index]
+      return this.subject[index];
     },
     formatOrderState(index) {
-      return this.orderState[index]
+      return this.orderState[index];
     }
   }
-}
+};
 </script>
+<style>
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
+}
+</style>
+

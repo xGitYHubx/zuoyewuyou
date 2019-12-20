@@ -37,6 +37,9 @@ Vue.prototype.subject = ['语文', '数学', '英语', '物理', '化学', '生�
 Vue.prototype.orderState = ['老师未同意', '同意未支付', '支付未完成', '完成', '老师已拒绝']
 Vue.config.productionTip = false
 
+
+
+
 new Vue({
   el: '#app',
   router,

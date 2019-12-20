@@ -35,7 +35,8 @@
         </template>
       </el-table-column>
     </el-table>
-
+        <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange"   :current-page='pagination1.page' :total="pagination1.total">
+        </el-pagination>
     <!-- Table -->
 
     <!-- <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
@@ -76,6 +77,10 @@ export default {
   name: "exchange",
   data() {
     return {
+            pagination1: {
+        page: 1,
+        total: 1
+      },
       dialogVisible: false,
       search_teacher: "",
       account: "",
@@ -137,10 +142,12 @@ export default {
     };
   },
   computed: {
-    tableDataFilter() {
+        tableDataFilter() {
       const peopleSearch = this.search_teacher; // 这里要定义
+      // var page = this.pagination1.page;
       if (peopleSearch) {
-        return this.tableData.filter(data => {
+        this.pagination1.page=1;
+        let filter = this.tableData.filter(data => {
           return Object.keys(data).some(key => {
             return (
               String(data[key])
@@ -148,10 +155,20 @@ export default {
                 .indexOf(peopleSearch) > -1
             );
           });
-        });
+        })
+        this.pagination1.total=filter.length;
+        console.log(this.pagination1.total)
+        return filter.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      );
       }
-      return this.tableData;
-    }
+      this.pagination1.total=this.tableData.length;
+      return this.tableData.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      );
+    },
   },
   methods: {
     // changeDialogTable(id) {
@@ -167,6 +184,13 @@ export default {
         this.tableData = res.result;
         this.tableLoading = false;
       });
+    },
+        handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pagination1.page = val;
+      this.changePage(val)
+
+      // this.getList();
     },
     recharge() {
       var params = {
@@ -235,5 +259,10 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>

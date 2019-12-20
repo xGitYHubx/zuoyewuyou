@@ -1,7 +1,7 @@
 <template>
   <div class="box">
-    <el-row :gutter="20">
-
+    <el-row style="" :gutter="20">
+<el-button type="primary" class="refreshBtn" @click="Refresh">刷新</el-button>
       <el-col :span="16">
         <p>编辑</p>
         <editor
@@ -50,14 +50,23 @@ export default {
   },
   methods: {
     onEditorReady(res) {
+      console.log(res)
     }, onEditorDestroy(res) {
     }, 
     onEditorUploadComplete(res) {
+      console.log(res)
     }, onEditorUploadFail(res) {
+    },
+    Refresh(){
+      // this.getAbout();
+      location.reload();
     },
     getAbout() {
       getAboutUs().then(res => {
+        console.log('111')
+        console.log(res)
         this.Value = res.result
+        // this.Value=JSON.parse(JSON.stringify(this.Value))
       })
     },
     save() {
@@ -89,5 +98,9 @@ export default {
 }
 .preview img{
   max-width: 100%;
+}
+.refreshBtn{
+  left:60%;
+  position: absolute;
 }
 </style>

@@ -10,14 +10,22 @@ export function getStudentList(params) {
   })
 }
 
-export function getHistOrder(params) {
-  params = {
-    page: 0
+export function getHistOrder(page) {
+  let params = {
+    page: page
   }
   return request({
-    url: $host + '/order/query',
+    url: $host + '/order/query/page',
     method: 'get',
     params
+  })
+}
+export function getHistOrderCount() {
+
+  return request({
+    url: $host + '/order/query/count',
+    method: 'get',
+    
   })
 }
 
