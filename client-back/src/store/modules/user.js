@@ -48,6 +48,9 @@ const actions = {
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
         // console.log(response)
+        // console.log(response.result)
+        localStorage.setItem('userInfo',JSON.stringify(userInfo))
+        console.log(localStorage)
         commit('SET_TOKEN', response.result)
         setToken(response.result)
         resolve()
@@ -64,6 +67,7 @@ const actions = {
     state
   }) {
     return new Promise((resolve, reject) => {
+      console.log('vuexOf')
       commit('SET_NAME', '')
       commit('SET_AVATAR', 'hll')
       resolve('edit')

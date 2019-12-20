@@ -11,28 +11,12 @@
           </div>
         </div>
 
-        <el-table
-          v-loading="tableLoading"
-          :data="TtableDataFilter"
-          element-loading-text="Loading"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%"
-        >
-          <el-table-column
-            :show-overflow-tooltip="true"
-            align="center"
-            v-for="(item,index) in showCols"
-            :key="index"
-            :width="item.width"
-            :prop="item.prop"
-            :label="item.label"
-          ></el-table-column>
+        <el-table v-loading="tableLoading" :data="TtableDataFilter" element-loading-text="Loading" border fit highlight-current-row style="width: 95%">
+          <el-table-column :show-overflow-tooltip="true" align="center" v-for="(item,index) in showCols" :key="index" :width="item.width" :prop="item.prop" :label="item.label"></el-table-column>
 
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" @click="logout(scope.row)">注销</el-button>
+              <el-button type="primary" @click="beforelogout(scope.row)">注销</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -41,35 +25,19 @@
       <el-col :span="12">
         <div class="commandContain">
           <div class="command_left">
-            <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索"></el-input>
+            <el-input v-model="search_student" clearable placeholder="输入学生信息进行搜索"></el-input>
           </div>
           <div class="command_right">
             <!-- <el-button type="success" @click="newCommand">新建+</el-button> -->
           </div>
         </div>
 
-        <el-table
-          v-loading="tableLoading"
-          :data="StableDataFilter"
-          element-loading-text="Loading"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%"
-        >
-          <el-table-column
-            :show-overflow-tooltip="true"
-            align="center"
-            v-for="(item,index) in showCols"
-            :key="index"
-            :width="item.width"
-            :prop="item.prop"
-            :label="item.label"
-          ></el-table-column>
+        <el-table v-loading="tableLoading" :data="StableDataFilter" element-loading-text="Loading" border fit highlight-current-row style="width: 95%">
+          <el-table-column :show-overflow-tooltip="true" align="center" v-for="(item,index) in showCols" :key="index" :width="item.width" :prop="item.prop" :label="item.label"></el-table-column>
 
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" @click="logout(scope.row)">注销</el-button>
+              <el-button type="primary" @click="beforelogout(scope.row)">注销</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -87,6 +55,16 @@
         <el-button type="primary" @click="recharge()">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="确定要注销该账号吗？" class="determine" :visible.sync='Determine' width="30%">
+      <!-- <span>确定要注销该账号吗？</span> -->
+      <p class="isLogout">账号：{{isLogoutAccount}}</p>
+      <p class="isLogout">名字：{{isLogoutName}}</p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="Determine = false">取 消</el-button>
+        <el-button type="primary" @click="logout">确 定</el-button>
+      </span>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -98,6 +76,8 @@ export default {
   name: "exchange",
   data() {
     return {
+      isLogoutAccount:null,
+      isLogoutName:null,
       dialogVisible: false,
       search_teacher: "",
       account: "",
@@ -124,6 +104,7 @@ export default {
       ],
       dialogTableVisible: false,
       dialogFormVisible: false,
+      Determine: false,
       nowUser: {}, //当前选中的user
       form: {
         name: "",
@@ -155,7 +136,7 @@ export default {
       return this.TtableData;
     },
     StableDataFilter() {
-      const peopleSearch = this.search_teacher; // 这里要定义
+      const peopleSearch = this.search_student; // 这里要定义
       if (peopleSearch) {
         return this.StableData.filter(data => {
           return Object.keys(data).some(key => {
@@ -195,9 +176,16 @@ export default {
         })
         .catch(_ => {});
     },
-    logout(row) {
+    beforelogout(row){
+      this.isLogoutAccount=row.account;
+      this.isLogoutName=row.name;
+      this.Determine=true;
+
+    },
+    logout() {
+      this.Determine=false;
       var params = {
-        account: row.account
+        account: this.isLogoutAccount,
       };
       logout(params).then(res => {
         this.$message({
@@ -221,6 +209,13 @@ export default {
   padding: 20px;
 }
 
+.isLogout{
+  padding-left: 80px;
+  font-size: 1.3em;
+}
+.determine >>> .el-dialog__body{
+  padding: 10px 20px;
+}
 .commandContain {
   width: 100%;
   margin: 15px auto;

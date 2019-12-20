@@ -1,20 +1,21 @@
 <template>
   <div class="dashbord-container">
     <div class="dashbord-text">当前用户: {{ name }}</div>
+    <!-- <img class="dashbord-img" src="../../assets/book.jpg"></img> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from "vuex";
 
 export default {
-  name: 'dashbord',
+  name: 'Dashbord',
   computed: {
-    ...mapGetters([
-      'name'
-    ])
-    ,name(){
-      return this.$store.state.name
+    // ...mapGetters([
+    //   'name'
+    // ])
+    name() {
+      return JSON.parse(localStorage.getItem('userInfo')).username
     }
   }
 }
@@ -29,5 +30,7 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+  // &-img {
+  // }
 }
 </style>
