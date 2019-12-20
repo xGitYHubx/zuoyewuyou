@@ -52,6 +52,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
 
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>确定要删除吗？</span>
@@ -64,11 +65,15 @@
 </template>
 
 <script>
-import { getDataBypage, deleteCommand } from '../../api/teacherCommand'
+import { getDataBypage, deleteCommand, getCount } from '../../api/teacherCommand'
 export default {
   name: 'Tchcmd',
   data() {
     return {
+      pagination1: {
+        page: 1,
+        total: 1
+      },
       dialogVisible: false,
       search_command: '',
       tableLoading: false,
@@ -78,7 +83,7 @@ export default {
       showCols: [
         {
           prop: 'recmdId',
-          label: 'id'
+          label: 'ID'
         },
         {
           prop: 'title',
@@ -122,15 +127,30 @@ export default {
   },
   mounted() {
     this.changePage(0)
+    this.getCount()
   },
   methods: {
+    getSimpleText(html) {
+      var re1 = new RegExp('<.+?>', 'g') // 匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
+      var msg = html.replace(re1, '') // 执行替换成空字符
+      return msg
+    },
     // 搜索
 
     changePage(page) {
       this.tableLoading = true
       getDataBypage(page).then(res => {
         this.tableData = res.result
+        // this.pagination1.total=res.
+        this.tableData.forEach((element, index) => {
+          element.content = this.getSimpleText(element.content)
+        })
         this.tableLoading = false
+      })
+    },
+    getCount() {
+      getCount().then(res => {
+        this.pagination1.total = res.result
       })
     },
     newCommand() {
@@ -142,6 +162,12 @@ export default {
 
       // deleteCommand();
     },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.pagination1.page = val
+      this.changePage(val)
+      // this.getList();
+    },
     Determine() {
       const data = {
         recmdId: this.deleteRow.recmdId
@@ -150,11 +176,19 @@ export default {
         if (res.success) {
           this.dialogVisible = false
           this.changePage(this.page)
+          this.getCount()
         }
       })
     },
     editCmd(row) {
       this.$router.push({ path: '/tchCommand/editcmd', query: row })
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
     }
   }
 }
@@ -184,5 +218,9 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>

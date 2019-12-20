@@ -43,6 +43,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
       </el-col>
 
       <el-col :span="12">
@@ -61,7 +62,7 @@
 
         <el-table
           v-loading="tableLoading"
-          :data="StableDataFilter"
+          :data="StableDataFilter()"
           element-loading-text="Loading"
           border
           fit
@@ -87,6 +88,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" :current-page="pagination2.page" :total="pagination2.total" @current-change="handleCurrentChange2" />
       </el-col>
     </el-row>
 
@@ -130,6 +132,14 @@ export default {
   name: 'Exchange',
   data() {
     return {
+      pagination1: {
+        page: 1,
+        total: 1
+      },
+      pagination2: {
+        page: 1,
+        total: 1
+      },
       isLogoutAccount: null,
       isLogoutName: null,
       dialogVisible: false,
@@ -140,7 +150,10 @@ export default {
       deleteRow: null,
       tableData: [],
       TtableData: [],
+      allTtableData: [],
       StableData: [],
+      allStableData: [],
+
       page: 0,
       showCols: [
         {
@@ -158,6 +171,7 @@ export default {
       ],
       dialogTableVisible: false,
       dialogFormVisible: false,
+      search_student: null,
       Determine: false,
       nowUser: {}, // 当前选中的user
       form: {
@@ -174,35 +188,11 @@ export default {
     }
   },
   computed: {
-    TtableDataFilter() {
-      const peopleSearch = this.search_teacher // 这里要定义
-      if (peopleSearch) {
-        return this.TtableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-      }
-      return this.TtableData
-    },
-    StableDataFilter() {
-      const peopleSearch = this.search_student // 这里要定义
-      if (peopleSearch) {
-        return this.StableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-      }
-      return this.StableData
+
+  },
+  watch: {
+    pagination2(newval) {
+      console.log(this.pagination2.page)
     }
   },
   mounted() {
@@ -216,16 +206,87 @@ export default {
     },
     changePage(page) {
       this.tableLoading = true
-
+      this.getTeacherList(page)
+      this.getStudentList(page)
+    },
+    getTeacherList(page) {
       getTeacherList(page).then(res => {
+        this.pagination1.total = res.result.length
         this.TtableData = res.result
         this.tableLoading = false
       })
-
+    },
+    getStudentList(page) {
       getStudentList(page).then(res => {
+        this.pagination2.total = res.result.length
         this.StableData = res.result
         this.tableLoading = false
       })
+    },
+    handleCurrentChange(val) {
+      this.pagination1.page = val
+    },
+    handleCurrentChange2(val) {
+      this.pagination2.page = val
+    },
+    StableDataFilter() {
+      const peopleSearch = this.search_student // 这里要定义
+      if (peopleSearch) {
+        this.pagination2.page = 1
+        const filter = this.StableData.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(peopleSearch) > -1
+            )
+          })
+        })
+        this.pagination2.total = filter.length
+        return filter.slice(
+          (this.pagination2.page - 1) * 10,
+          this.pagination2.page * 10
+        )
+      }
+      this.pagination2.total = this.StableData.length
+      return this.StableData.slice(
+        (this.pagination2.page - 1) * 10,
+        this.pagination2.page * 10
+      )
+    },
+    TtableDataFilter() {
+      const peopleSearch = this.search_teacher // 这里要定义
+      // var page = this.pagination1.page;
+      if (peopleSearch) {
+        this.pagination1.page = 1
+        const filter = this.TtableData.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(peopleSearch) > -1
+            )
+          })
+        })
+        this.pagination1.total = filter.length
+        console.log(this.pagination1.total)
+        return filter.slice(
+          (this.pagination1.page - 1) * 10,
+          this.pagination1.page * 10
+        )
+      }
+      this.pagination1.total = this.TtableData.length
+      return this.TtableData.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      )
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
     },
     beforelogout(row) {
       this.isLogoutAccount = row.account
@@ -281,5 +342,9 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>

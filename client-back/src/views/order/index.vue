@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-side-effects-in-computed-properties */
 <template>
   <div>
     <el-row :gutter="6" class="app-container">
@@ -9,7 +10,7 @@
           </el-form-item>
           <el-form-item label="辅导时间">
             <el-col>
-              <el-date-picker v-model="form.startTime" type="datetime" placeholder="选择日期时间" style="width: 100%;" />
+              <el-date-picker v-model="form.startTime" is-range="true" :picker-options="pickerOptions" type="datetime" placeholder="选择日期时间" style="width: 100%;" />
             </el-col>
           </el-form-item>
           <el-form-item label="资薪/每小时">
@@ -43,7 +44,7 @@
       <el-col :span="12">
         <div class="grid-content  bg-purple">
           <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索" /> </div>
-        <el-table v-loading="listLoading" :data="teacherMange" element-loading-text="Loading" highlight-current-row border fit @current-change="handleTeacherCurrentChange">
+        <el-table v-loading="listLoading" :data="teacherMange()" element-loading-text="Loading" align="center" highlight-current-row border fit @current-change="handleTeacherCurrentChange">
           <el-table-column align="center" label="选中" width="50">
             <template slot-scope="scope">
               <svg-icon v-if="scope.row.checked==1" icon-class="checked" />
@@ -55,23 +56,24 @@
               {{ scope.row.name }}
             </template>
           </el-table-column>
-          <el-table-column label="擅长科目">
+          <el-table-column align="center" label="擅长科目">
             <template slot-scope="scope">
               {{ formatGoodAt(scope.row.goodAt) }}
             </template>
           </el-table-column>
-          <el-table-column label="手机号">
+          <el-table-column align="center" label="手机号">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
       </el-col>
       <el-col :span="12">
         <div class="grid-content bg-purple-light" />
         <div class="grid-content  bg-purple">
           <el-input v-model="search_student" clearable placeholder="输入学生信息进行搜索" /> </div>
-        <el-table v-loading="listLoading" :data="studentMange" element-loading-text="Loading" border fit highlight-current-row @current-change="handleStudentCurrentChange">
+        <el-table v-loading="listLoading" :data="studentMange()" element-loading-text="Loading" align="center" border fit highlight-current-row @current-change="handleStudentCurrentChange">
           <el-table-column align="center" label="选中" width="50">
             <template slot-scope="scope">
               <svg-icon v-if="scope.row.checked==1" icon-class="checked" />
@@ -83,12 +85,13 @@
               {{ scope.row.name }}
             </template>
           </el-table-column>
-          <el-table-column label="手机号">
+          <el-table-column align="center" label="手机号">
             <template slot-scope="scope">
               {{ scope.row.account }}
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination background layout="prev, pager, next" :current-page="pagination2.page" :total="pagination2.total" @current-change="handleCurrentChange2" />
       </el-col>
     </el-row>
 
@@ -149,6 +152,20 @@ export default {
   },
   data() {
     return {
+      tableRange: {},
+      pickerOptions: {
+        disabledDate: (time) => {
+          return this.dealDisabledDate(time)
+        }
+      }, // 日期设置对象,
+      pagination1: {
+        page: 1,
+        total: 1
+      },
+      pagination2: {
+        page: 1,
+        total: 1
+      },
       list_teacher: null,
       list_student: null,
       dialogFormVisible: false,
@@ -181,44 +198,31 @@ export default {
     }
   },
   computed: {
-    // 人员搜索
 
-    teacherMange() {
-      const peopleSearch = this.search_teacher
-      if (peopleSearch) {
-        return this.list_teacher.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-      }
-      return this.list_teacher
-    },
-    studentMange() {
-      const peopleSearch = this.search_student
-      if (peopleSearch) {
-        return this.list_student.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-      }
-      return this.list_student
-    }
   },
   created() {
+    // this.getStartData2();
     this.fetchTeacherData()
     this.fetchStudentData()
   },
   methods: {
+    dealDisabledDate(time) {
+      const curDate = (new Date()).getTime()
+      const day = 30 * 24 * 3600 * 1000
+      return time.getTime() < Date.now() - 8.64e7 || time.getTime() > (day + curDate)
+    },
+    getStartData() {
+      const date = new Date()
+      this.tableRange.start = date.format('yyyy-MM-dd HH:mm:ss')
+      date.setMonth(date.getMonth() + 1)
+      this.tableRange.end = date.format('yyyy-MM-dd HH:mm:ss')
+    },
+    handleCurrentChange(val) {
+      this.pagination1.page = val
+    },
+    handleCurrentChange2(val) {
+      this.pagination2.page = val
+    },
     fetchTeacherData() {
       this.listLoading = true
       getTeacherList().then(response => {
@@ -256,18 +260,82 @@ export default {
       this.form.initiatorName = currentRow.name
     },
     onSubmit() {
-      var paramss = this.form
-      paramss.startTime = beautyTime1(paramss.startTime)
-      paramss.cost = paramss.duration * paramss.cost
-      paramss.initiatorAccount = paramss.initiator
-      paramss.receiverAccount = paramss.receiver
+      var paramss = JSON.parse(JSON.stringify(this.form))
 
-      console.log(paramss)
-
-      submitOrder(paramss).then(res => {
-        this.$message('订单生成！')
-        this.onCancel(1)
-      })
+      if (
+        paramss.startTime != null &&
+        paramss.cost != null &&
+        paramss.initiator != null &&
+        paramss.receiver != null
+      ) {
+        paramss.startTime = beautyTime1(paramss.startTime)
+        paramss.cost = paramss.duration * paramss.cost
+        paramss.initiatorAccount = paramss.initiator
+        paramss.receiverAccount = paramss.receiver
+        submitOrder(paramss).then(res => {
+          this.onCancel(1)
+          this.dialogFormVisible = false
+        })
+      } else {
+        this.$message('请检查信息是否完整')
+      }
+    },
+    teacherMange() {
+      const peopleSearch = this.search_teacher
+      if (peopleSearch) {
+        this.pagination1.page = 1
+        const filter = this.list_teacher.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(peopleSearch) > -1
+            )
+          })
+        })
+        // console.log(filter)
+        this.pagination1.total = filter.length
+        console.log(this.pagination1.total)
+        return filter.slice(
+          (this.pagination1.page - 1) * 10,
+          this.pagination1.page * 10
+        )
+      }
+      if (this.list_teacher != null) {
+        this.pagination1.total = this.list_teacher.length
+        return this.list_teacher.slice(
+          (this.pagination1.page - 1) * 10,
+          this.pagination1.page * 10
+        )
+      } else return null
+    },
+    studentMange() {
+      const peopleSearch = this.search_student // 这里要定义
+      if (peopleSearch) {
+        this.pagination2.page = 1
+        const filter = this.list_student.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(peopleSearch) > -1
+            )
+          })
+        })
+        this.pagination2.total = filter.length
+        return filter.slice(
+          (this.pagination2.page - 1) * 10,
+          this.pagination2.page * 10
+        )
+      }
+      if (this.list_student != null) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.pagination2.total = this.list_student.length
+        return this.list_student.slice(
+          (this.pagination2.page - 1) * 10,
+          this.pagination2.page * 10
+        )
+      } else return null
     },
     onCancel(notLog) {
       this.form = {
@@ -280,6 +348,15 @@ export default {
         cost: 0,
         subject: 0
       }
+      this.teacherMange.forEach(element => {
+        element.checked = 0
+      })
+      this.studentMange.forEach(element => {
+        // console.log(element);
+        element.checked = 0
+      })
+      this.fetchTeacherData()
+      this.fetchStudentData()
       if (!notLog) {
         this.$message({
           message: '清空!',
@@ -293,13 +370,18 @@ export default {
       console.log(this.form)
     },
     formatGoodAt(code) {
-      var arr = code.split('-')
-      var result = ''
-      for (let index = 0; index < arr.length; index++) {
-        arr[index] = this.subjectArr[arr[index]]
+      // console.log(code)
+      if (code != null) {
+        var arr = code.split('-')
+        var result = ''
+        for (let index = 0; index < arr.length; index++) {
+          arr[index] = this.subjectArr[arr[index]]
+        }
+        result = arr.join('、')
+        return result
+      } else {
+        return ''
       }
-      result = arr.join('、')
-      return result
     }
   }
 }
@@ -311,6 +393,10 @@ export default {
 }
 .app-container >>> .XelRadio{
   width: 98%;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>
 

@@ -36,7 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -47,9 +46,9 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     name: 'home',
-    redirect: '/zuoyewuyou',
+    redirect: '/zywy',
     children: [{
-      path: 'zuoyewuyou',
+      path: 'zywy',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '作业无忧', icon: '书2' }

@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="16">
+
+      <el-col :span="14">
         <el-input v-model="title" class="XYtitle" placeholder="输入标题" />
 
         <el-upload
@@ -20,26 +21,19 @@
         >
           <i class="el-icon-plus" />
         </el-upload>
-        <editor
-          v-model="Value"
-          class="editor"
-          :url="Url"
-          @on-ready="onEditorReady"
-          @on-destroy="onEditorDestroy"
-          @on-upload-success="onEditorUploadComplete"
-          @on-upload-fail="onEditorUploadFail"
-        />
-      </el-col>
-      <el-col :span="3" class="editor">
-        <el-button type="button" @click="save">保存</el-button>
+        <editor v-model="Value" class="editor" :url="Url" @on-ready="onEditorReady" @on-destroy="onEditorDestroy" @on-upload-success="onEditorUploadComplete" @on-upload-fail="onEditorUploadFail" />
+
+        <el-button style="margin-left:50px;margin-bottom:40px;" type="primary" @click="save">保存</el-button>
         <el-button type="danger" @click="back">返回</el-button>
       </el-col>
+
+      <el-col :span="8">
+        <p>预览</p>
+        <div id="" class="preview" name="" v-html="Value" />
+      </el-col>
     </el-row>
-    <el-dialog
-      title="保存失败"
-      :visible.sync="dialogVisible"
-      width="30%"
-    >
+
+    <el-dialog title="保存失败" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <span>请检查信息是否输入完整</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -84,15 +78,11 @@ export default {
           sketch: this.avatarUrl
         }
         addTeacherCommand(data).then(res => {
-          console.log(res)
           if (res.success) {
             this.$router.push('/tchCommand/tchcmd')
           }
         })
       } else {
-        console.log(this.title)
-        console.log(this.Value)
-        console.log(this.avatarUrl)
         this.dialogVisible = true
       }
     },
@@ -100,10 +90,13 @@ export default {
       this.$router.push('/tchCommand/tchcmd')
     },
     handlePictureCardPreview(res) {
-      // console.log(res);
     },
     handleRemove(res) {
       this.avatarUrl = ''
+      var upload = document.getElementsByClassName(
+        'el-upload--picture-card'
+      )[0]
+      upload.style.display = 'block'
     },
     onEditorReady(res) {},
     onEditorDestroy(res) {},
@@ -114,6 +107,14 @@ export default {
     },
     onUploadAvatarSuccess(res) {
       this.avatarUrl = res.result
+      var upload = document.getElementsByClassName(
+        'el-upload--picture-card'
+      )[0]
+      console.log(upload)
+      // upload.setAttribute('display','hidden')
+      // upload.setAttribute('style','display:hidden')
+      // upload.style('display','hidden')
+      upload.style.display = 'none'
     },
     onProgress(event, file, fileList) {
       console.log()
@@ -141,5 +142,15 @@ export default {
 .imgUpload {
   padding-left: 40px;
   padding-top: 20px;
+}
+.preview {
+  width: 100%;
+  height: 700px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  padding: 5px 20px;
+}
+.preview img {
+  max-width: 100%;
 }
 </style>

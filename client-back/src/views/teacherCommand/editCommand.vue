@@ -1,12 +1,9 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="16">
-        <el-input
-          v-model="title"
-          class="XYtitle"
-          placeholder="输入标题"
-        />
+
+      <el-col :span="14">
+        <el-input v-model="title" class="XYtitle" placeholder="输入标题" />
 
         <el-upload
           class="imgUpload"
@@ -25,19 +22,15 @@
         >
           <i class="el-icon-plus" />
         </el-upload>
-        <editor
-          v-model="Value"
-          class="editor"
-          :url="Url"
-          @on-ready="onEditorReady"
-          @on-destroy="onEditorDestroy"
-          @on-upload-success="onEditorUploadComplete"
-          @on-upload-fail="onEditorUploadFail"
-        />
-      </el-col>
-      <el-col :span="3" class="editor">
-        <el-button type="button" @click="save">保存</el-button>
+        <editor v-model="Value" class="editor" :url="Url" @on-ready="onEditorReady" @on-destroy="onEditorDestroy" @on-upload-success="onEditorUploadComplete" @on-upload-fail="onEditorUploadFail" />
+
+        <el-button style="margin-left:50px;margin-bottom:40px;" type="primary" @click="save">保存</el-button>
         <el-button type="danger" @click="back">返回</el-button>
+      </el-col>
+
+      <el-col :span="8">
+        <p>预览</p>
+        <div id="" class="preview" name="" v-html="Value" />
       </el-col>
     </el-row>
     <el-dialog
@@ -59,9 +52,8 @@
 
 <script>
 import editor from '@/components/tinymce/tinymce.vue'
-import { updataAboutUs, getAboutUs } from '@/api/aboutUs'
+// import { updataAboutUs, getAboutUs } from '@/api/aboutUs'
 import { editTeacherCommand } from '../../api/teacherCommand'
-import { constants } from 'fs'
 
 export default {
   name: 'Editcmd',
@@ -103,18 +95,13 @@ export default {
           sketch: this.avatarUrl,
           recmdId: this.recmdId
         }
-        console.log(data)
 
         editTeacherCommand(data).then(res => {
-          console.log(res)
           if (res.success) {
             this.$router.push('/tchCommand/tchcmd')
           }
         })
       } else {
-        console.log(this.title)
-        console.log(this.Value)
-        console.log(this.avatarUrl)
         this.dialogVisible = true
       }
     },
@@ -122,7 +109,6 @@ export default {
       this.$router.push('/tchCommand/tchcmd')
     },
     handlePictureCardPreview(res) {
-      // console.log(res);
     },
     handleRemove(res) {
       this.avatarUrl = ''

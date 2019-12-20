@@ -47,8 +47,6 @@ const actions = {
         // const { data } = response
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
-        // console.log(response)
-        // console.log(response.result)
         localStorage.setItem('userInfo', JSON.stringify(userInfo))
         console.log(localStorage)
         commit('SET_TOKEN', response.result)

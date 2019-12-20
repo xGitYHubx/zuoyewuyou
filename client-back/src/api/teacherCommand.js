@@ -11,6 +11,14 @@ export function getDataBypage(page) {
   })
 }
 
+export function getCount() {
+  return request({
+    url: '/recmd/query/count',
+    method: 'get'
+
+  })
+}
+
 export function addTeacherCommand(data) {
   return opearteRequest({
     url: '/recmd/add',

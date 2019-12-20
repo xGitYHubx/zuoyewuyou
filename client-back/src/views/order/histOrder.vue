@@ -1,13 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="学生手机号">
         <template slot-scope="scope">
           {{ scope.row.initiatorAccount }}
@@ -72,11 +65,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
   </div>
 </template>
 
 <script>
-import { getHistOrder, changeOrderStatus } from '@/api/order'
+import { getHistOrder, changeOrderStatus, getHistOrderCount } from '@/api/order'
 
 export default {
   name: 'HistOrder',
@@ -92,21 +86,40 @@ export default {
   },
   data() {
     return {
+      pagination1: {
+        page: 1,
+        total: 1
+      },
       list: [],
       listLoading: true
     }
   },
   computed: {},
   created() {
-    this.fetchData()
+    this.fetchData(0)
+    this.fetchCount()
   },
   methods: {
-    fetchData() {
+    fetchData(page) {
       this.listLoading = true
-      getHistOrder().then(response => {
+      getHistOrder(page).then(response => {
         this.list = response.result
         this.listLoading = false
       })
+    },
+    fetchCount() {
+      getHistOrderCount().then(res => {
+        // console.log(res)
+        this.pagination1.total = res.result
+      })
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      console.log(val)
+      this.pagination1.page = val
+      this.fetchData(val - 1)
+
+      // this.getList();
     },
     formatSubject(index) {
       return this.subject[index]
@@ -127,3 +140,10 @@ export default {
   }
 }
 </script>
+<style>
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
+}
+</style>
+

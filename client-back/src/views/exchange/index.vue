@@ -11,7 +11,7 @@
 
     <el-table
       v-loading="tableLoading"
-      :data="tableDataFilter"
+      :data="tableDataFilter()"
       element-loading-text="Loading"
       border
       fit
@@ -34,6 +34,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
+    <!-- Table -->
+
+    <!-- <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+      <el-table :data="gridData">
+        <el-table-column property="date" label="日期" width="150"></el-table-column>
+        <el-table-column property="name" label="姓名" width="200"></el-table-column>
+        <el-table-column property="address" label="地址"></el-table-column>
+      </el-table>
+    </el-dialog>-->
+
+    <!-- Form -->
 
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       <el-form :model="form">
@@ -57,6 +69,10 @@ export default {
   name: 'Exchange',
   data() {
     return {
+      pagination1: {
+        page: 1,
+        total: 1
+      },
       dialogVisible: false,
       search_teacher: '',
       account: '',
@@ -118,21 +134,7 @@ export default {
     }
   },
   computed: {
-    tableDataFilter() {
-      const peopleSearch = this.search_teacher // 这里要定义
-      if (peopleSearch) {
-        return this.tableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-      }
-      return this.tableData
-    }
+
   },
   mounted() {
     this.tableData = []
@@ -152,6 +154,13 @@ export default {
         this.tableData = res.result
         this.tableLoading = false
       })
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.pagination1.page = val
+      this.changePage(val)
+
+      // this.getList();
     },
     recharge() {
       var params = {
@@ -176,6 +185,33 @@ export default {
           message: '余额不足！'
         })
       }
+    },
+    tableDataFilter() {
+      const peopleSearch = this.search_teacher // 这里要定义
+      // var page = this.pagination1.page;
+      if (peopleSearch) {
+        this.pagination1.page = 1
+        const filter = this.tableData.filter(data => {
+          return Object.keys(data).some(key => {
+            return (
+              String(data[key])
+                .toLowerCase()
+                .indexOf(peopleSearch) > -1
+            )
+          })
+        })
+        this.pagination1.total = filter.length
+        console.log(this.pagination1.total)
+        return filter.slice(
+          (this.pagination1.page - 1) * 10,
+          this.pagination1.page * 10
+        )
+      }
+      this.pagination1.total = this.tableData.length
+      return this.tableData.slice(
+        (this.pagination1.page - 1) * 10,
+        this.pagination1.page * 10
+      )
     }
   }
 }
@@ -205,5 +241,10 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: cover;
+}
+
+.el-pagination {
+  margin-top: 20px;
+  margin-left: 40px;
 }
 </style>
