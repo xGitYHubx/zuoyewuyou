@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <el-row :gutter="6">
+  <div>
+    <el-row :gutter="6" class="app-container">
       <el-col :span="24">
         <div class="grid-content bg-purple" />
         <el-form ref="form" :model="form" label-width="120px">
@@ -15,7 +15,7 @@
           <el-form-item label="资薪/每小时">
             <el-input v-model="form.cost" suffix-icon="el-icon-coin" />
           </el-form-item>
-          <el-form-item label="每次辅导时长">
+          <el-form-item label="辅导时长">
             <el-input v-model="form.duration" suffix-icon="el-icon-coin" type="number" />
           </el-form-item>
           <el-form-item class="XelRadio" label="辅导科目">
@@ -31,11 +31,8 @@
               <el-radio label="8">地理</el-radio>
             </el-radio-group>
           </el-form-item>
-          <!-- <el-form-item label="Activity form">
-            <el-input v-model="form.desc" type="textarea" />
-          </el-form-item> -->
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button type="primary" @click="changeDialogForm()">提交</el-button>
             <el-button @click="onCancel">清空</el-button>
           </el-form-item>
         </el-form>
@@ -93,9 +90,44 @@
           </el-table-column>
         </el-table>
       </el-col>
-
     </el-row>
 
+    <el-dialog title="确认订单信息" :visible.sync="dialogFormVisible">
+      <div>
+        <el-form ref="form" :inline="true" :model="form">
+          <el-form-item label="辅导地点">
+            <el-input :value="form.location" readonly />
+          </el-form-item>
+          <el-form-item label="辅导时间">
+            <el-date-picker :value="form.startTime" format="yyyy-MM-dd HH:mm:ss" readonly type="datetime" placeholder="选择日期时间" />
+          </el-form-item>
+          <el-form-item label="资薪/每小时">
+            <el-input :value="form.cost" suffix-icon="el-icon-coin" readonly />
+          </el-form-item>
+          <el-form-item label="辅导时长">
+            <el-input :value="form.duration" suffix-icon="el-icon-coin" type="number" readonly />
+          </el-form-item>
+          <el-form-item class="XelRadio" label="辅导科目">
+            <el-radio-group :value="form.subject" readonly>
+              <el-radio label="0">语文</el-radio>
+              <el-radio label="1">数学</el-radio>
+              <el-radio label="2">英语</el-radio>
+              <el-radio label="3">物理</el-radio>
+              <el-radio label="4">化学</el-radio>
+              <el-radio label="5">生物</el-radio>
+              <el-radio label="6">政治</el-radio>
+              <el-radio label="7">历史</el-radio>
+              <el-radio label="8">地理</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSubmit()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -119,6 +151,7 @@ export default {
     return {
       list_teacher: null,
       list_student: null,
+      dialogFormVisible: false,
       subjectArr: [
         '语文',
         '数学',
@@ -151,8 +184,7 @@ export default {
     // 人员搜索
 
     teacherMange() {
-      const peopleSearch = this.search_teacher // 这里要定义
-
+      const peopleSearch = this.search_teacher
       if (peopleSearch) {
         return this.list_teacher.filter(data => {
           return Object.keys(data).some(key => {
@@ -164,12 +196,10 @@ export default {
           })
         })
       }
-
       return this.list_teacher
     },
     studentMange() {
-      const peopleSearch = this.search_student // 这里要定义
-
+      const peopleSearch = this.search_student
       if (peopleSearch) {
         return this.list_student.filter(data => {
           return Object.keys(data).some(key => {
@@ -181,7 +211,6 @@ export default {
           })
         })
       }
-
       return this.list_student
     }
   },
@@ -258,6 +287,11 @@ export default {
         })
       }
     },
+    changeDialogForm(row) {
+      // this.nowUser = row
+      this.dialogFormVisible = !this.dialogFormVisible
+      console.log(this.form)
+    },
     formatGoodAt(code) {
       var arr = code.split('-')
       var result = ''
@@ -271,11 +305,11 @@ export default {
 }
 </script>
 <style scoped>
-.el-form-item {
+.app-container >>> .el-form-item {
   width: 22%;
   float: left;
 }
-.XelRadio{
+.app-container >>> .XelRadio{
   width: 98%;
 }
 </style>
