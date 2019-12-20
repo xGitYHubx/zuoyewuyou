@@ -16,7 +16,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-Vue.use(axios)
+Vue.prototype.axios = axios
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -25,17 +25,17 @@ Vue.use(axios)
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+// import { mockXHR } from '../mock'
+// if (process.env.NODE_ENV === 'production') {
+//   mockXHR()
+// }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 Vue.prototype.axios = axios
 Vue.prototype.subject = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理']
 Vue.prototype.orderState = ['老师未同意', '同意未支付', '支付未完成', '完成', '老师已拒绝']
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 new Vue({
   el: '#app',

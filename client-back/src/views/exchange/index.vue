@@ -2,7 +2,7 @@
   <div class="teacher_command">
     <div class="commandContain">
       <div class="command_left">
-        <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索"></el-input>
+        <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索" />
       </div>
       <div class="command_right">
         <!-- <el-button type="success" @click="newCommand">新建+</el-button> -->
@@ -19,19 +19,18 @@
       style="width: 100%"
     >
       <el-table-column
-        :show-overflow-tooltip="true"
-        align="center"
         v-for="(item,index) in showCols"
         :key="index"
+        :show-overflow-tooltip="true"
+        align="center"
         :width="item.width"
         :prop="item.prop"
         :label="item.label"
-      ></el-table-column>
+      />
 
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" @click="changeDialogForm(scope.row)">兑换学币</el-button>
-          <!-- <el-button type="danger" @click="changeDialogTable(scope.row)">历史记录</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -51,7 +50,7 @@
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="兑换的学币数量" :label-width="formLabelWidth">
-          <el-input v-model="coinCount" autocomplete="off" placeholder="（人民币）1:10（学币）"></el-input>
+          <el-input v-model="coinCount" autocomplete="off" placeholder="（人民币）1:10（学币）" />
         </el-form-item>
         <!-- <el-form-item label="活动区域" :label-width="formLabelWidth">
           <el-select v-model="form.region" placeholder="请选择活动区域">
@@ -69,16 +68,16 @@
 </template>
 
 <script>
-import { getTeacherList } from "../../api/order";
-import { exchange } from "../../api/exchange";
+import { getTeacherList } from '../../api/order'
+import { exchange } from '../../api/exchange'
 
 export default {
-  name: "exchange",
+  name: 'Exchange',
   data() {
     return {
       dialogVisible: false,
-      search_teacher: "",
-      account: "",
+      search_teacher: '',
+      account: '',
       tableLoading: false,
       coinCount: 0,
       deleteRow: null,
@@ -86,16 +85,16 @@ export default {
       page: 0,
       showCols: [
         {
-          prop: "name",
-          label: "名字"
+          prop: 'name',
+          label: '名字'
         },
         {
-          prop: "account",
-          label: "手机号"
+          prop: 'account',
+          label: '手机号'
         },
         {
-          prop: "coin",
-          label: "学币余额"
+          prop: 'coin',
+          label: '学币余额'
         }
       ],
       //   gridData: [
@@ -122,23 +121,23 @@ export default {
       //   ],
       dialogTableVisible: false,
       dialogFormVisible: false,
-      nowUser: {}, //当前选中的user
+      nowUser: {}, // 当前选中的user
       form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
         delivery: false,
         type: [],
-        resource: "",
-        desc: ""
+        resource: '',
+        desc: ''
       },
-      formLabelWidth: "120px"
-    };
+      formLabelWidth: '120px'
+    }
   },
   computed: {
     tableDataFilter() {
-      const peopleSearch = this.search_teacher; // 这里要定义
+      const peopleSearch = this.search_teacher // 这里要定义
       if (peopleSearch) {
         return this.tableData.filter(data => {
           return Object.keys(data).some(key => {
@@ -146,69 +145,58 @@ export default {
               String(data[key])
                 .toLowerCase()
                 .indexOf(peopleSearch) > -1
-            );
-          });
-        });
+            )
+          })
+        })
       }
-      return this.tableData;
+      return this.tableData
     }
+  },
+  mounted() {
+    this.tableData = []
+    this.changePage(0)
   },
   methods: {
     // changeDialogTable(id) {
     //   this.dialogTableVisible = !this.dialogTableVisible;
     // },
     changeDialogForm(row) {
-      this.nowUser = row;
-      this.dialogFormVisible = !this.dialogFormVisible;
+      this.nowUser = row
+      this.dialogFormVisible = !this.dialogFormVisible
     },
     changePage(page) {
-      this.tableLoading = true;
+      this.tableLoading = true
       getTeacherList(page).then(res => {
-        this.tableData = res.result;
-        this.tableLoading = false;
-      });
+        this.tableData = res.result
+        this.tableLoading = false
+      })
     },
     recharge() {
       var params = {
         coin: this.coinCount,
         account: this.nowUser.account
-      };
+      }
       if (params.coin < this.nowUser.coin) {
         exchange(params)
           .then(res => {
-            this.$message({
-              message: "兑换成功！",
-              type: "success"
-            });
-            this.dialogFormVisible = false;
-            this.tableData = [];
-            this.changePage(0);
+            this.dialogFormVisible = false
+            this.tableData = []
+            this.changePage(0)
           })
-          .catch(err => {
-            this.$message({
-              message: "兑换失败",
-              type: "error"
-            });
-          });
+          // .catch(() => {
+          //   this.$message({
+          //     message: '兑换失败',
+          //     type: 'error'
+          //   })
+          // })
       } else {
         this.$message({
-          message: "余额不足！",
-        });
-      }
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
+          message: '余额不足！'
         })
-        .catch(_ => {});
+      }
     }
-  },
-  mounted() {
-    this.tableData = [];
-    this.changePage(0);
   }
-};
+}
 </script>
 
 <style scoped>

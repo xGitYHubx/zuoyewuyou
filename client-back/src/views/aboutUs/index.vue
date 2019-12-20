@@ -19,14 +19,12 @@
       </el-col>
       <el-col :span="8">
         <p>预览</p>
-        <div class="preview" name="" id="" v-html="Value"></div>
+        <div id="" class="preview" name="" v-html="Value" />
       </el-col>
       <el-col
         :span="3"
         class="editor"
-      >
-
-      </el-col>
+      />
     </el-row>
 
   </div>
@@ -41,7 +39,7 @@ export default {
   components: { editor },
   data() {
     return {
-      Url: 'http://47.93.22.56:8082/file/upload',
+      Url: '/file/upload',
       Value: ''
     }
   },
@@ -51,7 +49,7 @@ export default {
   methods: {
     onEditorReady(res) {
     }, onEditorDestroy(res) {
-    }, 
+    },
     onEditorUploadComplete(res) {
     }, onEditorUploadFail(res) {
     },

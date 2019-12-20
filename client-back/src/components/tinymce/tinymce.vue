@@ -170,7 +170,7 @@ export default {
 
       this.Editor = window.tinymce.init({
         // 默认配置
-        branding: false,//去除右下角的'由tinymce驱动'
+        branding: false, // 去除右下角的'由tinymce驱动'
         elementpath: false,
         ...this.DefaultConfig,
 
@@ -240,7 +240,6 @@ export default {
   }
 }
 </script>
-
 
 <style >
 .mce-statusbar{

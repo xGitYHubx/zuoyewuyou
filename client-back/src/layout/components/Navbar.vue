@@ -41,9 +41,9 @@ export default {
     Breadcrumb,
     Hamburger
   },
-  data(){
-    return{
-      avatarUrl:require("@/assets/avatar.png") 
+  data() {
+    return {
+      avatarUrl: require('@/assets/avatar.png')
     }
   },
   computed: {

@@ -1,9 +1,8 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { opearteRequest } from '@/utils/request'
 
 export function exchange(data) {
-  return request({
-    url: $host + '/user/exchange',
+  return opearteRequest({
+    url: '/user/exchange',
     method: 'post',
     data
   })

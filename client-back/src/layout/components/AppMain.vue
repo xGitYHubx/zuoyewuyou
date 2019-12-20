@@ -29,7 +29,6 @@ export default {
   padding-top: 50px;
 }
 
-
 </style>
 
 <style lang="scss">
@@ -39,6 +38,5 @@ export default {
     padding-right: 15px;
   }
 }
-
 
 </style>

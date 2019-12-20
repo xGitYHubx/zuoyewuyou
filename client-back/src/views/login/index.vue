@@ -58,47 +58,46 @@
         <span>password: any</span>
       </div> -->
 
-
     </el-form>
-      <p class="dreamtech" >By DRE@MTECH</p>
+    <p class="dreamtech">By DRE@MTECH</p>
 
   </div>
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+// import { validUsername } from '@/utils/validate'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       loginForm: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       },
       loading: false,
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined
-    };
+    }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       // this.$refs.loginForm.validate(valid => {
@@ -110,23 +109,23 @@ export default {
       // });
       // this.$router.push({ name: "home" });
 
-      this.loading = true;
+      this.loading = true
       this.$store
-        .dispatch("user/login", this.loginForm)
+        .dispatch('user/login', this.loginForm)
         .then(res => {
-          console.log(res);
-          this.$router.push({ name: "home" })
+          console.log(res)
+          this.$router.push({ name: 'home' })
           this.loading = false
         })
         .catch(err => {
-          console.log("chucuo")
-          console.log(err);
+          console.log('chucuo')
+          console.log(err)
 
           this.loading = false
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -173,7 +172,6 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
-
 
   .dreamtech{
     position: fixed;

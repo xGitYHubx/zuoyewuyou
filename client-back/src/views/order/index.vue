@@ -41,7 +41,7 @@
         </el-form>
       </el-col>
     </el-row>
-    
+
     <el-row :gutter="16">
       <el-col :span="12">
         <div class="grid-content  bg-purple">
@@ -100,19 +100,19 @@
 </template>
 
 <script>
-import { getStudentList, getTeacherList, submitOrder } from "@/api/order";
-import { beautyTime1 } from "@/utils/beauty";
+import { getStudentList, getTeacherList, submitOrder } from '@/api/order'
+import { beautyTime1 } from '@/utils/beauty'
 
 export default {
-  name: "Order",
+  name: 'Order',
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     }
   },
   data() {
@@ -120,38 +120,38 @@ export default {
       list_teacher: null,
       list_student: null,
       subjectArr: [
-        "语文",
-        "数学",
-        "英语",
-        "物理",
-        "化学",
-        "生物",
-        "政治",
-        "历史",
-        "地理"
+        '语文',
+        '数学',
+        '英语',
+        '物理',
+        '化学',
+        '生物',
+        '政治',
+        '历史',
+        '地理'
       ],
       listLoading: false,
-      search_teacher: "",
-      search_student: "",
+      search_teacher: '',
+      search_student: '',
       form: {
-        initiator: "",
-        receiver: "",
-        initiatorName: "",
-        receiverName: "",
-        location: "",
-        startTime: "",
-        region: "",
+        initiator: '',
+        receiver: '',
+        initiatorName: '',
+        receiverName: '',
+        location: '',
+        startTime: '',
+        region: '',
         duration: 0,
         cost: 0,
         subject: 0
       }
-    };
+    }
   },
   computed: {
     // 人员搜索
 
     teacherMange() {
-      const peopleSearch = this.search_teacher; // 这里要定义
+      const peopleSearch = this.search_teacher // 这里要定义
 
       if (peopleSearch) {
         return this.list_teacher.filter(data => {
@@ -160,15 +160,15 @@ export default {
               String(data[key])
                 .toLowerCase()
                 .indexOf(peopleSearch) > -1
-            );
-          });
-        });
+            )
+          })
+        })
       }
 
-      return this.list_teacher;
+      return this.list_teacher
     },
     studentMange() {
-      const peopleSearch = this.search_student; // 这里要定义
+      const peopleSearch = this.search_student // 这里要定义
 
       if (peopleSearch) {
         return this.list_student.filter(data => {
@@ -177,98 +177,98 @@ export default {
               String(data[key])
                 .toLowerCase()
                 .indexOf(peopleSearch) > -1
-            );
-          });
-        });
+            )
+          })
+        })
       }
 
-      return this.list_student;
+      return this.list_student
     }
   },
   created() {
-    this.fetchTeacherData();
-    this.fetchStudentData();
+    this.fetchTeacherData()
+    this.fetchStudentData()
   },
   methods: {
     fetchTeacherData() {
-      this.listLoading = true;
+      this.listLoading = true
       getTeacherList().then(response => {
-        this.list_teacher = response.result;
+        this.list_teacher = response.result
         for (let index = 0; index < response.result.length; index++) {
-          this.list_teacher[index].checked = 0;
+          this.list_teacher[index].checked = 0
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     },
     fetchStudentData() {
-      this.listLoading = true;
+      this.listLoading = true
       getStudentList().then(response => {
-        this.list_student = response.result;
+        this.list_student = response.result
         for (let index = 0; index < response.result.length; index++) {
-          this.list_student[index].checked = 0;
+          this.list_student[index].checked = 0
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     },
     handleTeacherCurrentChange(currentRow, oldCurrentRow) {
-      currentRow.checked = 1;
+      currentRow.checked = 1
       if (oldCurrentRow) {
-        oldCurrentRow.checked = 0;
+        oldCurrentRow.checked = 0
       }
-      this.form.receiver = currentRow.account;
-      this.form.receiverName = currentRow.name;
+      this.form.receiver = currentRow.account
+      this.form.receiverName = currentRow.name
     },
     handleStudentCurrentChange(currentRow, oldCurrentRow) {
-      currentRow.checked = 1;
+      currentRow.checked = 1
       if (oldCurrentRow) {
-        oldCurrentRow.checked = 0;
+        oldCurrentRow.checked = 0
       }
-      this.form.initiator = currentRow.account;
-      this.form.initiatorName = currentRow.name;
+      this.form.initiator = currentRow.account
+      this.form.initiatorName = currentRow.name
     },
     onSubmit() {
-      var paramss = this.form;
-      paramss.startTime = beautyTime1(paramss.startTime);
-      paramss.cost = paramss.duration * paramss.cost;
-      paramss.initiatorAccount = paramss.initiator;
-      paramss.receiverAccount = paramss.receiver;
+      var paramss = this.form
+      paramss.startTime = beautyTime1(paramss.startTime)
+      paramss.cost = paramss.duration * paramss.cost
+      paramss.initiatorAccount = paramss.initiator
+      paramss.receiverAccount = paramss.receiver
 
-      console.log(paramss);
+      console.log(paramss)
 
       submitOrder(paramss).then(res => {
-        this.$message("订单生成！");
-        this.onCancel(1);
-      });
+        this.$message('订单生成！')
+        this.onCancel(1)
+      })
     },
     onCancel(notLog) {
       this.form = {
-        initiator: "",
-        receiver: "",
-        location: "",
-        startTime: "",
-        region: "",
+        initiator: '',
+        receiver: '',
+        location: '',
+        startTime: '',
+        region: '',
         duration: 0,
         cost: 0,
         subject: 0
-      };
+      }
       if (!notLog) {
         this.$message({
-          message: "清空!",
-          type: "warning"
-        });
+          message: '清空!',
+          type: 'warning'
+        })
       }
     },
     formatGoodAt(code) {
-      var arr = code.split("-");
-      var result = "";
+      var arr = code.split('-')
+      var result = ''
       for (let index = 0; index < arr.length; index++) {
-        arr[index] = this.subjectArr[arr[index]];
+        arr[index] = this.subjectArr[arr[index]]
       }
-      result = arr.join("、");
+      result = arr.join('、')
       return result
     }
   }
-};
+}
 </script>
 <style scoped>
 .el-form-item {

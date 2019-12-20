@@ -3,95 +3,111 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// create an axios instance
-const service = axios.create({
+function erroeMsg(error) {
+  Message({
+    message: error,
+    type: 'error',
+    duration: 5 * 1000
+  })
+}
+
+function logoutConfirm() {
+  MessageBox.confirm('未登录或登录已过期', '请重新登录', {
+    confirmButtonText: '去登陆',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    store.dispatch('user/resetToken').then(() => {
+      location.reload()
+    })
+  })
+}
+
+// create an axios instance(请求数据)
+const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
+  withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
-
-// request interceptor
-service.interceptors.request.use(
+request.interceptors.request.use(
   config => {
-    // do something before request is sent
-
     if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      // config.headers['X-Token'] = getToken()
       config.headers['Authorization'] = getToken()
-      // config.headers['Content-Type'] = 'application/json'
-
-      // console.log(config)
     }
     return config
   },
   error => {
-    // do something with request error
     console.log(error) // for debug
+    erroeMsg('request Error:', error)
     return Promise.reject(error)
   }
 )
-
-// response interceptor
-service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
+request.interceptors.response.use(
   response => {
     var res = response.data
-    // console.log(res)
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.success === true) { // 天少 res处理
+    if (res.success == true) {
       return res
-    } else { // admin自带 res处理
-      // console.log(res)
-      if (res.code !== 20000) {
-        // console.log('res.code !== 20000')
-        Message({
-          message: res.message || 'Error',
-          type: 'error',
-          duration: 5 * 1000
-        })
-
-        // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-        if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-          // to re-login
-          MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-            confirmButtonText: 'Re-Login',
-            cancelButtonText: 'Cancel',
-            type: 'warning'
-          }).then(() => {
-            store.dispatch('user/resetToken').then(() => {
-              location.reload()
-            })
-          })
-        }
+    } else { // res.success==false
+      if (res.message == 0 || res.message == 1 || res.message == 2) { // 校验出错
+        erroeMsg(res.message || 'Error')
+        logoutConfirm()
         return Promise.reject(new Error(res.message || 'Error'))
       } else {
-        // console.log(1111)
-
+        erroeMsg(res.message || 'Error')
         return res
       }
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    erroeMsg(error.message || 'Error')
     return Promise.reject(error)
   }
 )
 
-export default service
+// 这个axios实例是为了一些操作型请求创建，操作后message提示成功或者失败
+const opearteRequest = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  withCredentials: true, // send cookies when cross-domain requests
+  timeout: 5000 // request timeout
+})
+opearteRequest.interceptors.request.use(
+  config => {
+    if (store.getters.token) {
+      config.headers['Authorization'] = getToken()
+    }
+    return config
+  },
+  error => {
+    console.log(error) // for debug
+    erroeMsg('operateRequest Error' + error.message)
+    return Promise.reject(error)
+  }
+)
+opearteRequest.interceptors.response.use(
+  response => {
+    var res = response.data
+    if (res.success == true) {
+      Message({
+        message: '操作成功',
+        type: 'success',
+        duration: 5 * 1000
+      })
+      return res
+    } else { // res.success==false
+      if (res.message == 0 || res.message == 1 || res.message == 2) { // 校验出错
+        erroeMsg('校验出错,code:' + res.message || 'Error')
+        logoutConfirm()
+        return Promise.reject(new Error(res.message || 'Error'))
+      } else {
+        erroeMsg('出错' + res.message || 'Error')
+        return res
+      }
+    }
+  },
+  error => {
+    erroeMsg(error.message)
+    return Promise.reject(error)
+  }
+)
+
+module.exports = { request, opearteRequest }

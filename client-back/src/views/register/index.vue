@@ -63,145 +63,145 @@
 </template>
 
 <script>
-import { register } from "../../api/register";
+import { register } from '../../api/register'
 
 export default {
   data() {
     return {
       form: {
-        name: "",
-        account: "",
-        gender: "1",
-        school: "",
-        password: "",
-        address: "",
-        date1: "",
+        name: '',
+        account: '',
+        gender: '1',
+        school: '',
+        password: '',
+        address: '',
+        date1: '',
         good_at: [],
-        age: "",
-        date2: "",
+        age: '',
+        date2: '',
         delivery: false,
         type: [],
-        resource: "",
-        desc: ""
+        resource: '',
+        desc: ''
       },
       subjectArr: [
         {
           value: 0,
-          name: "语文",
+          name: '语文',
           checked: false,
           hot: false
         },
         {
           value: 1,
-          name: "数学",
+          name: '数学',
           checked: false,
           hot: false
         },
         {
           value: 2,
-          name: "英语",
+          name: '英语',
           checked: false,
           hot: false
         },
         {
           value: 3,
-          name: "物理",
+          name: '物理',
           checked: false,
           hot: false
         },
         {
           value: 4,
-          name: "化学",
+          name: '化学',
           checked: false,
           hot: false
         },
         {
           value: 5,
-          name: "生物",
+          name: '生物',
           checked: false,
           hot: false
         },
         {
           value: 6,
-          name: "政治",
+          name: '政治',
           checked: false,
           hot: false
         },
         {
           value: 7,
-          name: "历史",
+          name: '历史',
           checked: false,
           hot: false
         },
         {
           value: 8,
-          name: "地理",
+          name: '地理',
           checked: false,
           hot: false
         }
       ]
-    };
+    }
   },
   methods: {
     onSubmit() {
-      var params = JSON.parse(JSON.stringify(this.form));
-      var good_at = [];
+      var params = JSON.parse(JSON.stringify(this.form))
+      var good_at = []
       for (let i = 0; i < params.good_at.length; i++) {
         for (let j = 0; j < this.subjectArr.length; j++) {
-          if (params.good_at[i] == this.subjectArr[j].name) good_at.push(j);
+          if (params.good_at[i] === this.subjectArr[j].name) good_at.push(j)
         }
       }
-      params.good_at = good_at.join("-");
+      params.good_at = good_at.join('-')
       register(params)
         .then(res => {
           this.$message({
-            message: "注册成功！",
-            type: "success"
-          });
+            message: '注册成功！',
+            type: 'success'
+          })
 
           this.form = {
-            name: "",
-            account: "",
-            gender: "1",
-            school: "",
-            address: "",
-            password: "",
-            date1: "",
+            name: '',
+            account: '',
+            gender: '1',
+            school: '',
+            address: '',
+            password: '',
+            date1: '',
             good_at: [],
-            age: "",
-            date2: "",
+            age: '',
+            date2: '',
             delivery: false,
             type: [],
-            resource: "",
-            desc: ""
-          };
+            resource: '',
+            desc: ''
+          }
         })
-        .finally(res => {});
+        .finally(res => {})
     },
     onCancel() {
       this.$message({
-        message: "清空!",
-        type: "warning"
-      });
+        message: '清空!',
+        type: 'warning'
+      })
       this.form = {
-        name: "",
-        account: "",
-        gender: "1",
-        school: "",
-        address: "",
-        date1: "",
+        name: '',
+        account: '',
+        gender: '1',
+        school: '',
+        address: '',
+        date1: '',
         good_at: [],
-        age: "",
-        date2: "",
+        age: '',
+        date2: '',
         delivery: false,
         type: [],
-        resource: "",
-        desc: ""
-      };
+        resource: '',
+        desc: ''
+      }
     },
     tranType() {}
   }
-};
+}
 </script>
 
 <style scoped>

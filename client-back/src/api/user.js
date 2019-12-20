@@ -1,9 +1,8 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { request } from '@/utils/request'
 // const $host = ''
 export function login(data) {
   return request({
-    url: $host + '/admin/login',
+    url: '/admin/login',
     method: 'post',
     data
   })
@@ -11,7 +10,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: $host + '/user/info',
+    url: '/user/info',
     method: 'get',
     params: { token }
   })
@@ -19,7 +18,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: $host + '/user/logout',
+    url: '/user/logout',
     method: 'post'
   })
 }

@@ -1,10 +1,9 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { request, opearteRequest } from '@/utils/request'
 
 export function getStudentList(params) {
   params = { role: 0 }
   return request({
-    url: $host + '/user/query/all',
+    url: '/user/query/all',
     method: 'get',
     params
   })
@@ -15,7 +14,7 @@ export function getHistOrder(params) {
     page: 0
   }
   return request({
-    url: $host + '/order/query',
+    url: '/order/query/page',
     method: 'get',
     params
   })
@@ -24,17 +23,25 @@ export function getHistOrder(params) {
 export function getTeacherList(params) {
   params = { role: 1 }
   return request({
-    url: $host + '/user/query/all',
+    url: '/user/query/all',
     method: 'get',
     params
   })
 }
 
 export function submitOrder(data) {
-  return request({
-    url: $host + '/order/create',
+  return opearteRequest({
+    url: '/order/create',
     method: 'post',
     data
   })
 }
 
+// 更改订单状态
+export function changeOrderStatus(data) {
+  return opearteRequest({
+    url: '/order/status/update',
+    method: 'post',
+    data
+  })
+}

@@ -1,9 +1,8 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { request, opearteRequest } from '@/utils/request'
 
 export function register(data) {
-  return request({
-    url: $host + '/user/teacher/register',
+  return opearteRequest({
+    url: '/user/teacher/register',
     method: 'post',
     data
   })
@@ -11,7 +10,7 @@ export function register(data) {
 
 export function logout(data) {
   return request({
-    url: $host + '/user/logout',
+    url: '/user/logout',
     method: 'post',
     data
   })

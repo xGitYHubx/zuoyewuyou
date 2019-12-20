@@ -45,7 +45,7 @@
       </el-table-column>
       <el-table-column align="center" label="资薪/每小时">
         <template slot-scope="scope">
-          {{ scope.row.cost/scope.row.duration }}
+          {{ scope.row.cost / scope.row.duration }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="科目">
@@ -63,13 +63,20 @@
           {{ scope.row.createTime }}
         </template>
       </el-table-column>
-
+      <el-table-column align="center" label="操作">
+        <template slot-scope="scope">
+          <el-button
+            type="warning"
+            @click="cancelOrder(scope.row)"
+          >撤销</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getHistOrder } from '@/api/order'
+import { getHistOrder, changeOrderStatus } from '@/api/order'
 
 export default {
   name: 'HistOrder',
@@ -85,13 +92,11 @@ export default {
   },
   data() {
     return {
-      list: null,
+      list: [],
       listLoading: true
     }
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
     this.fetchData()
   },
@@ -100,7 +105,6 @@ export default {
       this.listLoading = true
       getHistOrder().then(response => {
         this.list = response.result
-
         this.listLoading = false
       })
     },
@@ -109,6 +113,16 @@ export default {
     },
     formatOrderState(index) {
       return this.orderState[index]
+    },
+    cancelOrder(row) {
+      console.log(row)
+      changeOrderStatus({
+        orderId: row.orderId,
+        status: 4
+      }).then(res => {
+        this.list = []
+        this.fetchData()
+      })
     }
   }
 }

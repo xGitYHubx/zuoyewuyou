@@ -1,9 +1,8 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { request, opearteRequest } from '@/utils/request'
 
 export function updataAboutUs(data) {
-  return request({
-    url: $host + '/backstage/aboutus/update',
+  return opearteRequest({
+    url: '/backstage/aboutus/update',
     method: 'post',
     data
   })
@@ -11,7 +10,7 @@ export function updataAboutUs(data) {
 
 export function getAboutUs(params) {
   return request({
-    url: $host + '/backstage/aboutus/query',
+    url: '/backstage/aboutus/query',
     method: 'get',
     params
   })

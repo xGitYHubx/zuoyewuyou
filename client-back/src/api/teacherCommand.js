@@ -1,9 +1,8 @@
-import request from '@/utils/request'
-const $host = 'http://47.93.22.56:8082'
+import { request, opearteRequest } from '@/utils/request'
 
 export function getDataBypage(page) {
   return request({
-    url: $host + '/recmd/query/page',
+    url: '/recmd/query/page',
     method: 'get',
     params: {
       page: page
@@ -13,8 +12,8 @@ export function getDataBypage(page) {
 }
 
 export function addTeacherCommand(data) {
-  return request({
-    url: $host + '/recmd/add',
+  return opearteRequest({
+    url: '/recmd/add',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
@@ -25,7 +24,7 @@ export function addTeacherCommand(data) {
 
 export function editTeacherCommand(data) {
   return request({
-    url: $host + '/recmd/edit',
+    url: '/recmd/edit',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
@@ -36,7 +35,7 @@ export function editTeacherCommand(data) {
 
 export function linkImg(data) {
   return request({
-    url: $host + '/picture/upload',
+    url: '/picture/upload',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
@@ -46,8 +45,8 @@ export function linkImg(data) {
 }
 
 export function deleteCommand(data) {
-  return request({
-    url: $host + '/recmd/delete',
+  return opearteRequest({
+    url: '/recmd/delete',
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
