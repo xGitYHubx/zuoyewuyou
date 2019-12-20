@@ -177,6 +177,18 @@ export const constantRoutes = [
   },
 
   {
+    path: '/configEdit',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'ConfigEdit',
+        component: () => import('@/views/configEdit/configEdit'),
+        meta: { title: '参数配置', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/form',
     hidden: true,
 
