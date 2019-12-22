@@ -166,6 +166,10 @@
 				"navigationBarTextStyle": "white"
 			}
         }
+        ,{
+            "path" : "pages/tabbar/order/valuation",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

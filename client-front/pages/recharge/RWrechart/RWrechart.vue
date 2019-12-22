@@ -54,7 +54,7 @@
 
 		<view class="uni-padding-wrap ">
 			<view style="background:#FFF; padding:50upx 0;">
-				<view class="uni-hello-text uni-center"></text></view>
+				<view class="uni-hello-text uni-center"></view>
 				<view class="uni-h1 uni-center uni-common-mt">
 					<text class="rmbLogo cuIcon-coin"></text>
 					<input class="price" type="digit" :value="price" maxlength="4" @input="priceChange" />
@@ -75,7 +75,6 @@
 				</button>
 			</view>
 		</view>
-	</view>
 	</view>
 </template>
 <script>

@@ -8,6 +8,9 @@
 	width: 650rpx;
 	margin: 10rpx 50rpx;
 }
+.cu-list+.cu-list{
+	margin-top: 0;
+}
 
 
 .RW-border-bottom.data-v-7c2ad400{
@@ -15,7 +18,7 @@
 }
 .comment.data-v-7c2ad400{
 	/* border-radius: 10px; */
-	border-bottom: #dddddd solid 8rpx;
+	/* border-bottom: #dddddd solid 8upx; */
 }
 .rw-caiyong text.data-v-7c2ad400{
 	margin: 0 10rpx;

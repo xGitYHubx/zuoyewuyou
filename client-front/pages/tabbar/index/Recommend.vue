@@ -16,7 +16,7 @@
 		},
 		onLoad(options) {
 			this.recmdId = options.id
-			console.log(options.id);
+			// console.log(options.id);
 			this.getContent()
 		},
 		methods: {

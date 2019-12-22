@@ -5,7 +5,6 @@
 	<view>
 		<view class="img-view">
 			<image class="img" src="../../../static/img/index_bg.jpg" />
-			</image>
 			<view class="user-info">
 				<!-- <view v-if="isLogin" class="user-avatar">
 					<image style="width: 100%;height: 100%;" src="../../../static/avatar_boy.png"></image>
@@ -155,7 +154,12 @@
 				})
 			},
 			checkLogin() {
-				initData.checkLogin()
+				if(!initData.checkLogin()){
+					uni.navigateTo({
+						url: "../../login/login"
+					})
+				}
+				// initData.checkLogin()
 				// if (!uni.getStorageSync('account')) {
 				// 	uni.navigateTo({
 				// 		url: "../../login/login"

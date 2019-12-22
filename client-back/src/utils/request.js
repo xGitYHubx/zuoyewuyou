@@ -7,7 +7,7 @@ function erroeMsg(error) {
   Message({
     message: error,
     type: 'error',
-    duration: 5 * 1000
+    duration: 3 * 1000
   })
 }
 
@@ -95,7 +95,7 @@ opearteRequest.interceptors.response.use(
       return res
     } else { // res.success==false
       if (res.message == 0 || res.message == 1 || res.message == 2) { // 校验出错
-        erroeMsg('校验出错,code:' + res.message || 'Error')
+        erroeMsg('校验出错' || 'Error')
         logoutConfirm()
         return Promise.reject(new Error(res.message || 'Error'))
       } else {
@@ -110,4 +110,37 @@ opearteRequest.interceptors.response.use(
   }
 )
 
-module.exports = { request, opearteRequest }
+// create an axios instance(请求数据，不带msg提示，自行维护msg)
+const requestNoMsg = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  withCredentials: true, // send cookies when cross-domain requests
+  timeout: 5000 // request timeout
+})
+requestNoMsg.interceptors.request.use(
+  config => {
+    if (store.getters.token) {
+      config.headers['Authorization'] = getToken()
+    }
+    return config
+  },
+  error => {
+    console.log(error) // for debug
+    erroeMsg('request Error:', error)
+    return Promise.reject(error)
+  }
+)
+requestNoMsg.interceptors.response.use(
+  response => {
+    var res = response.data
+    if (res.success == true) {
+      return res
+    } else {
+      return Promise.reject(new Error(res.message || 'Error'))
+    }
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+module.exports = { request, opearteRequest, requestNoMsg }

@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+    <div class="grid-content  bg-purple">
+      <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索" />
+    </div>
+    <el-table v-loading="listLoading" :data="searchFilter()" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label="学生手机号">
         <template slot-scope="scope">
           {{ scope.row.initiatorAccount }}
@@ -48,7 +51,7 @@
       </el-table-column>
       <el-table-column align="center" label="订单状态">
         <template slot-scope="scope">
-          {{ formatOrderState(scope.row.status) }}
+          <i :class="orderStatus(scope.row.status)" /> {{ formatOrderState(scope.row.status) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单生成时间">
@@ -59,6 +62,7 @@
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button
+            v-if="scope.row.status==0||scope.row.status==1"
             type="warning"
             @click="cancelOrder(scope.row)"
           >撤销</el-button>
@@ -71,7 +75,7 @@
 
 <script>
 import { getHistOrder, changeOrderStatus, getHistOrderCount } from '@/api/order'
-
+import { searchFilter } from '@/utils/others.js'
 export default {
   name: 'HistOrder',
   filters: {
@@ -90,6 +94,7 @@ export default {
         page: 1,
         total: 1
       },
+      search_teacher: '',
       list: [],
       listLoading: true
     }
@@ -107,19 +112,17 @@ export default {
         this.listLoading = false
       })
     },
+    searchFilter() {
+      return searchFilter(this.search_teacher, this.list, this.pagination1)
+    },
     fetchCount() {
       getHistOrderCount().then(res => {
-        // console.log(res)
         this.pagination1.total = res.result
       })
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
-      console.log(val)
       this.pagination1.page = val
       this.fetchData(val - 1)
-
-      // this.getList();
     },
     formatSubject(index) {
       return this.subject[index]
@@ -128,14 +131,27 @@ export default {
       return this.orderState[index]
     },
     cancelOrder(row) {
-      console.log(row)
       changeOrderStatus({
         orderId: row.orderId,
         status: 4
       }).then(res => {
         this.list = []
-        this.fetchData()
+        this.pagination1.page = 1
+        this.fetchData(0)
       })
+    },
+    orderStatus(status) {
+      if (status == 0) {
+        return 'el-icon-question'
+      } else if (status == 1) {
+        return 'el-icon-success'
+      } else if (status == 2) {
+        return 'el-icon-s-check'
+      } else if (status == 3) {
+        return 'el-icon-money'
+      } else if (status == 4) {
+        return 'el-icon-circle-close'
+      }
     }
   }
 }

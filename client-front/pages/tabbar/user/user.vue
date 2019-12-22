@@ -38,7 +38,7 @@
 		</view>
 		<view class="list-content">
 			<view class="list">
-				<view class="li noborder" @click="toDetail(0)">
+				<view class="li " @click="toDetail(0)">
 					<view class="icon">
 						<image src="../../../static/user/card.png"></image>
 					</view>
@@ -188,7 +188,8 @@
 
 <style lang="scss">
 	.status_bar {
-		height: var(--status-bar-height);
+		// height: var(--status-bar-height);
+		
 		width: 100%;
 	}
 
@@ -199,8 +200,8 @@
 
 	.header {
 		background: #fff;
-		height: 500upx !important;
-		padding-bottom: 140upx;
+		// height: 500upx !important;
+		padding-bottom: 230upx;
 
 		.bg {
 			width: 100%;
@@ -292,7 +293,8 @@
 
 	.list-content {
 		background: #fff;
-		margin-top: var(--status-bar-height);
+		// margin-top: var(--status-bar-height);
+		// margin-top: 200upx;
 	}
 
 	.list {

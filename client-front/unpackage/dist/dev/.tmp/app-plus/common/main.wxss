@@ -13,9 +13,6 @@
 
 
 
-
-
-
 /*每个页面公共css */ 
 /*
   ColorUi for uniApp  v2.1.6 | by 文晓港 2019-05-31 10:44:24
@@ -4783,6 +4780,9 @@ scroll-view.cu-steps .cu-item {
 .rw-page-loading{
 	text-align: center;
 	line-height: 40rpx;
+}
+.uni-body{
+	background-color: rgb(241, 241, 241);
 } 
 /* 上传 */
 .uni-uploader {

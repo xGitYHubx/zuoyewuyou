@@ -17,7 +17,8 @@
     "pages/square-detail/RWcomment",
     "pages/recharge/RWrechart/RWrechart",
     "pages/square-detail/RWDetailById",
-    "pages/tabbar/index/Recommend"
+    "pages/tabbar/index/Recommend",
+    "pages/tabbar/order/valuation"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -63,7 +64,7 @@
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
-  "appname": "作业无忧",
+  "appname": "workunless",
   "compilerVersion": "2.4.2",
   "usingComponents": {}
 }

@@ -6,7 +6,7 @@
 			</view> -->
 			<view class="cu-form-group margin-top">
 				<view class="title">手机号码</view>
-				<input @input="phoneChange" name="account"></input>
+				<input @input="phoneChange" name="account">
 				<view class="cu-capsule radius">
 					<view class='cu-tag bg-blue '>
 						+86
@@ -20,13 +20,13 @@
 
 			<view class="cu-form-group margin-top">
 				<view class="title">登录密码</view>
-				<input placeholder="登录密码" type="password" name="password" :value="password" @input="passwordChange"></input>
+				<input placeholder="登录密码" type="password" name="password" :value="password" @input="passwordChange">
 			</view>
 
 
 			<view class="cu-form-group margin-top">
 				<view class="title">确认密码</view>
-				<input placeholder="确认密码" type="password" name="password_again"></input>
+				<input placeholder="确认密码" type="password" name="password_again">
 			</view>
 
 
@@ -68,7 +68,7 @@
 
 			<view class="cu-form-group margin-top">
 				<view class="title">验证码</view>
-				<input placeholder="验证码" name="input" @input="codeChange"></input>
+				<input placeholder="验证码" name="input" @input="codeChange">
 				<button class='cu-btn bg-green shadow' @click="getPhoneCode()" :disabled="codeDis">{{ codeText }}</button>
 			</view>
 			<text class="tip" v-if="codeDis">短信验证码已发送,请查收</text>
@@ -306,7 +306,7 @@
 							icon: "none"
 						})
 					}).finally(res=>{
-						console.log(res);
+						// console.log(res);
 					})
 			},
 			formReset: function(e) {

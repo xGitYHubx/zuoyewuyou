@@ -137,6 +137,7 @@
 <script>
 import { getStudentList, getTeacherList, submitOrder } from '@/api/order'
 import { beautyTime1 } from '@/utils/beauty'
+import { searchFilter } from '@/utils/others.js'
 
 export default {
   name: 'Order',
@@ -261,7 +262,6 @@ export default {
     },
     onSubmit() {
       var paramss = JSON.parse(JSON.stringify(this.form))
-
       if (
         paramss.startTime != null &&
         paramss.cost != null &&
@@ -275,67 +275,19 @@ export default {
         submitOrder(paramss).then(res => {
           this.onCancel(1)
           this.dialogFormVisible = false
+        }).then(_ => {
+          this.onCancel(true)
+          this.dialogFormVisible = false
         })
       } else {
         this.$message('请检查信息是否完整')
       }
     },
     teacherMange() {
-      const peopleSearch = this.search_teacher
-      if (peopleSearch) {
-        this.pagination1.page = 1
-        const filter = this.list_teacher.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-        // console.log(filter)
-        this.pagination1.total = filter.length
-        console.log(this.pagination1.total)
-        return filter.slice(
-          (this.pagination1.page - 1) * 10,
-          this.pagination1.page * 10
-        )
-      }
-      if (this.list_teacher != null) {
-        this.pagination1.total = this.list_teacher.length
-        return this.list_teacher.slice(
-          (this.pagination1.page - 1) * 10,
-          this.pagination1.page * 10
-        )
-      } else return null
+      return searchFilter(this.search_teacher, this.list_teacher, this.pagination1)
     },
     studentMange() {
-      const peopleSearch = this.search_student // 这里要定义
-      if (peopleSearch) {
-        this.pagination2.page = 1
-        const filter = this.list_student.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-        this.pagination2.total = filter.length
-        return filter.slice(
-          (this.pagination2.page - 1) * 10,
-          this.pagination2.page * 10
-        )
-      }
-      if (this.list_student != null) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.pagination2.total = this.list_student.length
-        return this.list_student.slice(
-          (this.pagination2.page - 1) * 10,
-          this.pagination2.page * 10
-        )
-      } else return null
+      return searchFilter(this.search_student, this.list_student, this.pagination2)
     },
     onCancel(notLog) {
       this.form = {
@@ -348,13 +300,12 @@ export default {
         cost: 0,
         subject: 0
       }
-      this.teacherMange.forEach(element => {
-        element.checked = 0
-      })
-      this.studentMange.forEach(element => {
-        // console.log(element);
-        element.checked = 0
-      })
+      // this.teacherMange.forEach(element => {
+      //   element.checked = 0
+      // })
+      // this.studentMange.forEach(element => {
+      //   element.checked = 0
+      // })
       this.fetchTeacherData()
       this.fetchStudentData()
       if (!notLog) {
@@ -365,12 +316,9 @@ export default {
       }
     },
     changeDialogForm(row) {
-      // this.nowUser = row
       this.dialogFormVisible = !this.dialogFormVisible
-      console.log(this.form)
     },
     formatGoodAt(code) {
-      // console.log(code)
       if (code != null) {
         var arr = code.split('-')
         var result = ''

@@ -75,7 +75,6 @@
 				this.RWajax.get('/task/query/page', {
 					page: _this.page
 				}).then(res => {
-					console.log(res);
 					if (res.data.success == true) {
 						_this.page = _this.page + 1;
 						_this.list = _this.list.concat(res.data.result);
@@ -83,7 +82,6 @@
 						uni.stopPullDownRefresh()
 					}
 				}).finally(res => {
-					console.log(res);
 					_this.isLoading = false
 					uni.stopPullDownRefresh()
 					uni.stopPullDownRefresh()

@@ -17,7 +17,7 @@
 
         <el-table
           v-loading="tableLoading"
-          :data="TtableDataFilter"
+          :data="TtableDataFilter()"
           element-loading-text="Loading"
           border
           fit

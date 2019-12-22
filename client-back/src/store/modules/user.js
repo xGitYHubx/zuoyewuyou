@@ -43,15 +43,22 @@ const actions = {
       login({
         adminAccount: username.trim(),
         adminPassword: password
-      }).then(response => {
+      }).then(res => {
         // const { data } = response
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
-        localStorage.setItem('userInfo', JSON.stringify(userInfo))
-        console.log(localStorage)
-        commit('SET_TOKEN', response.result)
-        setToken(response.result)
-        resolve()
+        // console.log(res)
+
+        if (res.success == true) {
+          localStorage.setItem('userInfo', JSON.stringify(userInfo))
+          commit('SET_TOKEN', res.result)
+          setToken(res.result)
+          resolve(res)
+        } else {
+          console.log(1231)
+
+          reject(res)
+        }
       }).catch(error => {
         console.log(error)
         reject(error)

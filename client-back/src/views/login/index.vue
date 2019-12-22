@@ -72,8 +72,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'hll',
+        password: '000000'
       },
       loading: false,
       passwordType: 'password',
@@ -113,12 +113,24 @@ export default {
       this.$store
         .dispatch('user/login', this.loginForm)
         .then(res => {
+          console.log(res)
+
+          this.$message({
+            message: '登录成功',
+            type: 'success',
+            duration: 3 * 1000
+          })
           this.$router.push({ name: 'home' })
           this.loading = false
-        })
-        .catch(err => {
+        }).catch(err => {
           console.log(err)
+
           this.loading = false
+          this.$message({
+            message: '账号不存在或密码错误',
+            type: 'warning',
+            duration: 3 * 1000
+          })
         })
     }
   }

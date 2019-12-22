@@ -94,7 +94,6 @@
 				})
 			},
 			thirdLogin(type) {
-				console.log(type)
 			}
 		}
 	}

@@ -5,18 +5,20 @@
         <el-input
           v-model="config.orderHandleFee"
           :disabled="!editing"
+          type="number"
         />
       </el-form-item>
       <el-form-item label="题目手续费" prop="taskHandleFee">
         <el-input
           v-model="config.taskHandleFee"
           :disabled="!editing"
+          type="number"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="edit">编辑</el-button>
-        <el-button type="primary" @click="onSubmit('config')">保存</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
+        <el-button v-if="!editing" type="primary" @click="edit">编辑</el-button>
+        <el-button v-if="editing" type="primary" @click="onSubmit('config')">保存</el-button>
+        <el-button v-if="editing" @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -37,10 +39,10 @@ export default {
       },
       rules: {
         orderHandleFee: [
-          { validator: checkTwoPoint, trigger: 'blur' }
+          { validator: checkTwoPoint, trigger: 'change' }
         ],
         taskHandleFee: [
-          { validator: checkTwoPoint, trigger: 'blur' }
+          { validator: checkTwoPoint, trigger: 'change' }
         ]
       }
     }
@@ -53,7 +55,6 @@ export default {
       var params = this.config
       this.$refs[config].validate((valid) => {
         if (valid) {
-          alert('submit!')
           updateConfig(params).then(res => {
             this.editing = false
           })
@@ -63,10 +64,7 @@ export default {
       })
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.editing = false
     },
     getConfig() {
       getConfig().then(res => {

@@ -4,7 +4,9 @@
 	line-height: 40upx;
 }
 
-
+.uni-body{
+	background-color: rgb(241, 241, 241);
+}
 
 
 /* 上传 */

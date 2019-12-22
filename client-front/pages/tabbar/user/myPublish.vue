@@ -80,7 +80,6 @@
 				}).then(res => {
 					if (res.data.success == true) {
 						// _this.page=_this.page+1;
-						console.log(res);
 						_this.list = _this.list.concat(res.data.result);
 						if(_this.list.length==0){
 							_this.loadingMsg="还未发布任务"

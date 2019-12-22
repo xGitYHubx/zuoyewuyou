@@ -6,7 +6,7 @@ const RWajax = (opts, data) => {
         url: baseUrl+opts.url,
         data: data,
 		success:(res)=>{
-		}
+		},
         method: opts.method || "post",
         header: opts.method == 'get' ? {
         'X-Requested-With': 'XMLHttpRequest',

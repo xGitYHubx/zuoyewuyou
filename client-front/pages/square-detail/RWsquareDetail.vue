@@ -81,7 +81,7 @@
 				:adjust-position="false" 
 				class="solid-bottom" 
 				@focus="toEditComment"
-				maxlength="300" cursor-spacing="10"></input>
+				maxlength="300" cursor-spacing="10">
 			<!-- <view class="action">
 				<text class="cuIcon-emojifill text-grey"></text>
 			</view> -->
@@ -189,7 +189,6 @@
 						taskId: _this.task.taskId,
 						commentText: _this.commentText
 					}).then(res=>{
-						console.log(res);
 						if (res.data.success == true) {
 							uni.showToast({
 								title: '发送成功'
@@ -201,7 +200,6 @@
 						}
 						_this.getMsg()
 					}).finally(res=>{
-						console.log(res);
 						uni.hideLoading()
 					})
 			},

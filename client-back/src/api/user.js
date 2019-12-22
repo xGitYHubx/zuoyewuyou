@@ -1,7 +1,7 @@
-import { request } from '@/utils/request'
-// const $host = ''
+import { requestNoMsg } from '@/utils/request'
+import { Message } from 'element-ui'
 export function login(data) {
-  return request({
+  return requestNoMsg({
     url: '/admin/login',
     method: 'post',
     data
@@ -9,7 +9,7 @@ export function login(data) {
 }
 
 export function getInfo(token) {
-  return request({
+  return requestNoMsg({
     url: '/user/info',
     method: 'get',
     params: { token }
@@ -17,7 +17,7 @@ export function getInfo(token) {
 }
 
 export function logout() {
-  return request({
+  return requestNoMsg({
     url: '/user/logout',
     method: 'post'
   })

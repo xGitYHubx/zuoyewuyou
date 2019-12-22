@@ -25,7 +25,6 @@
 /* 透明度 */
 /* 文章场景相关 */
 .status_bar {
-  height: var(--status-bar-height);
   width: 100%;
 }
 page {
@@ -34,8 +33,7 @@ page {
 }
 .header {
   background: #fff;
-  height: 500rpx !important;
-  padding-bottom: 140rpx;
+  padding-bottom: 230rpx;
 }
 .header .bg {
     width: 100%;
@@ -162,7 +160,6 @@ page {
 }
 .list-content {
   background: #fff;
-  margin-top: var(--status-bar-height);
 }
 .list {
   width: 100%;

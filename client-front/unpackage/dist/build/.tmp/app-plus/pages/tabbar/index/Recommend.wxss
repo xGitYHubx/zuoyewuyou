@@ -6,14 +6,14 @@ image {
 }
 
 
-.box.data-v-ee7b87a0 {
+.box.data-v-f0d0dcf2 {
 	padding: 20rpx;
 	overflow: hidden;
 }
-.content.data-v-ee7b87a0 {
+.content.data-v-f0d0dcf2 {
 	overflow: hidden;
 }
-.content ._img.data-v-ee7b87a0 {
+.content ._img.data-v-f0d0dcf2 {
 	max-width: 90% !important;
 	-o-object-fit: cover;
 	   object-fit: cover;

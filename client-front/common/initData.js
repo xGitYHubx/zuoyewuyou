@@ -1,4 +1,4 @@
-const $host = "http://47.93.22.56:8082"
+const $host = "http://10.14.4.158:8082"
 
 
 //更新余额
@@ -14,7 +14,6 @@ function getBalance() {
 			account: uni.getStorageSync('account')
 		},
 		success: res => {
-			// console.log(res);
 			if (res.data.success&&res.data.success == true) {
 				uni.setStorageSync('balance', res.data.result)
 				balance=res.data.result
@@ -32,11 +31,9 @@ function getBalance() {
 
 //更新用户信息存到storage
 function getUserInfo() {
-	// console.log("getUserInfo");
 	var _this = this
 	var token = uni.getStorageSync('token')
 	var account = uni.getStorageSync('account')
-	// console.log(token);	console.log(account);
 	if (!account||account=='custom') {
 		return 'false'
 	} else {
@@ -63,12 +60,10 @@ function getUserInfo() {
 
 function checkLogin() {
 	var account=uni.getStorageSync('account')
-	if (!account|| account == 'custom') {
-		// uni.showToast({
-		// 	title:'尚未登录',
-		// 	icon:'none'
-		// })
+	if (!account) {
 		return false
+	}else{
+		return true
 	}
 }
 

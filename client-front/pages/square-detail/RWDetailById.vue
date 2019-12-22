@@ -22,8 +22,8 @@
 				<view class="image">
 					<image class="task-img" v-for="(item,index) in taskImg" :key="index" :src="item" mode="widthFix" @tap="ViewImage" :data-url="item"></image>
 				</view>
-				<view class="text-orange cuIcon-coin text-right padding RW-border-bottom">{{task.reward}}
-					<!-- <text class='cuIcon-coin text-orange'></text> -->
+				<view class="text-orange cuIcon-coin text-right padding RW-border-bottom">
+					{{task.reward}}
 				</view>
 
 
@@ -34,23 +34,14 @@
 						<view class="cu-avatar round" :style="'background-image:url('+avatarDefault(item.avatarUrl)+');'"></view>
 						<view class="content">
 							<view class="text-grey">{{item.name||item.account}}</view>
-							<view class="text-gray text-content text-df">
+							<view style="color:#826767">
 								{{item.commentText}}
-								<!-- <view class="grid flex-sub padding-lr" :class="isCard?'col-3 grid-square':'col-1'">
-									<image 
-										v-for="(item,index) in item" 
-										:key="index" :src="item" 
-										mode="widthFix" @tap="ViewImage" 
-										:data-url="item"
-										class="bg-img" :class="isCard?'':'only-img'"
-										></image>
-								</view> -->
-								<view class="grid flex-sub padding-lr" :class="isCard?'col-3 grid-square':'col-1'">
+								<view class="grid flex-sub" :class="isCard?'col-3 grid-square':'col-1'">
 									<view class="bg-img" 
 									:class="isCard?'':'only-img'" 
 									v-for="(photo,index) in item.pictureBeans" :key="index" 
 									:style="'background-image:url('+ avatarDefault(photo.url) +');'"
-									@tap="ViewCommentImg(item.pictureBeans,index)"
+									@tap="ViewCommentImg( JSON.stringify(item.pictureBeans) ,index)"
 									 >
 									</view>
 								</view>
@@ -84,7 +75,7 @@
 				:adjust-position="false" 
 				class="solid-bottom" 
 				@focus="toEditComment"
-				maxlength="300" cursor-spacing="10"></input>
+				maxlength="300" cursor-spacing="10">
 			<!-- <view class="action">
 				<text class="cuIcon-emojifill text-grey"></text>
 			</view> -->
@@ -157,6 +148,8 @@
 				});
 			},
 			ViewCommentImg(photos,index){
+			
+				photos=JSON.parse(photos)
 				var urlArr=[]
 				for (var i = 0; i < photos.length; i++) {
 					urlArr.push(photos[i].url)
@@ -271,6 +264,9 @@
 		width: 650upx;
 		margin: 10upx 50upx;
 	}
+	.cu-list+.cu-list{
+		margin-top: 0;
+	}
 </style>
 
 <style scoped>
@@ -279,7 +275,7 @@
 	}
 	.comment{
 		/* border-radius: 10px; */
-		border-bottom: #dddddd solid 8upx;
+		/* border-bottom: #dddddd solid 8upx; */
 	
 	}
 	.rw-caiyong text{

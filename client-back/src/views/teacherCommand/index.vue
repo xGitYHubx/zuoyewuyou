@@ -30,8 +30,11 @@
         :width="item.width"
         :prop="item.prop"
         :label="item.label"
-      />
-
+      >
+        <template slot-scope="scope">
+          {{ item.filter?item.filter(scope.row[item.prop]):scope.row[item.prop] }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="图片">
         <template slot-scope="scope">
           <img
@@ -66,6 +69,8 @@
 
 <script>
 import { getDataBypage, deleteCommand, getCount } from '../../api/teacherCommand'
+import { getSimpleText } from '@/utils/others.js'
+
 export default {
   name: 'Tchcmd',
   data() {
@@ -95,7 +100,12 @@ export default {
         // },
         {
           prop: 'content',
-          label: '内容'
+          label: '内容',
+          filter: function(value) {
+            console.log(value)
+
+            return getSimpleText(value)
+          }
         },
         {
           prop: 'createTime',
@@ -130,21 +140,14 @@ export default {
     this.getCount()
   },
   methods: {
-    getSimpleText(html) {
-      var re1 = new RegExp('<.+?>', 'g') // 匹配html标签的正则表达式，"g"是搜索匹配多个符合的内容
-      var msg = html.replace(re1, '') // 执行替换成空字符
-      return msg
-    },
-    // 搜索
-
     changePage(page) {
       this.tableLoading = true
       getDataBypage(page).then(res => {
         this.tableData = res.result
         // this.pagination1.total=res.
-        this.tableData.forEach((element, index) => {
-          element.content = this.getSimpleText(element.content)
-        })
+        // this.tableData.forEach((element, index) => {
+        //   element.content = this.getSimpleText(element.content)
+        // })
         this.tableLoading = false
       })
     },
@@ -163,7 +166,6 @@ export default {
       // deleteCommand();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
       this.pagination1.page = val
       this.changePage(val)
       // this.getList();

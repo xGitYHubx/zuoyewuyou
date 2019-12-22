@@ -32,7 +32,7 @@
 			</view> -->
 			<view class="cu-form-group margin-top">
 				<view class="title">悬赏</view>
-				<input type="number" placeholder="悬赏的金币额" name="input" @input="changePrice"></input>
+				<input type="number" placeholder="悬赏的金币额" name="input" @input="changePrice">
 				<text class='cuIcon-coin text-orange'></text>
 			</view>
 			<view class="cu-bar bg-white margin-top">
@@ -158,7 +158,6 @@
 			},
 			checkLogin() {
 				var account = uni.getStorageSync('account')
-				console.log(account);
 				if (!account || account == "custom") {//未登录的时候
 					// uni.showModal({
 					// 	title: '未登录',
@@ -353,7 +352,6 @@
 			},
 			
 			async validation(){
-				console.log("validata");
 				var params = {
 					account: uni.getStorageSync('account'),
 					descText: this.textareaAValue,

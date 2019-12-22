@@ -32,7 +32,7 @@
 		</view>
 		<!-- 登录提交 -->
 		<button class="submit" type="primary" @tap="login">登录</button>
-		<button class="submit2" type="default" @tap="loginByCustom">游客浏览</button>
+		<!-- <button class="submit2" type="default" @tap="loginByCustom">游客浏览</button> -->
 		<view class="opts">
 			<text @tap="goReg" class="text">立即注册</text>
 			<text @tap="findPwd" class="text">忘记密码？</text>
@@ -74,7 +74,7 @@
 		},
 		onBackPress() {
 			uni.showToast({
-				title:'请登录/注册，或使用游客登录',
+				title:'登陆后才能使用哦~',
 				icon:'none',
 				success() {
 				}
