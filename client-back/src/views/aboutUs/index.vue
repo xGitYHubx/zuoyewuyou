@@ -14,7 +14,7 @@
           @on-upload-fail="onEditorUploadFail"
         />
 
-        <el-button type="button" class="" @click="save">保存</el-button>
+        <el-button type="primary" class="" @click="save">保存</el-button>
 
       </el-col>
       <el-col :span="8">

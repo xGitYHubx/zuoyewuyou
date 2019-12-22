@@ -1,13 +1,7 @@
-import { request, opearteRequest } from '@/utils/request'
-
-export function getStudentList(params) {
-  params = { role: 0 }
-  return request({
-    url: '/user/query/all',
-    method: 'get',
-    params
-  })
-}
+import {
+  request,
+  opearteRequest
+} from '@/utils/request'
 
 export function getHistOrder(page) {
   const params = {
@@ -27,10 +21,37 @@ export function getHistOrderCount() {
   })
 }
 
-export function getTeacherList(params) {
-  params = { role: 1 }
+export function getStudentList(params) {
+  params['role'] = 0
   return request({
-    url: '/user/query/all',
+    url: '/user/query/page',
+    method: 'get',
+    params
+  })
+}
+
+export function getStudentListTotal(params) {
+  params['role'] = 0
+  return request({
+    url: '/user/query/count',
+    method: 'get',
+    params
+  })
+}
+
+export function getTeacherList(params) {
+  params['role'] = 1
+  return request({
+    url: '/user/query/page',
+    method: 'get',
+    params
+  })
+}
+
+export function getTeacherListTotal(params) {
+  params['role'] = 1
+  return request({
+    url: '/user/query/count',
     method: 'get',
     params
   })
@@ -50,5 +71,13 @@ export function changeOrderStatus(data) {
     url: '/order/status/update',
     method: 'post',
     data
+  })
+}
+
+export function getOrderListByKeyword(params) {
+  return request({
+    url: '/order/search',
+    method: 'get',
+    params
   })
 }

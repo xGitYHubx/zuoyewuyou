@@ -7,7 +7,7 @@
             <el-input
               v-model="search_teacher"
               clearable
-              placeholder="输入老师信息进行搜索"
+              placeholder="输入手机号或姓名进行搜索"
             />
           </div>
           <div class="command_right">
@@ -17,7 +17,7 @@
 
         <el-table
           v-loading="tableLoading"
-          :data="TtableDataFilter()"
+          :data="search_teacher.trim()==''?TtableData:TtableDataFilter()"
           element-loading-text="Loading"
           border
           fit
@@ -43,7 +43,13 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :current-page="pagination1.page"
+          :total="pagination1.total"
+          @current-change="handleCurrentChange"
+        />
       </el-col>
 
       <el-col :span="12">
@@ -62,7 +68,7 @@
 
         <el-table
           v-loading="tableLoading"
-          :data="StableDataFilter()"
+          :data="search_student.trim()==''?StableData:StableDataFilter()"
           element-loading-text="Loading"
           border
           fit
@@ -88,7 +94,13 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next" :current-page="pagination2.page" :total="pagination2.total" @current-change="handleCurrentChange2" />
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :current-page="pagination2.page"
+          :total="pagination2.total"
+          @current-change="handleCurrentChange2"
+        />
       </el-col>
     </el-row>
 
@@ -125,36 +137,39 @@
 </template>
 
 <script>
-import { getTeacherList, getStudentList } from '../../api/order'
+import {
+  getTeacherList,
+  getStudentList,
+  getTeacherListTotal,
+  getStudentListTotal
+} from '../../api/order'
 import { logout } from '../../api/register'
+import { searchFilter } from '@/utils/others.js'
+import {
+  getTeacherListBykeyword,
+  getStudentListBykeyword
+} from '@/api/user.js'
 
 export default {
   name: 'Exchange',
   data() {
     return {
       pagination1: {
-        page: 1,
+        page: 0,
         total: 1
       },
       pagination2: {
-        page: 1,
+        page: 0,
         total: 1
       },
       isLogoutAccount: null,
       isLogoutName: null,
       dialogVisible: false,
       search_teacher: '',
-      account: '',
       tableLoading: false,
       coinCount: 0,
-      deleteRow: null,
-      tableData: [],
       TtableData: [],
-      allTtableData: [],
       StableData: [],
-      allStableData: [],
-
-      page: 0,
       showCols: [
         {
           prop: 'name',
@@ -169,9 +184,8 @@ export default {
           label: '学币余额'
         }
       ],
-      dialogTableVisible: false,
       dialogFormVisible: false,
-      search_student: null,
+      search_student: '',
       Determine: false,
       nowUser: {}, // 当前选中的user
       form: {
@@ -187,16 +201,36 @@ export default {
       formLabelWidth: '120px'
     }
   },
-  computed: {
-
-  },
+  computed: {},
   watch: {
-    pagination2(newval) {
-      console.log(this.pagination2.page)
+    search_teacher(newval) {
+      if (newval.trim() != '') {
+        getTeacherListBykeyword({ searchKey: newval }).then(res => {
+          this.list_teacher = res.result
+          this.pagination1.total = res.result.length
+          this.pagination1.page = 0
+        })
+      } else {
+        this.pagination1.page = 0
+        this.getTeacherList()
+        this.fetchTeacherDataCount()
+      }
+    },
+    search_student(newval) {
+      if (newval.trim() != '') {
+        getStudentListBykeyword({ searchKey: newval }).then(res => {
+          this.list_student = res.result
+          this.pagination2.total = res.result.length
+          this.pagination2.page = 0
+        })
+      } else {
+        this.pagination2.page = 0
+        this.getStudentList()
+        this.fetchStudentDataCount()
+      }
     }
   },
   mounted() {
-    this.tableData = []
     this.changePage(0)
   },
   methods: {
@@ -206,79 +240,57 @@ export default {
     },
     changePage(page) {
       this.tableLoading = true
-      this.getTeacherList(page)
-      this.getStudentList(page)
+      this.getTeacherList()
+      this.getStudentList()
+      this.fetchTeacherDataCount()
+      this.fetchStudentDataCount()
     },
-    getTeacherList(page) {
-      getTeacherList(page).then(res => {
-        this.pagination1.total = res.result.length
+    getTeacherList() {
+      this.tableLoading = true
+      getTeacherList({ page: this.pagination1.page }).then(res => {
         this.TtableData = res.result
         this.tableLoading = false
       })
     },
-    getStudentList(page) {
-      getStudentList(page).then(res => {
-        this.pagination2.total = res.result.length
+    fetchTeacherDataCount() {
+      this.tableLoading = true
+      getTeacherListTotal({}).then(res => {
+        this.pagination1.total = res.result
+      })
+    },
+    getStudentList() {
+      this.tableLoading = true
+      getStudentList({ page: this.pagination2.page }).then(res => {
         this.StableData = res.result
         this.tableLoading = false
       })
     },
+    fetchStudentDataCount() {
+      this.listLoading = true
+      getStudentListTotal({}).then(res => {
+        this.pagination2.total = res.result
+      })
+    },
     handleCurrentChange(val) {
       this.pagination1.page = val
+      this.getTeacherList()
     },
     handleCurrentChange2(val) {
       this.pagination2.page = val
+      this.getStudentList()
     },
     StableDataFilter() {
-      const peopleSearch = this.search_student // 这里要定义
-      if (peopleSearch) {
-        this.pagination2.page = 1
-        const filter = this.StableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-        this.pagination2.total = filter.length
-        return filter.slice(
-          (this.pagination2.page - 1) * 10,
-          this.pagination2.page * 10
-        )
-      }
-      this.pagination2.total = this.StableData.length
-      return this.StableData.slice(
-        (this.pagination2.page - 1) * 10,
-        this.pagination2.page * 10
+      return searchFilter(
+        this.search_student,
+        this.StableData,
+        this.pagination2
       )
     },
     TtableDataFilter() {
-      const peopleSearch = this.search_teacher // 这里要定义
-      // var page = this.pagination1.page;
-      if (peopleSearch) {
-        this.pagination1.page = 1
-        const filter = this.TtableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-        this.pagination1.total = filter.length
-        console.log(this.pagination1.total)
-        return filter.slice(
-          (this.pagination1.page - 1) * 10,
-          this.pagination1.page * 10
-        )
-      }
-      this.pagination1.total = this.TtableData.length
-      return this.TtableData.slice(
-        (this.pagination1.page - 1) * 10,
-        this.pagination1.page * 10
+      return searchFilter(
+        this.search_teacher,
+        this.TtableData,
+        this.pagination1
       )
     },
     handleClose(done) {
@@ -303,7 +315,6 @@ export default {
           message: '注销成功',
           type: 'success'
         })
-        this.tableData = []
         this.changePage(0)
       })
     }

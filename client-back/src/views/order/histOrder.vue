@@ -1,9 +1,20 @@
 <template>
   <div class="app-container">
     <div class="grid-content  bg-purple">
-      <el-input v-model="search_teacher" clearable placeholder="输入老师信息进行搜索" />
+      <el-input
+        v-model="search_keyword"
+        clearable
+        placeholder="手机号或姓名进行搜索"
+      />
     </div>
-    <el-table v-loading="listLoading" :data="searchFilter()" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table
+      v-loading="listLoading"
+      :data="search_keyword.trim()==''?list:searchFilter()"
+      element-loading-text="Loading"
+      border
+      fit
+      highlight-current-row
+    >
       <el-table-column align="center" label="学生手机号">
         <template slot-scope="scope">
           {{ scope.row.initiatorAccount }}
@@ -51,7 +62,8 @@
       </el-table-column>
       <el-table-column align="center" label="订单状态">
         <template slot-scope="scope">
-          <i :class="orderStatus(scope.row.status)" /> {{ formatOrderState(scope.row.status) }}
+          <i :class="orderStatus(scope.row.status)" />
+          {{ formatOrderState(scope.row.status) }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单生成时间">
@@ -59,23 +71,42 @@
           {{ scope.row.createTime }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="center" label="操作" min-width="120px">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status==0||scope.row.status==1"
+            v-if="scope.row.status == 0 || scope.row.status == 1"
             type="warning"
+            size="mini"
             @click="cancelOrder(scope.row)"
           >撤销</el-button>
+          <el-button
+            v-if="scope.row.status == 2"
+            type="info"
+            size="mini"
+            @click="lookEvaluate(scope.row)"
+          >查看评价</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :current-page="pagination1.page" :total="pagination1.total" @current-change="handleCurrentChange" />
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :current-page="pagination1.page"
+      :total="pagination1.total"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
 <script>
-import { getHistOrder, changeOrderStatus, getHistOrderCount } from '@/api/order'
+import {
+  getHistOrder,
+  changeOrderStatus,
+  getHistOrderCount,
+  getOrderListByKeyword
+} from '@/api/order'
 import { searchFilter } from '@/utils/others.js'
+
 export default {
   name: 'HistOrder',
   filters: {
@@ -94,12 +125,28 @@ export default {
         page: 1,
         total: 1
       },
-      search_teacher: '',
+      search_keyword: '',
       list: [],
       listLoading: true
     }
   },
-  computed: {},
+  computed: {
+  },
+  watch: {
+    search_keyword(newval) {
+      if (newval.trim() != '') {
+        getOrderListByKeyword({ searchKey: newval }).then(res => {
+          this.list = res.result
+          this.pagination1.total = res.result.length
+          this.pagination1.page = 0
+        })
+      } else {
+        this.pagination1.page = 0
+        this.fetchData(0)
+        this.fetchCount()
+      }
+    }
+  },
   created() {
     this.fetchData(0)
     this.fetchCount()
@@ -113,7 +160,7 @@ export default {
       })
     },
     searchFilter() {
-      return searchFilter(this.search_teacher, this.list, this.pagination1)
+      return searchFilter(this.search_keyword, this.list, this.pagination1)
     },
     fetchCount() {
       getHistOrderCount().then(res => {
@@ -140,17 +187,28 @@ export default {
         this.fetchData(0)
       })
     },
+    lookEvaluate(row) {
+      console.log(row)
+
+      var content = ''
+      if (row.evaluation) {
+        content = row.evaluation
+      }
+      this.$alert(content, '评价', {
+        confirmButtonText: '确定'
+      })
+    },
     orderStatus(status) {
       if (status == 0) {
-        return 'el-icon-question'
+        return 'el-icon-question color-warning'
       } else if (status == 1) {
-        return 'el-icon-success'
+        return 'el-icon-check color-warning'
       } else if (status == 2) {
-        return 'el-icon-s-check'
+        return 'el-icon-circle-check color-success'
       } else if (status == 3) {
-        return 'el-icon-money'
+        return 'el-icon-circle-close color-danger'
       } else if (status == 4) {
-        return 'el-icon-circle-close'
+        return 'el-icon-circle-close color-info'
       }
     }
   }
@@ -161,5 +219,16 @@ export default {
   margin-top: 20px;
   margin-left: 40px;
 }
+.color-success{
+  color:#67C23A
+}
+.color-warning{
+  color:#E6A23C
+}
+.color-danger{
+  color:#F56C6C
+}
+.color-info{
+  color:#909399
+}
 </style>
-

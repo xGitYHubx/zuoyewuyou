@@ -189,6 +189,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/editPassword',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'EditPassword',
+        component: () => import('@/views/editPassword/editpassword'),
+        meta: { title: '修改密码', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/form',
     hidden: true,
 

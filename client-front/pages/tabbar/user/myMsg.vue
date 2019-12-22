@@ -10,11 +10,11 @@
 
 			<view class="cu-form-group">
 				<view class="title">姓名</view>
-				<input placeholder="姓名" name="input" :value="name" @input="changeName"></input>
+				<input placeholder="姓名" name="input" :value="name" @input="changeName">
 			</view>
 			<view class="cu-form-group">
 				<view class="title">手机号码</view>
-				<input name="input" disabled="" :value="account" style="color:#ccc"></input>
+				<input name="input" disabled="" :value="account" style="color:#ccc">
 				<view class="cu-capsule radius">
 					<view class='cu-tag bg-blue '>
 						+86
@@ -26,7 +26,7 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="title">学校</view>
-				<input name="school" :value="school" @input="changeSchool"></input>
+				<input name="school" :value="school" @input="changeSchool">
 			</view>
 			<!-- #ifndef MP-ALIPAY -->
 			<view class="cu-form-group margin-top" v-if="role==0" >

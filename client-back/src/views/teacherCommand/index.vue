@@ -102,8 +102,6 @@ export default {
           prop: 'content',
           label: '内容',
           filter: function(value) {
-            console.log(value)
-
             return getSimpleText(value)
           }
         },

@@ -47,7 +47,8 @@ request.interceptors.response.use((response, next) => {
 	   
 	   uni.showModal({
 	   	title: '失败',
-	   	content: content,
+			content: content,
+			showCancel:false,
 	   	success: function(res) {
 			// console.log(response);
 	   		if (res.confirm) {

@@ -77,7 +77,6 @@ export default {
     this.recmdId = this.$route.query.recmdId
     this.title = this.$route.query.title
     this.Value = this.$route.query.content
-    console.log(this.$route.query)
 
     this.fileList = [
       {

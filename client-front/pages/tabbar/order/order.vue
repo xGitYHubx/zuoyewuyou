@@ -5,7 +5,7 @@
       class="page"
       :class="modalName != null ? 'show' : ''"
     >
-      <view v-for="item in list" :key="item.orderId">
+      <view v-for="item in list" :key="item.orderId" v-show="item.state!=4">
         <view class="cu-bar bg-white solid-bottom margin-top">
           <view class="action">
             <text
@@ -65,10 +65,10 @@
               完成
             </button>
 						<button
-              class="RW-button-item RW-bg-orange"
-              @click="toDetail(0, item.orderId)"
+              class="RW-button-item line-blue  shadow RW-button-item-valuation"
+              @click="toDetail(0, item)"
             >
-              评价
+              {{item.evaluation?'查看评价':'评价'}}
             </button>
           </view>
         </view>
@@ -132,6 +132,7 @@ export default {
             }
           });
           _this.list = res.data.result;
+		  console.log(_this.list);
         })
         .catch(res => {})
         .finally(res => {
@@ -145,7 +146,7 @@ export default {
 		console.log(exdata);
 		if(type==0){
 			uni.navigateTo({
-			  url: "./valuation?orderId="+exdata
+			  url: "/pages/tabbar/order/valuation?orderId="+exdata.orderId+"&value="+exdata.evaluation||''
 			});
 		}
 	},
@@ -189,7 +190,7 @@ export default {
       if (status == 0 || status == 1 || status == 2) {
         return ["orange", "进行中"];
       } else if (status == 3) {
-        return ["gray", "进行中"];
+        return ["orange", "进行中"];
       } else {
         return ["green", "已完成"];
       }
@@ -242,7 +243,7 @@ export default {
 
 .RW-button-group {
   /* display: flex; */
-  padding: 10upx 0;
+  padding: 5upx 0 20upx 0;
   overflow: hidden;
   background-color: #ffffff;
 /*  align-items: center;
@@ -269,8 +270,8 @@ export default {
 }
 .RW-bg-orange{
   background-color: #fff;
-	border: 1px solid orange;
-	color: orange;
+	border: 1upx solid #f37b1d;
+	color: #f37b1d;
 	
 }
 
@@ -281,5 +282,14 @@ export default {
 .actionbox{
 	width: unset !important;
 	text-align: right !important;
+}
+.cu-list.menu-avatar>.cu-item{
+	padding-right: 30upx;
+}
+.cu-list.menu-avatar>.cu-item:after, .cu-list.menu>.cu-item:after{
+	border-bottom: 0;
+}
+.RW-button-item-valuation{
+	border-radius: unset;
 }
 </style>

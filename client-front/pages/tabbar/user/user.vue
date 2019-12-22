@@ -167,7 +167,11 @@
 			},
 			getAvatar() {
 				var userInfo = uni.getStorageSync('userInfo')
+				console.log(userInfo);
+				
 				if (userInfo) {
+					console.log(userInfo.avatar);
+					
 					if (userInfo.avatar) {
 						this.avatar = userInfo.avatar
 					} else {

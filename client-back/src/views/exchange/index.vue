@@ -11,7 +11,9 @@
 
     <el-table
       v-loading="tableLoading"
-      :data="tableDataFilter()"
+
+      :data="search_teacher.trim()==''?tableData:searchFilter()"
+
       element-loading-text="Loading"
       border
       fit
@@ -62,8 +64,12 @@
 </template>
 
 <script>
-import { getTeacherList } from '../../api/order'
+import { getTeacherList, getTeacherListTotal } from '../../api/order'
 import { exchange } from '../../api/exchange'
+import { searchFilter } from '@/utils/others.js'
+import {
+  getTeacherListBykeyword
+} from '@/api/user.js'
 
 export default {
   name: 'Exchange',
@@ -136,31 +142,47 @@ export default {
   computed: {
 
   },
+  watch: {
+    search_teacher(newval) {
+      if (newval.trim() != '') {
+        getTeacherListBykeyword({ searchKey: newval }).then(res => {
+          this.tableData = res.result
+          this.pagination1.total = res.result.length
+          this.pagination1.page = 0
+        })
+      } else {
+        this.pagination1.page = 0
+        this.changePage(0)
+        this.fetchTeacherDataCount()
+      }
+    }
+  },
   mounted() {
     this.tableData = []
     this.changePage(0)
+    this.fetchTeacherDataCount()
   },
   methods: {
-    // changeDialogTable(id) {
-    //   this.dialogTableVisible = !this.dialogTableVisible;
-    // },
+
     changeDialogForm(row) {
       this.nowUser = row
       this.dialogFormVisible = !this.dialogFormVisible
     },
     changePage(page) {
       this.tableLoading = true
-      getTeacherList(page).then(res => {
+      getTeacherList({ page: page }).then(res => {
         this.tableData = res.result
         this.tableLoading = false
       })
     },
+    fetchTeacherDataCount() {
+      getTeacherListTotal({}).then(res => {
+        this.pagination1.total = res.result
+      })
+    },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
       this.pagination1.page = val
       this.changePage(val)
-
-      // this.getList();
     },
     recharge() {
       var params = {
@@ -174,44 +196,14 @@ export default {
             this.tableData = []
             this.changePage(0)
           })
-          // .catch(() => {
-          //   this.$message({
-          //     message: '兑换失败',
-          //     type: 'error'
-          //   })
-          // })
       } else {
         this.$message({
           message: '余额不足！'
         })
       }
     },
-    tableDataFilter() {
-      const peopleSearch = this.search_teacher // 这里要定义
-      // var page = this.pagination1.page;
-      if (peopleSearch) {
-        this.pagination1.page = 1
-        const filter = this.tableData.filter(data => {
-          return Object.keys(data).some(key => {
-            return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(peopleSearch) > -1
-            )
-          })
-        })
-        this.pagination1.total = filter.length
-        console.log(this.pagination1.total)
-        return filter.slice(
-          (this.pagination1.page - 1) * 10,
-          this.pagination1.page * 10
-        )
-      }
-      this.pagination1.total = this.tableData.length
-      return this.tableData.slice(
-        (this.pagination1.page - 1) * 10,
-        this.pagination1.page * 10
-      )
+    searchFilter() {
+      return searchFilter(this.search_teacher, this.tableData, this.pagination1)
     }
   }
 }

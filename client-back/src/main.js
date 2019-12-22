@@ -35,7 +35,7 @@ Vue.prototype.axios = axios
 Vue.use(ElementUI, { locale })
 Vue.prototype.axios = axios
 Vue.prototype.subject = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理']
-Vue.prototype.orderState = ['老师未同意', '同意未支付', '完成', '老师已拒绝', '已撤销']
+Vue.prototype.orderState = ['老师未同意', '老师已同意', '订单已完成', '老师已拒绝', '订单已撤销']
 
 Vue.config.productionTip = true
 

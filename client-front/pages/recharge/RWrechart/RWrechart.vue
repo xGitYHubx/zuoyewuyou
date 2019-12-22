@@ -14,10 +14,10 @@
 				</view>
 				<radio class='radio black' :class="radio=='1'?'checked':''" :checked="radio=='1'?true:false" value="1"></radio>
 			</view>
-			<view class="cu-form-group">
+			<!-- <view class="cu-form-group">
 				<view class="title">测试</view>
 				<radio class='radio black' :class="radio=='2'?'checked':''" :checked="radio=='2'?true:false" value="2"></radio>
-			</view>
+			</view> -->
 		</radio-group>
 
 
@@ -71,7 +71,7 @@
                 </template> -->
 				<!-- #endif -->
 
-				<button class="submit" @click="requestPaymentTest()" :loading="loading">立刻支付
+				<button class="submit" @click="requestPaymentTest()" :loading="loading" disabled>立刻支付
 				</button>
 			</view>
 		</view>

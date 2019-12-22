@@ -110,20 +110,15 @@ export default {
       var upload = document.getElementsByClassName(
         'el-upload--picture-card'
       )[0]
-      console.log(upload)
       // upload.setAttribute('display','hidden')
       // upload.setAttribute('style','display:hidden')
       // upload.style('display','hidden')
       upload.style.display = 'none'
     },
     onProgress(event, file, fileList) {
-      console.log()
-      console.log()
-      console.log()
     },
     beforeUploadAvatar(file) {
       this.avatarExdata.fileType = file.type.split('/')[1]
-      console.log(file)
     }
   }
 }

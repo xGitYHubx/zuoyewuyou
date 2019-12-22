@@ -6,7 +6,7 @@
           maxlength="-1"
           :disabled="modalName != null"
           @input="textareaAInput"
-          placeholder="再此处输入文字描述"
+          placeholder="再此处输入200字符以内的评论"
           focus
         ></textarea>
       </view>
@@ -37,7 +37,7 @@
           type="button"
           @click="sendCommen"
         >
-          输入评论
+          保存评论
         </button>
       </view>
     </form>
@@ -58,7 +58,8 @@ export default {
     };
   },
   onLoad(options) {
-    this.orderId = options.orderId
+    this.orderId = options.orderId;
+    this.textareaAValue = options.value;
   },
   onShow() {},
   onBackPress(event) {
@@ -70,14 +71,14 @@ export default {
         success: function(res) {
           if (res.confirm) {
             uni.switchTab({
-            	url:'/pages/tabbar/order/order'
-            })
+              url: "/pages/tabbar/order/order"
+            });
           }
         }
       });
     } else {
       uni.switchTab({
-          url: '/pages/tabbar/order/order'
+        url: "/pages/tabbar/order/order"
       });
     }
 
@@ -100,50 +101,59 @@ export default {
     },
     sendCommen() {
       var _this = this;
-      uni.showLoading({
-        title: "评论中...",
-        mask: true
-      });
-      this.RWajax.post("/order/evaluate", {
-        orderId: _this.orderId,
-        evaluation: _this.textareaAValue
-      })
-        .then(res => {
-          if (res.data.success == true) {
-            _this.commentId = res.data.result;
+	console.log(this.textareaAValue.length);
+	console.log(this.textareaAValue);
+      if (this.textareaAValue.length >= 200) {
+        uni.showToast({
+          title: "需要在200字符以内,目前为"+this.textareaAValue.length+"字符",
+          icon: "none"
+        });
+      } else {
+        uni.showLoading({
+          title: "评论中...",
+          mask: true
+        });
+        this.RWajax.post("/order/evaluate", {
+          orderId: _this.orderId,
+          evaluation: _this.textareaAValue
+        })
+          .then(res => {
+            if (res.data.success == true) {
+              _this.commentId = res.data.result;
 
-            if (_this.imgList.length > 0) {
-              _this.uploadImg();
+              if (_this.imgList.length > 0) {
+                _this.uploadImg();
+              } else {
+                uni.hideLoading();
+                uni.showToast({
+                  title: "评论发表成功",
+                  icon: "success",
+                  duration: 500
+                });
+                _this.isCommented = 1;
+                setTimeout(function() {
+                  uni.switchTab({
+                    url: "/pages/tabbar/order/order"
+                  });
+                }, 1000);
+              }
             } else {
               uni.hideLoading();
               uni.showToast({
-                title: "评论发表成功",
-                icon: "success",
-                duration: 500
+                title: "发送失败",
+                icon: "none"
               });
-              _this.isCommented = 1;
-              setTimeout(function() {
-                uni.switchTab({
-                	url:'/pages/tabbar/order/order'
-                })
-              }, 1000);
             }
-          } else {
+            // _this.getMsg()
+          })
+          .catch(res => {
             uni.hideLoading();
             uni.showToast({
               title: "发送失败",
               icon: "none"
             });
-          }
-          // _this.getMsg()
-        })
-        .catch(res => {
-          uni.hideLoading();
-          uni.showToast({
-            title: "发送失败",
-            icon: "none"
           });
-        });
+      }
     },
     uploadImg() {
       var _this = this;
@@ -195,8 +205,8 @@ export default {
                         _this.isCommented = 1;
                         setTimeout(function() {
                           uni.switchTab({
-                          	url:'/pages/tabbar/order/order'
-                          })
+                            url: "/pages/tabbar/order/order"
+                          });
                         }, 1000);
                       }
                     },
