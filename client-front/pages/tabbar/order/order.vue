@@ -31,7 +31,7 @@
               </view>
             </view>
             <view class="action actionbox">
-              <view class="text-grey text-xs RW-nowrap">{{ item.createTime }}</view>
+              <view class="text-grey text-xs RW-nowrap">{{ item.startTime }}</view>
               <view class="cuIcon-coin text-orange">{{ item.cost }}</view>
             </view>
           </view>
@@ -66,6 +66,7 @@
             </button>
 						<button
               class="RW-button-item line-blue  shadow RW-button-item-valuation"
+			  v-if="item.status == 2"
               @click="toDetail(0, item)"
             >
               {{item.evaluation?'查看评价':'评价'}}
@@ -125,10 +126,10 @@ export default {
         .then(res => {
           console.log(res);
           res.data.result.sort((a, b) => {
-            if (a.state > b.state) {
-              return 1;
-            } else {
+            if (a.createTime >b.createTime) {
               return -1;
+            } else {
+              return 1;
             }
           });
           _this.list = res.data.result;
@@ -187,21 +188,10 @@ export default {
       }
     },
     mapOrderColor(status) {
-      if (status == 0 || status == 1 || status == 2) {
-        return ["orange", "进行中"];
-      } else if (status == 3) {
-        return ["orange", "进行中"];
+      if (status == 2 ) {
+		  return ["green", "已完成"];
       } else {
-        return ["green", "已完成"];
-      }
-    },
-    mapOrderColor2(status) {
-      if (status == 0 || status == 1 || status == 2) {
-        return "orange";
-      } else if (status == 3) {
-        return "green";
-      } else {
-        return "gray";
+		  return ["orange", "进行中"];
       }
     }
   }

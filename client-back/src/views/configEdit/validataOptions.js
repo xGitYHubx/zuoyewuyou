@@ -1,4 +1,5 @@
 //
+
 import { twoPoint } from '@/utils/validate.js'
 
 export function checkTwoPoint(rule, value, callback) {

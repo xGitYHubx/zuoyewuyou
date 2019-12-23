@@ -4,9 +4,10 @@
       <view class="cu-form-group margin-top">
         <textarea
           maxlength="-1"
-          :disabled="modalName != null"
+		  :value="textareaAValue"
+          :disabled="role ==1"
           @input="textareaAInput"
-          placeholder="再此处输入200字符以内的评论"
+          :placeholder="role==0?'再此处输入200字符以内的评论':'还没有评价'"
           focus
         ></textarea>
       </view>
@@ -36,6 +37,7 @@
           class="cu-btn block bg-blue margin-tb-sm lg"
           type="button"
           @click="sendCommen"
+		  v-if="role==0"
         >
           保存评论
         </button>
@@ -54,12 +56,14 @@ export default {
       textareaAValue: "",
       orderId: "",
       commentId: "",
+	  role: uni.getStorageSync("userInfo").role,
       isCommented: 0 //评论是否已经发表
     };
   },
   onLoad(options) {
     this.orderId = options.orderId;
     this.textareaAValue = options.value;
+	console.log(this.textareaAValue);
   },
   onShow() {},
   onBackPress(event) {

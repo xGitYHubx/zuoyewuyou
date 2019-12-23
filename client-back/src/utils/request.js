@@ -15,6 +15,10 @@ function logoutConfirm() {
   MessageBox.confirm('未登录或登录已过期', '请重新登录', {
     confirmButtonText: '去登陆',
     cancelButtonText: '取消',
+    showCancelButton: false,
+    showClose: false,
+    closeOnClickModal: false,
+    closeOnPressEscape: false,
     type: 'warning'
   }).then(() => {
     store.dispatch('user/resetToken').then(() => {
@@ -49,7 +53,7 @@ request.interceptors.response.use(
       return res
     } else { // res.success==false
       if (res.message == 0 || res.message == 1 || res.message == 2) { // 校验出错
-        erroeMsg(res.message || 'Error')
+        // erroeMsg('请求失败')
         logoutConfirm()
         return Promise.reject(new Error(res.message || 'Error'))
       } else {

@@ -20,7 +20,7 @@ export function validUsername(str) {
 }
 
 /**
- * @小数点位置为2
+ * @小数点至多到后两位
  * @param {string} str
  * @returns {Boolean}
  */
@@ -33,3 +33,19 @@ export function twoPoint(str) {
     return true
   }
 }
+
+/**
+ * @大于0的整数
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function positiveNum(str) {
+  console.log(str)
+
+  if (Number(str) <= 0) {
+    return false
+  } else {
+    return true
+  }
+}
+

@@ -4,11 +4,11 @@
     <el-row :gutter="6" class="app-container">
       <el-col :span="24">
         <div class="grid-content bg-purple" />
-        <el-form ref="form" :model="form" label-width="120px">
-          <el-form-item label="辅导地点">
+        <el-form ref="form" :model="form" label-width="120px" :rules="rules">
+          <el-form-item label="辅导地点" prop="location">
             <el-input v-model="form.location" />
           </el-form-item>
-          <el-form-item label="辅导时间">
+          <el-form-item label="辅导时间" prop="startTime">
             <el-col>
               <el-date-picker
                 v-model="form.startTime"
@@ -20,17 +20,17 @@
               />
             </el-col>
           </el-form-item>
-          <el-form-item label="资薪/每小时">
-            <el-input v-model="form.cost" suffix-icon="el-icon-coin" />
+          <el-form-item label="资薪/每小时" prop="cost">
+            <el-input v-model="form.cost" type="number" suffix-icon="el-icon-coin" />
           </el-form-item>
-          <el-form-item label="辅导时长">
+          <el-form-item label="辅导时长" prop="duration">
             <el-input
               v-model="form.duration"
               suffix-icon="el-icon-coin"
               type="number"
             />
           </el-form-item>
-          <el-form-item class="XelRadio" label="辅导科目">
+          <el-form-item class="XelRadio" label="辅导科目" prop="subject">
             <el-radio-group v-model="form.subject">
               <el-radio label="0">语文</el-radio>
               <el-radio label="1">数学</el-radio>
@@ -152,10 +152,10 @@
     <el-dialog title="确认订单信息" :visible.sync="dialogFormVisible">
       <div>
         <el-form ref="form" :inline="true" :model="form">
-          <el-form-item label="辅导地点">
+          <el-form-item label="辅导地点" :required="true">
             <el-input :value="form.location" readonly />
           </el-form-item>
-          <el-form-item label="辅导时间">
+          <el-form-item label="辅导时间" :required="true">
             <el-date-picker
               :value="form.startTime"
               format="yyyy-MM-dd HH:mm:ss"
@@ -164,10 +164,10 @@
               placeholder="选择日期时间"
             />
           </el-form-item>
-          <el-form-item label="资薪/每小时">
+          <el-form-item label="资薪/每小时" :required="true">
             <el-input :value="form.cost" suffix-icon="el-icon-coin" readonly />
           </el-form-item>
-          <el-form-item label="辅导时长">
+          <el-form-item label="辅导时长" :required="true">
             <el-input
               :value="form.duration"
               suffix-icon="el-icon-coin"
@@ -175,7 +175,8 @@
               readonly
             />
           </el-form-item>
-          <el-form-item class="XelRadio" label="辅导科目">
+
+          <el-form-item class="XelRadio" label="辅导科目" :required="true">
             <el-radio-group :value="form.subject" readonly>
               <el-radio label="0">语文</el-radio>
               <el-radio label="1">数学</el-radio>
@@ -187,6 +188,14 @@
               <el-radio label="7">历史</el-radio>
               <el-radio label="8">地理</el-radio>
             </el-radio-group>
+          </el-form-item>
+          <br>
+          <el-form-item label="老师：" :required="true">
+            <div>{{ form.receiverName||'未选择' +', '+form.receiver }}</div>
+          </el-form-item>
+          <br>
+          <el-form-item label="学生：" :required="true">
+            <div>{{ form.initiatorName||'未选择' +', '+form.initiator }}</div>
           </el-form-item>
         </el-form>
       </div>
@@ -213,6 +222,7 @@ import {
   getTeacherListBykeyword,
   getStudentListBykeyword
 } from '@/api/user.js'
+import { validationRules } from './validataOptions.js'
 
 export default {
   name: 'Order',
@@ -267,10 +277,11 @@ export default {
         location: '',
         startTime: '',
         region: '',
-        duration: 0,
-        cost: 0,
-        subject: 0
-      }
+        duration: '',
+        cost: '',
+        subject: 8
+      },
+      rules: validationRules
     }
   },
   computed: {},
@@ -387,8 +398,11 @@ export default {
       if (
         paramss.startTime != null &&
         paramss.cost != null &&
+        paramss.duration != null &&
+        paramss.duration != null &&
         paramss.initiator != null &&
-        paramss.receiver != null
+        paramss.receiver != null &&
+        paramss.location != null
       ) {
         paramss.startTime = beautyTime1(paramss.startTime)
         paramss.cost = paramss.duration * paramss.cost
@@ -402,6 +416,8 @@ export default {
           .then(_ => {
             this.onCancel(true)
             this.dialogFormVisible = false
+          }).catch(_ => {
+            this.$message('请检查信息是否完整')
           })
       } else {
         this.$message('请检查信息是否完整')
@@ -430,7 +446,7 @@ export default {
         region: '',
         duration: 0,
         cost: 0,
-        subject: 0
+        subject: null
       }
       // this.teacherMange.forEach(element => {
       //   element.checked = 0
@@ -448,7 +464,13 @@ export default {
       }
     },
     changeDialogForm(row) {
-      this.dialogFormVisible = !this.dialogFormVisible
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.dialogFormVisible = !this.dialogFormVisible
+        } else {
+          return false
+        }
+      })
     },
     formatGoodAt(code) {
       if (code != null) {
