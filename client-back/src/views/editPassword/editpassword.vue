@@ -45,6 +45,8 @@ export default {
             newPassword: '',
             checkNewPassword: ''
           }
+        }).then(_ => {
+          this.logout()
         })
       }
     },
@@ -53,6 +55,9 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
+    }, async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

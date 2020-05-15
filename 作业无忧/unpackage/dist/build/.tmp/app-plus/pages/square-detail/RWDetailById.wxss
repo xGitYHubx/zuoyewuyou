@@ -1,0 +1,26 @@
+
+.rw-bottom-bar {
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+}
+.task-img{
+	width: 650rpx;
+	margin: 10rpx 50rpx;
+}
+.cu-list+.cu-list{
+	margin-top: 0;
+}
+
+
+.RW-border-bottom.data-v-e491f012{
+	border-bottom: #dddddd solid 16rpx;
+}
+.comment.data-v-e491f012{
+	/* border-radius: 10px; */
+	/* border-bottom: #dddddd solid 8upx; */
+}
+.rw-caiyong text.data-v-e491f012{
+	margin: 0 10rpx;
+}
+

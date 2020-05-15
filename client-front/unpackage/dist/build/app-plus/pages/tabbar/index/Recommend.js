@@ -1,2 +1,0 @@
-setCssToHead(["wx-image { max-width: 100%; -o-object-fit: cover; object-fit: cover; }\n.",[1],"box.",[1],"data-v-f0d0dcf2 { padding: ",[0,20],"; overflow: hidden; }\n.",[1],"content.",[1],"data-v-f0d0dcf2 { overflow: hidden; }\n.",[1],"content .",[1],"_img.",[1],"data-v-f0d0dcf2 { max-width: 90% !important; -o-object-fit: cover; object-fit: cover; }\n",],undefined,{path:"./pages/tabbar/index/Recommend.wxss"})();
-document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/tabbar/index/Recommend.wxml') } }));
