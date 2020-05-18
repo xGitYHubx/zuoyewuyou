@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-04 19:58:31
+ * @LastEditTime: 2020-05-18 22:31:50
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \homeworkUnless\作业无忧\main.js
+ */ 
 import Vue from 'vue'
 import App from './App'
 require('promise.prototype.finally').shim();//低版本浏览器对finally的支持
@@ -52,7 +60,7 @@ request.interceptors.response.use((response, next) => {
 	   	success: function(res) {
 			// console.log(response);
 	   		if (res.confirm) {
-	   			uni.navigateTo({
+	   			uni.redirectTo({
 	   				url: "/pages/login/login"
 	   			})
 	   		} else if (res.cancel) {

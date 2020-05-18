@@ -113,6 +113,7 @@
 			},
 			Logout() {
 				uni.clearStorageSync();
+				uni.setStorageSync('opened', true)
 				this.balance = 0
 				uni.switchTab({
 					url: "../index/index"
@@ -167,7 +168,7 @@
 			},
 			getAvatar() {
 				var userInfo = uni.getStorageSync('userInfo')
-				console.log(userInfo);
+				// console.log(userInfo);
 				
 				if (userInfo) {
 					console.log(userInfo.avatar);

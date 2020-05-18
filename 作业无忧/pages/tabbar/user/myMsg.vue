@@ -124,7 +124,6 @@
 					'account': account
 				}).then(res => {
 					var data = res.data.result
-					console.log(res);
 					if (res.data.success==true) {
 						_this.name = data.name
 						_this.account = data.account

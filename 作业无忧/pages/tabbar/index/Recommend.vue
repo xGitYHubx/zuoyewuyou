@@ -48,7 +48,7 @@
 	}
 
 	.content {
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 
 	.content img {

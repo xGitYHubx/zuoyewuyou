@@ -28,7 +28,7 @@
 						<view class="title" v-html="item.title">
 							<!-- {{item.title}} -->
 						</view>
-				<!-- 		<view class="content" v-html='item.content'>
+						<!-- 		<view class="content" v-html='item.content'>
 
 						</view> -->
 					</view>
@@ -46,17 +46,17 @@
 
 <script>
 	import initData from "../../../common/initData.js"
-	
+
 	var bitmap = null;
 	export default {
 		data() {
 			return {
-				page:0,
+				page: 0,
 				leftPos: 0,
 				isLogin: false,
 				isLoading: false,
 				loadingMsg: "加载中...",
-				news:[],
+				news: [],
 			};
 		},
 		onNavigationBarButtonTap() {
@@ -71,7 +71,7 @@
 					icon.show();
 				}, 100);
 			}
-			
+
 		},
 		onLoad() {
 			this.getrecmd(0)
@@ -83,13 +83,13 @@
 				function() {},
 				function(e) {});
 			// this.createtab();
-			
+
 
 		},
-		onReachBottom(){
-			
-			this.isLoading=true
-			this.getrecmd(this.page+1);
+		onReachBottom() {
+
+			this.isLoading = true
+			this.getrecmd(this.page + 1);
 		},
 		methods: {
 			createtab: function() {
@@ -125,27 +125,22 @@
 				})
 			},
 			getrecmd(page) {
-				this.RWajax.get('/recmd/query/page',{
-					page:page
-				}).then(res=>{
-					if(res.data.success){	
-						if(res.data.result.length>0){
-						this.news=this.news.concat(res.data.result);
-						this.page++;
-						}
-						else{
-							
-						}
-					}else{
-						
+				this.RWajax.get('/recmd/query/page', {
+					page: page
+				}).then(res => {
+					if (res.data.success) {
+						if (res.data.result.length > 0) {
+							this.news = this.news.concat(res.data.result);
+							this.page++;
+						} 
 					}
-					this.isLoading=false;
+					this.isLoading = false;
 				})
 
 			},
-			GetDetails(obj){
+			GetDetails(obj) {
 				uni.navigateTo({
-					url: "./Recommend?"+"id="+obj.recmdId,
+					url: "./Recommend?" + "id=" + obj.recmdId,
 				})
 			},
 			goLogin() {
@@ -154,8 +149,8 @@
 				})
 			},
 			checkLogin() {
-				if(!initData.checkLogin()){
-					uni.navigateTo({
+				if (!initData.checkLogin()) {
+					uni.redirectTo({
 						url: "../../login/login"
 					})
 				}
@@ -187,9 +182,11 @@
 		top: 0;
 		z-index: 1;
 	}
-	.Scontainer{
+
+	.Scontainer {
 		min-height: 60vh;
 	}
+
 	.img-view .img {
 		width: 100%;
 		height: 100%;
@@ -243,7 +240,7 @@
 		z-index: 999;
 		width: 100%;
 		background-color: #FFFFFF;
-		border-radius:  32rpx 32rpx 10rpx 10rpx;
+		border-radius: 32rpx 32rpx 10rpx 10rpx;
 		box-shadow: -2px 1px 20px 0px grey;
 	}
 
@@ -323,7 +320,8 @@
 		height: 50px;
 		color: rgb(205, 205, 205);
 	}
-	.rw-page-loading{
+
+	.rw-page-loading {
 		width: 100%;
 		color: black;
 		z-index: 1000;
