@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-04 19:58:31
+ * @LastEditTime: 2020-05-17 12:01:45
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \homeworkUnless\作业无忧\common\initData.js
+ */ 
 const $host = "http://47.93.22.56:80"
 
 
@@ -68,11 +76,21 @@ function checkLogin() {
 }
 
 
+/**
+ * 检查是否已经打开过app
+ * 用于显示隐私政策文件
+ */
+function checkOpened(){
+	var opened = uni.getStorageSync('opened')
+	return opened?true:false
+}
+
 
 
 const initData = {
 	getBalance: getBalance,
 	getUserInfo: getUserInfo,
-	checkLogin:checkLogin
+	checkLogin:checkLogin,
+	checkOpened:checkOpened
 }
 module.exports = initData

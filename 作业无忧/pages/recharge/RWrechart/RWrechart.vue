@@ -71,7 +71,7 @@
                 </template> -->
 				<!-- #endif -->
 
-				<button class="submit" @click="requestPaymentTest()" :loading="loading" disabled>立刻支付
+				<button class="submit" @click="requestPaymentTest()" :loading="loading" disabled>立刻支付(未开通)
 				</button>
 			</view>
 		</view>

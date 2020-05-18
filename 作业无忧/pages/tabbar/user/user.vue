@@ -21,15 +21,15 @@
 					</view>
 					<view class="box-bd">
 						<view class="item" @click="toDetail(3)">
-							<view class="icon"><img src="../../../static/user/message.png"></view>
+							<view class="icon"><image src="../../../static/user/message.png"></image></view>
 							<view class="text">我发布的</view>
 						</view>
 						<view class="item" @click="toDetail(4)">
-							<view class="icon"><img src="../../../static/user/favorite.png"></view>
+							<view class="icon"><image src="../../../static/user/favorite.png"></image></view>
 							<view class="text">我评论的</view>
 						</view>
 						<view class="item" @tap="contactService">
-							<view class="icon"><img src="../../../static/user/service.png"></view>
+							<view class="icon"><image src="../../../static/user/service.png"></image></view>
 							<view class="text">联系客服</view>
 						</view>
 					</view>
@@ -280,7 +280,7 @@
 					width: 60upx;
 					height: 60upx;
 
-					img {
+					image {
 						width: 100%;
 						height: 100%;
 					}

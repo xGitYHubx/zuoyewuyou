@@ -84,13 +84,13 @@
 			<!-- <view class="pwd">
 				<input password type="password" name="password" placeholder="登录密码" />
 			</view> -->
-			<view style="padding: 20upx;">
+			<!-- <view style="padding: 20upx;">
 				<label class="checkbox">
 					<checkbox :checked="isAgreeItem" @tap="handleAgree" />
 					<text class="protocol_tip">我已阅读并同意</text>
 				</label>
 				<text class="protocol_tip link">《注册服务协议》</text>
-			</view>
+			</view> -->
 			<view class="btn-area submit-button">
 				<button type="primary" formType="submit">提交</button>
 			</view>
@@ -104,7 +104,7 @@
 	export default {
 		data() {
 			return {
-				isAgreeItem: false, //
+				isAgreeItem: true, //
 				index_subject: 0, //学科的索引值
 				code: '', //验证码
 				codeText: '获取验证码', //验证码提示（发出一分钟内无法再次发送）

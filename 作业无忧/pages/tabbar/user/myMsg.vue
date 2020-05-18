@@ -124,10 +124,11 @@
 					'account': account
 				}).then(res => {
 					var data = res.data.result
+					console.log(res);
 					if (res.data.success==true) {
 						_this.name = data.name
 						_this.account = data.account
-						_this.index = data.age
+						_this.index = data.age>12?0:data.age
 						_this.school = data.school
 						_this.avatar = data.avatar
 						_this.textareaAValue = data.address
