@@ -88,6 +88,22 @@
         },
         "splashscreen" : {
             "waiting" : false
+        },
+        "nativePlugins" : {
+            "Laowu-BadgeModule" : {
+                "__plugin_info__" : {
+                    "name" : "桌面角标设置以及消息推送服务",
+                    "description" : "该插件支持国产主流手机品牌（华为，小米，OPPO，vivo）的桌面角标设置。",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=1782",
+                    "android_package_name" : "com.dreamtech.zywy",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "1782",
+                    "parameters" : {}
+                }
+            }
         }
     },
     /* SDK配置 */

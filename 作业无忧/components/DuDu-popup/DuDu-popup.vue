@@ -9,10 +9,13 @@
           你可以阅读<span
             class="path"
             hover-class="navigator-hover"
-						@tap="showProtocol(0)"
+            @tap="showProtocol(0)"
             >《服务协议》</span
           >
-          和<span  class="path" hover-class="navigator-hover" @tap="showProtocol(1)"
+          和<span
+            class="path"
+            hover-class="navigator-hover"
+            @tap="showProtocol(1)"
             >《隐私政策》</span
           >了解详细信息。如您同意，请点击"同意"开始接受我们的服务。
         </view>
@@ -75,17 +78,17 @@ export default {
 
     //展示协议内容
     showProtocol(type) {
-			var text = this.protocolText;
-			var title= "服务协议"
+      var text = this.protocolText;
+      var title = "服务协议";
       if (type == 1) {
-				text = this.policyText;
-				title = "隐私政策"
+        text = this.policyText;
+        title = "隐私政策";
       }
       uni.showModal({
         title: title,
         content: text,
-				showCancel:false,
-				confirmText: "我知道了",
+        showCancel: false,
+        confirmText: "我知道了",
         success: function (res) {
           // if (res.confirm) {
           // 	console.log('用户点击确定');

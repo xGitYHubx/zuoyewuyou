@@ -188,19 +188,25 @@
 				}
 				
 				this.validation().then(()=>{
-						this.RWajax.post('/task/publish',params).then(res=>{//生成任务id
-							if (res.data.success == true) {
-									this.taskId = res.data.result
-									this.uploadImg()
-								} else {
-									this.publishing=false
-									uni.showToast({
-										title: '出错',
-										icon: 'none'
-									})
-								}
-						})
+					this.RWajax.post('/task/publish',params).then(res=>{//生成任务id
+						if (res.data.success == true) {
+								this.taskId = res.data.result
+								this.uploadImg()
+							} else {
+								this.publishing=false
+								uni.showToast({
+									title: res.data.message,
+									icon: 'none'
+								})
+							}
+					})
 				}).catch((err)=>{
+					if(err!=""){
+						uni.showToast({
+							title: err,
+							icon: 'none'
+						});	
+					}
 					this.publishing=false
 				})
 				
@@ -232,25 +238,20 @@
 									var data = JSON.parse(res.data)
 									if (data.success == true) { //上传图片成功
 										var url = data.result
-										uni.request({ //url录入数据库
-											url: _this.$host + "/picture/upload",
-											method: "post",
-											data: {
+										//url录入数据库
+										_this.RWajax.post("/picture/upload",[{  
 												linkerId: exdata.taskId,
 												position: exdata.position,
 												url: url
-											},
-											success(res) {
-												resolve(url) //返回url与1 代表成功	
-												console.log(res);
-
-											},
-											fail(res) {
-												console.log(res);
-												
+											}]).then(res=>{
+												if(res.data.success==true){
+													resolve(url) //返回url 代表成功
+												}else{
+													reject(res)
+												}
+											}).catch(err=>{
 												reject(res)
-											}
-										})
+											})
 									} else {
 										uni.showModal({
 											content: "请求失败，请重试",
@@ -365,12 +366,12 @@
 				}
 				return new Promise((resolve,reject)=>{
 					if(this.textareaAValue.trim()==''){
-						uni.showToast({
-							title: '任务描述不能为空',
-							icon: 'none'
-						});
 						reject('任务描述不能为空')
-					}else if (params.reward > uni.getStorageSync('balance')) {
+					}
+					else if(params.reward<=0){
+					 	reject('悬赏的学币须为正整数')
+					}
+					else if (params.reward > uni.getStorageSync('balance')) {
 						uni.showModal({
 							title: '金币不足',
 							content: `剩余金币(${uni.getStorageSync('balance')||0})不足以发布任务,点击确认前往充值`,
@@ -382,7 +383,7 @@
 								}
 							},
 						});
-						reject('余额不足')
+						reject('')
 					}else{
 						resolve()
 					}

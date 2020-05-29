@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2019-12-04 19:58:31
- * @LastEditTime: 2020-05-18 22:31:50
- * @LastEditors: your name
+ * @LastEditTime: 2020-05-18 23:16:08
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \homeworkUnless\作业无忧\main.js
  */ 
@@ -11,7 +11,7 @@ import App from './App'
 require('promise.prototype.finally').shim();//低版本浏览器对finally的支持
 
 Vue.config.productionTip = false
-Vue.prototype.$host = "http://47.93.22.56:80"
+Vue.prototype.$host = "http://58.87.100.5:80"
 
 
 //全局函数 工具函数
@@ -22,7 +22,7 @@ Vue.prototype.RWcommon = RWcommon
 import uni_request from './common/uni_request.js'
 
 const request = uni_request({ // 有效配置项只有三个
-	baseURL: "http://47.93.22.56:80", //baseURL
+	baseURL: "http://58.87.100.5:80", //baseURL
 	timeout: 5000, // 超时时间
 	// heaers: {
 	//     // 'x-custom-header': 'x-custom-header'

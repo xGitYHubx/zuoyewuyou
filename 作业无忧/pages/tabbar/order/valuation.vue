@@ -62,8 +62,7 @@ export default {
   },
   onLoad(options) {
     this.orderId = options.orderId;
-    this.textareaAValue = options.value;
-	console.log(this.textareaAValue);
+    this.textareaAValue = options.value||"";
   },
   onShow() {},
   onBackPress(event) {
@@ -105,8 +104,8 @@ export default {
     },
     sendCommen() {
       var _this = this;
-	console.log(this.textareaAValue.length);
-	console.log(this.textareaAValue);
+	// console.log(this.textareaAValue.length);
+	// console.log(this.textareaAValue);
       if (this.textareaAValue.length >= 200) {
         uni.showToast({
           title: "需要在200字符以内,目前为"+this.textareaAValue.length+"字符",

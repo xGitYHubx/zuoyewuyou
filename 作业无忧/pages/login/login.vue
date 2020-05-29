@@ -169,7 +169,6 @@ export default {
         account: this.username,
         password: this.userpwd,
       }).then((res) => {
-        // console.log(res);
         if (res.data.success == true) {
           uni.showToast({
             title: "登陆成功",

@@ -57,13 +57,13 @@
             >
               去支付
             </button>
-            <button
+           <!-- <button
               class="RW-button-item RW-bg-blue"
               v-if="item.status == 2 && role == 0"
               @click="changeOrderState(3, item.orderId)"
             >
               完成
-            </button>
+            </button> -->
 						<button
               class="RW-button-item line-blue  shadow RW-button-item-valuation"
 			  v-if="item.status == 2"
@@ -124,7 +124,7 @@ export default {
         type: 2
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           res.data.result.sort((a, b) => {
             if (a.createTime >b.createTime) {
               return -1;
@@ -133,7 +133,7 @@ export default {
             }
           });
           _this.list = res.data.result;
-		  console.log(_this.list);
+		  // console.log(_this.list);
         })
         .catch(res => {})
         .finally(res => {
@@ -144,7 +144,7 @@ export default {
       return this.subject[index];
     },
 	toDetail(type,exdata){
-		console.log(exdata);
+		// console.log(exdata);
 		if(type==0){
 			uni.navigateTo({
 			  url: "/pages/tabbar/order/valuation?orderId="+exdata.orderId+"&value="+exdata.evaluation||''
@@ -188,11 +188,14 @@ export default {
       }
     },
     mapOrderColor(status) {
-      if (status == 2 ) {
-		  return ["green", "已完成"];
-      } else {
-		  return ["orange", "进行中"];
+      var map={
+        0:["orange", "进行中"],
+        1:["orange", "进行中"],
+        2:["green", "已完成"],
+        3:["gray","已拒绝"],
+        4:["gray","已拒绝"]
       }
+      return map[status]
     }
   }
 };

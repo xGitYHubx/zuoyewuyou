@@ -113,7 +113,7 @@
 			},
 			Logout() {
 				uni.clearStorageSync();
-				uni.setStorageSync('opened', true)
+				uni.setStorageSync('agreeProtocol', true)
 				this.balance = 0
 				uni.switchTab({
 					url: "../index/index"
@@ -131,31 +131,16 @@
 					})
 				}
 				if (type == 2) {//充值页面
-					// if (!this.isLogin) {
-					// 	uni.navigateTo({
-					// 		url: '/pages/login/login'
-					// 	})
-					// }
 					uni.navigateTo({
 						url: "/pages/recharge/RWrechart/RWrechart"
 					})
 				}
 				if (type == 3) {//我发布的页面
-					// if (!this.isLogin) {
-					// 	uni.navigateTo({
-					// 		url: '../../login/login'
-					// 	})
-					// }
 					uni.navigateTo({
 						url: "./myPublish"
 					})
 				}
 				if (type == 4) {//我评论的页面
-					// if (!this.isLogin) {
-					// 	uni.navigateTo({
-					// 		url: '../../login/login'
-					// 	})
-					// }
 					uni.navigateTo({
 						url: "./myComment"
 					})
@@ -171,7 +156,6 @@
 				// console.log(userInfo);
 				
 				if (userInfo) {
-					console.log(userInfo.avatar);
 					
 					if (userInfo.avatar) {
 						this.avatar = userInfo.avatar
