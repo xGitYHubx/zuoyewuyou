@@ -69,13 +69,14 @@
 			<!-- <view class="action">
 				<text class="cuIcon-sound text-grey"></text>
 			</view> -->
-			<input 
-				@input="changeCommentText" 
-				:value="commentText" 
+			<input
 				:adjust-position="false" 
 				class="solid-bottom" 
-				@focus="toEditComment"
-				maxlength="300" cursor-spacing="10">
+				@tap="toEditComment"
+				maxlength="300" 
+				disabled
+				cursor-spacing="10">
+				
 			<!-- <view class="action">
 				<text class="cuIcon-emojifill text-grey"></text>
 			</view> -->

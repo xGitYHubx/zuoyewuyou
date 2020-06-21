@@ -3,11 +3,11 @@
     <form>
       <view class="cu-form-group margin-top">
         <textarea
-          maxlength="-1"
+          maxlength="200"
           :disabled="modalName != null"
-          @input="textareaAInput"
           placeholder="再此处输入文字描述"
-          focus
+		  v-model="textareaAValue"
+		  focus
         ></textarea>
       </view>
       <view class="cu-bar bg-white margin-top">

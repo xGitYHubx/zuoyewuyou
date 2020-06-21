@@ -42,7 +42,7 @@
 						isHeartData: true, // 是否发送心跳
 						isReconnect: true, // 是否断线重连
 						reConnectTime: 3000, // 断线重连检测时间间隔
-						debug: true, // debug
+						debug: false, // debug
 						onSocketOpen: header => {},
 						onSocketError: res => {},
 						onSocketClose: res => {},
@@ -55,11 +55,11 @@
 								title: '作业无忧 有新评论了',
 								content: data.senderName+'给你评论了'
 							});
-							if (data) {
-								pool.resolve(data);
-							} else {
-								pool.reject(data);
-							}
+							// if (data) {
+							// 	pool.resolve(data);
+							// } else {
+							// 	pool.reject(data);
+							// }
 						}
 					});
 					this.globalData.socket.initSocket();
