@@ -117,6 +117,7 @@ opearteRequest.interceptors.response.use(
 // create an axios instance(请求数据，不带msg提示，自行维护msg)
 const requestNoMsg = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL:'http://www.zywy.top', // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })

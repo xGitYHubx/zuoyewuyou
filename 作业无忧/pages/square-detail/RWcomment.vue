@@ -65,6 +65,7 @@ export default {
   },
   onLoad(options) {
     this.task = JSON.parse(decodeURIComponent(options.task));
+	this.quote=options.quote
   },
   onShow() {
     this.checkLogin();
@@ -138,10 +139,12 @@ export default {
         account: uni.getStorageSync("account"),
         taskId: _this.task.taskId,
         commentText: _this.textareaAValue,
+		quote:_this.quote
       };
       this.RWajax.post("/comment/publish", params)
         .then((res) => {
           if (res.data.success == true) {
+			  // uni.hideLoading();//测试时使用，加入scoket后删除
             _this.commentId = res.data.result;
 
             if (_this.imgList.length > 0) {
@@ -150,7 +153,7 @@ export default {
 							});
             } else {
               _this.sendScoket(params);
-              uni.hideLoading();
+			  uni.hideLoading();
               uni.showToast({
                 title: "评论发表成功",
                 icon: "success",
@@ -178,7 +181,9 @@ export default {
             title: "发送失败",
             icon: "none",
           });
-        });
+        }).final(res=>{
+			uni.hideLoading()
+		});
     },
     uploadImg() {
       var _this = this;

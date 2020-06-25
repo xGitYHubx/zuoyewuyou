@@ -71,7 +71,7 @@
                 </template> -->
 				<!-- #endif -->
 
-				<button class="submit" @click="requestPaymentTest()" :loading="loading" disabled>立刻支付(未开通)
+				<button class="submit" @click="requestPaymentTest()" :loading="loading" >立刻支付(未开通)
 				</button>
 			</view>
 		</view>
@@ -217,7 +217,7 @@
 			},
 			requestPaymentTest(e) {
 
-				this.RWajax.post("/user/recharge", {
+				this.RWajax.post("/user/coin/recharge", {
 					account: uni.getStorageSync('account'),
 					coin: this.price
 				}).then(res => {

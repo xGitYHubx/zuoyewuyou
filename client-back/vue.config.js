@@ -61,7 +61,8 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       '/': {
         // target: `http://47.93.22.56:8082`,
-        target: `http://10.14.4.158:8082`,
+        // target: `http://10.14.4.158:8082`,
+        target: `http://58.87.100.5:80`,
         changeOrigin: true,
         ws: false
       }

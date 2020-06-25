@@ -8,7 +8,7 @@
  */ 
 //封装请求
 
-const baseUrl = "http://58.87.100.5:8082";
+const baseUrl = "http://58.87.100.5:80";
 const RWajax = (opts, data) => {
     let httpDefaultOpts = {
         url: baseUrl + opts.url,

@@ -67,6 +67,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/record',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Order',
+        component: () => import('@/views/record/index'),
+        meta: { title: '消费记录', icon: 'order2' }
+      }
+    ]
+  },
+  {
     path: '/aboutUs',
     component: Layout,
     children: [

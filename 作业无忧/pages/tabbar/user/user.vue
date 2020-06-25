@@ -66,6 +66,13 @@
 					<view class="text">充值学币</view>
 					<image class="to" src="../../../static/user/to.png"></image>
 				</view>
+				<view class="li " @click="toDetail(5)">
+					<view class="icon">
+						<image src="../../../static/user/recharge.png"></image>
+					</view>
+					<view class="text">消费记录</view>
+					<image class="to" src="../../../static/user/to.png"></image>
+				</view>
 				<view class="li " @click="Logout()">
 					<view class="icon">
 						<image src="../../../static/user/logout2.png"></image>
@@ -143,6 +150,11 @@
 				if (type == 4) {//我评论的页面
 					uni.navigateTo({
 						url: "./myComment"
+					})
+				}
+				if (type == 5) {//我评论的页面
+					uni.navigateTo({
+						url: "./myrecord"
 					})
 				}
 			},

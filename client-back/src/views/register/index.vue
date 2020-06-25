@@ -20,7 +20,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="学校">
-        <el-input v-model="form.school" />
+        <el-input v-model="form.school" maxlength="20"/>
       </el-form-item>
 
       <!-- <el-form-item label="Activity time">

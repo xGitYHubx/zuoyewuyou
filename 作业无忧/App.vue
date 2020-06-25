@@ -10,8 +10,6 @@
 	import initData from "./common/initData.js"
 	const badge_module = uni.requireNativePlugin('Laowu-BadgeModule');
 	import UniSocketPromise from "@i5920/uni-socket-promise"
-
-
 	export default {
 		onLaunch: function() {
 			initData.getBalance() //初始化余额
@@ -63,10 +61,8 @@
 						}
 					});
 					this.globalData.socket.initSocket();
-
 					
 				})
-
 			}
 		},
 		onShow: function() {},
